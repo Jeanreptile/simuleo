@@ -7,94 +7,16 @@ var ReactStyle = require('../../react-styles/src/ReactStyle.jsx');
 
 window.React = React;
 
-var constants = {
-  ADD_USER: "ADD_USER",
-  ADD_USER_SUCCESS: "ADD_USER_SUCCESS",
-  ADD_USER_FAIL: "ADD_USER_FAIL"
-};
-
-var actions = {
-  addUser: function(email, firstname, lastname, type, password) {
-    console.log("Adding USER ", email, firstname, lastname, type, password);
-    this.dispatch(constants.ADD_USER);
-    $.post( "/api/user", { email: email, firstname: firstname, lastname: lastname, type: type, password: password },
-      function(links) { }.bind(this)
-    )
-    .done(function(links) {
-        this.dispatch(constants.ADD_USER_SUCCESS, {uniqueId: links.uniqueId, email: email, firstname: firstname, lastname: lastname, type: type, password: password });
-      }.bind(this)
-    )
-    .fail(function(error) {
-        this.dispatch(constants.ADD_USER_FAIL, {error: error});
-      }.bind(this)
-    );
-  }
-};
-
-var UserStore = Fluxxor.createStore({
-  initialize: function() {
-    this.loading = false;
-    this.finished = false;
-    this.info = {};
-    //this.socket = io.connect('http://localhost');
-
-    this.bindActions(
-      constants.ADD_USER, this.onAddUser,
-      constants.ADD_USER_SUCCESS, this.onAddUserSuccess,
-      constants.ADD_USER_FAIL, this.onAddUserFail
-    );
-  },
-
-  onAddUser: function(payload) {
-    //var word = {id: payload.id, word: payload.word, status: "ADDING"};
-    //this.words[payload.id] = word;
-    //APICALL
-    //this.emit("change");
-    this.finished = true;
-    this.emit("change");
-  },
-
-  onAddUserSuccess: function(payload) {
-    //this.
-    // this.info["acheteur"] = "http://localhost:8080/simul_negociation/" + payload.uniqueId + "/acheteur";
-    // this.info["vendeur"] = "http://localhost:8080/simul_negociation/" + payload.uniqueId + "/vendeur";;
-    // this.info["montant_acheteur"] = payload.acheteur;
-    // this.info["contexte"] = payload.contexte;
-    // this.info["montant_vendeur"] = payload.vendeur;
-    this.emit("change");
-  },
-
-  onAddUserFail: function(payload) {
-    // this.words[payload.id].status = "ERROR";
-    // this.words[payload.id].error = payload.error;
-    this.emit("change");
-  }
-});
-
-var stores = {
-  UserStore: new UserStore()
-};
-
-var flux = new Fluxxor.Flux(stores, actions);
-
-window.flux = flux;
-
-flux.on("dispatch", function(type, payload) {
-  if (console && console.log) {
-    console.log("[Dispatch]", type, payload);
-  }
-});
-
 var FluxMixin = Fluxxor.FluxMixin(React),
     StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var Body = React.createClass({
   mixins: [FluxMixin, StoreWatchMixin("UserStore")],
-
   getInitialState: function() {
     return { email: "", firstname: "", lastname: "", type: "", password:"", password2:"" };
   },
   getStateFromFlux: function() {
+    console.log(this.getFlux());
     var store = this.getFlux().store("UserStore");
     return {
       loading: store.loading,
@@ -199,10 +121,7 @@ var Page = React.createClass({
     });
     return (
       <Container id='container' className={classes}>
-        <Sidebar />
-        <Header />
         <Body flux={flux} />
-        <Footer />
       </Container>
     );
   }

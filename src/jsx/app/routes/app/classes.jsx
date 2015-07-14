@@ -7,114 +7,6 @@ var Fluxxor = require('../../../../../node_modules/fluxxor');
 
 window.React = React;
 
-var constants = {
-  LOAD_CLASSES: "LOAD_CLASSES",
-  LOAD_CLASSES_SUCCESS: "LOAD_CLASSES_SUCCESS",
-  LOAD_CLASSES_FAIL: "LOAD_CLASSES_FAIL",
-
-  ADD_BUZZ: "ADD_BUZZ",
-  ADD_BUZZ_SUCCESS: "ADD_BUZZ_SUCCESS",
-  ADD_BUZZ_FAIL: "ADD_BUZZ_FAIL"
-};
-
-var actions = {
-  loadClasses: function() {
-    this.dispatch(constants.LOAD_CLASSES);
-
-    $.get( "/classess", function(classes) {
-        this.dispatch(constants.LOAD_CLASSES_SUCCESS, {classes: classes});
-      }.bind(this))
-      .done(function() {
-      })
-      .fail(function() {
-         this.dispatch(constants.LOAD_CLASSES_FAIL, {error: error});
-      }.bind(this));
-  },
-
-  addClasse: function(word) {
-    var id = _.uniqueId();
-    this.dispatch(constants.ADD_BUZZ, {id: id, word: word});
-
-    BuzzwordClient.submit(word, function() {
-      this.dispatch(constants.ADD_BUZZ_SUCCESS, {id: id});
-    }.bind(this), function(error) {
-      this.dispatch(constants.ADD_BUZZ_FAIL, {id: id, error: error});
-    }.bind(this));
-  }
-};
-
-var ClasseStore = Fluxxor.createStore({
-  initialize: function() {
-    this.loading = false;
-    this.error = null;
-    this.classes = {};
-
-    this.bindActions(
-      constants.LOAD_CLASSES, this.onLoadClasses,
-      constants.LOAD_CLASSES_SUCCESS, this.onLoadClassesSuccess,
-      constants.LOAD_CLASSES_FAIL, this.onLoadClassesFail,
-
-      constants.ADD_BUZZ, this.onAddBuzz,
-      constants.ADD_BUZZ_SUCCESS, this.onAddBuzzSuccess,
-      constants.ADD_BUZZ_FAIL, this.onAddBuzzFail
-    );
-  },
-
-  onLoadClasses: function() {
-    this.loading = true;
-    this.emit("change");
-  },
-
-  onLoadClassesSuccess: function(payload) {
-    this.loading = false;
-    this.error = null;
-
-    this.classes = payload.classes.reduce(function(acc, classe) {
-      var clientId = _.uniqueId();
-      acc[clientId] = {id: clientId, classe: classe, status: "OK"};
-      return acc;
-    }, {});
-    this.emit("change");
-  },
-
-  onLoadClassesFail: function(payload) {
-    this.loading = false;
-    this.error = payload.error;
-    this.emit("change");
-  },
-
-  onAddBuzz: function(payload) {
-    var word = {id: payload.id, word: payload.word, status: "ADDING"};
-    this.words[payload.id] = word;
-    this.emit("change");
-  },
-
-  onAddBuzzSuccess: function(payload) {
-    this.words[payload.id].status = "OK";
-    this.emit("change");
-  },
-
-  onAddBuzzFail: function(payload) {
-    this.words[payload.id].status = "ERROR";
-    this.words[payload.id].error = payload.error;
-    this.emit("change");
-  }
-});
-
-var stores = {
-  ClasseStore: new ClasseStore()
-  };
-
-var flux = new Fluxxor.Flux(stores, actions);
-
-window.flux = flux;
-
-flux.on("dispatch", function(type, payload) {
-  if (console && console.log) {
-    console.log("[Dispatch]", type, payload);
-  }
-});
-
 var FluxMixin = Fluxxor.FluxMixin(React),
     StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
@@ -143,7 +35,7 @@ var Body = React.createClass({
         {this.state.classes.map(function(classe, i ) {
           console.log("React Console : " + classe.classe.class_name + "||" + i );
           if ((i + 0) % 4 == 0)
-          {
+            {
             return(
               <Col sm={6}>
                 <Classe key={classe.id} classe={classe} />
@@ -232,7 +124,7 @@ var Classe = React.createClass({
 });
 
 var Page = React.createClass({
-  mixins: [SidebarMixin],
+  mixins: [FluxMixin, SidebarMixin],
   render: function() {
     var classes = React.addons.classSet({
       'container-open': this.state.open
@@ -241,7 +133,7 @@ var Page = React.createClass({
       <Container id='container' className={classes}>
         <Sidebar />
         <Header />
-        <Body flux={flux}/>
+        <Body />
         <Footer />
       </Container>
     );
