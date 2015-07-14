@@ -143,10 +143,24 @@ app.post('/api/simul_negociation/:uniqueId', function(req, res, next) {
 });
 
 app.post('/api/simul_negociation', function(req, res, next) {
-  console.log("body is " + req.body.contexte);
   rdb.createSimulNegociation(req.body.contexte, req.body.acheteur, req.body.vendeur).then(function (response) {
       if(!response) {
           return res.json("nope");
+      }
+      return res.json(response);
+  });
+});
+
+app.post('/api/login', function(req, res, next) {
+  console.log("username isis " + req.body.username + " and password is " + req.body.password);
+  rdb.findUser(req.body.contexte, req.body.acheteur, req.body.vendeur).then(function (response) {
+      if(!response) {
+          return res.json({error: "User does not exist"});
+      }
+      console.log("response is " + JSON.stringify(response.password));
+      if (req.body.password != response.password)
+      {
+        return res.json({error: "Wrong password"});
       }
       return res.json(response);
   });

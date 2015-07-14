@@ -7,92 +7,17 @@ var ReactStyle = require('../../react-styles/src/ReactStyle.jsx');
 
 window.React = React;
 
-var constants = {
-  ADD_SIMUL: "ADD_SIMUL",
-  ADD_SIMUL_SUCCESS: "ADD_SIMUL_SUCCESS",
-  ADD_SIMUL_FAIL: "ADD_SIMUL_FAIL"
-};
-
-var actions = {
-  addSimul: function(contexte, vendeur, acheteur) {
-    this.dispatch(constants.ADD_SIMUL);
-
-    $.post( "/api/simul_negociation", {acheteur: acheteur, vendeur: vendeur, contexte: contexte}, function(links) {
-      }.bind(this))
-      .done(function(links) {
-        this.dispatch(constants.ADD_SIMUL_SUCCESS, {uniqueId: links.uniqueId, acheteur : acheteur, vendeur: vendeur, contexte: contexte});
-      }.bind(this))
-      .fail(function(error) {
-         this.dispatch(constants.ADD_SIMUL_FAIL, {error: error});
-      }.bind(this));
-  }
-};
-
-var SimulStore = Fluxxor.createStore({
-  initialize: function() {
-    this.loading = false;
-    this.finished = false;
-    this.info = {};
-    //this.socket = io.connect('http://localhost');
-
-    this.bindActions(
-      constants.ADD_SIMUL, this.onAddSimul,
-      constants.ADD_SIMUL_SUCCESS, this.onAddSimulSuccess,
-      constants.ADD_SIMUL_FAIL, this.onAddSimulFail
-    );
-  },
-
-  onAddSimul: function(payload) {
-    //var word = {id: payload.id, word: payload.word, status: "ADDING"};
-    //this.words[payload.id] = word;
-    //APICALL
-    //this.emit("change");
-    this.finished = true;
-    this.emit("change");
-  },
-
-  onAddSimulSuccess: function(payload) {
-    //this.
-    this.info["acheteur"] = "http://localhost:8080/simul_negociation/" + payload.uniqueId + "/acheteur";
-    this.info["vendeur"] = "http://localhost:8080/simul_negociation/" + payload.uniqueId + "/vendeur";;
-    this.info["montant_acheteur"] = payload.acheteur;
-    this.info["contexte"] = payload.contexte;
-    this.info["montant_vendeur"] = payload.vendeur;
-    this.emit("change");
-  },
-
-  onAddSimulFail: function(payload) {
-    this.words[payload.id].status = "ERROR";
-    this.words[payload.id].error = payload.error;
-    this.emit("change");
-  }
-});
-
-var stores = {
-  SimulStore: new SimulStore()
-  };
-
-var flux = new Fluxxor.Flux(stores, actions);
-
-window.flux = flux;
-
-flux.on("dispatch", function(type, payload) {
-  if (console && console.log) {
-    console.log("[Dispatch]", type, payload);
-  }
-});
-
 var FluxMixin = Fluxxor.FluxMixin(React),
     StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var Body = React.createClass({
-  mixins: [FluxMixin, StoreWatchMixin("SimulStore")],
+  mixins: [FluxMixin, StoreWatchMixin("SimulConfigStore")],
   getInitialState: function() {
     return { newClasse: "" };
   },
 
   getStateFromFlux: function() {
-    var store = this.getFlux().store("SimulStore");
+    var store = this.getFlux().store("SimulConfigStore");
     return {
       loading: store.loading,
       finished: store.finished,
@@ -355,7 +280,7 @@ var Recap = React.createClass({
 });
 
 var Page = React.createClass({
-  mixins: [SidebarMixin],
+  mixins: [FluxMixin, SidebarMixin],
   render: function() {
     var classes = React.addons.classSet({
       'container-open': this.state.open
@@ -364,7 +289,7 @@ var Page = React.createClass({
       <Container id='container' className={classes}>
         <Sidebar />
         <Header />
-        <Body flux={flux}/>
+        <Body />
         <Footer />
       </Container>
     );

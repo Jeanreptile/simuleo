@@ -1,4 +1,28 @@
-'use strict';
+
+var Fluxxor = require('../../../node_modules/fluxxor'),
+    actions = require('./actions/actions');
+
+
+// Load stores
+
+var ClasseStore = require('./stores/classeStore'),
+    SimulConfigStore = require('./stores/simulConfigStore');
+
+var stores = {
+  SimulConfigStore: new SimulConfigStore(),
+  ClasseStore: new ClasseStore()
+  };
+
+var flux = new Fluxxor.Flux(stores, actions);
+
+window.flux = flux;
+
+
+flux.on("dispatch", function(type, payload) {
+  if (console && console.log) {
+    console.log("[Dispatch]", type, payload);
+  }
+});
 
 /* Initialize Locales */
 l20n.initializeLocales('app', {
@@ -27,7 +51,7 @@ var InitializeRouter = function(View) {
     });
   }
 
-  React.render(<View />, document.getElementById('app-container'), function() {
+  React.render(<View flux={flux} />, document.getElementById('app-container'), function() {
     // l20n initialized only after everything is rendered/updated
 
     l20n.ready();
