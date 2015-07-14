@@ -8,6 +8,7 @@ var simul_negociation = require('./routes/app/simul_negociation.jsx');
 var simul_negociation_config = require('./routes/app/simul_negociation_config.jsx');
 var simulations = require('./routes/app/simulations.jsx');
 var test = require('./routes/app/gallery.jsx');
+var signup = require('./routes/app/signup.jsx');
 
 
 /* ROUTES */
@@ -20,6 +21,7 @@ module.exports = (
     <Route path='/simul_negociation/*/*' handler={simul_negociation} />
     <Route path='/simulations' handler={simulations} />
     <Route path='/test' handler={test} />
+    <Route path='/signup' handler={signup} />
     <NotFoundRoute handler={notfound} />
   </Route>
 );

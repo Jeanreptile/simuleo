@@ -164,6 +164,21 @@ app.get('/classess', function(req, res, next) {
   });
 });
 
+app.post('/api/user', function(req, res, next) {
+  console.log("body is " + req.body);
+  rdb.createUser(
+    req.body.email,
+    req.body.firstname,
+    req.body.lastname,
+    req.body.type,
+    req.body.password)
+  .then(function (response) {
+    if(!response)
+      return res.json("nope");
+    return res.json(response);
+  });
+});
+
 //app.get('/simul_negociation/:generated', function(req, res, next) {
 //  return
   //return res.json({"text" : "All right, all right, we are in " + req.params.generated});
