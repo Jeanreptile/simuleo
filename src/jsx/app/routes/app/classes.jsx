@@ -3,15 +3,17 @@ var Sidebar = require('../../common/sidebar.jsx');
 var Footer = require('../../common/footer.jsx');
 
 var Fluxxor = require('../../../../../node_modules/fluxxor');
+var AuthenticatedMixin = require('../../mixins/authenticatedMixin');
 
 
 window.React = React;
+
 
 var FluxMixin = Fluxxor.FluxMixin(React),
     StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var Body = React.createClass({
-  mixins: [FluxMixin, StoreWatchMixin("ClasseStore")],
+  mixins: [AuthenticatedMixin, FluxMixin, StoreWatchMixin("ClasseStore")],
   getInitialState: function() {
     return { newClasse: {} };
   },
@@ -32,6 +34,7 @@ var Body = React.createClass({
        {this.state.loading ? <p>Loading...</p> : null}
        <Grid>
          <h1>Classes</h1>
+         <p>HEHO {this.props.user}</p>
         {this.state.classes.map(function(classe, i ) {
           console.log("React Console : " + classe.classe.class_name + "||" + i );
           if ((i + 0) % 4 == 0)
@@ -45,11 +48,11 @@ var Body = React.createClass({
           else{
             return(
             <Col sm={6}>
-             <Classe key={classe.id} classe={classe} />
+             <Classe {...this.props} key={classe.id} classe={classe} />
             </Col>
             )
           }
-        })}
+        }.bind(this))}
         </Grid>
       </Container>
     );
@@ -95,7 +98,8 @@ var Classe = React.createClass({
               <Grid>
                 <Row>
                   <Col xs={12}>
-                    <h4 style={{marginTop: 0}}>{this.props.classe.classe.class_name}</h4>
+                    <h4 style={{marginTop: 0}}>{this.props.classe.classe.class_name} </h4>
+                    <p>TESTTT {this.props.user}</p>
                     <Table striped>
                       <thead>
                         <tr>
@@ -124,7 +128,7 @@ var Classe = React.createClass({
 });
 
 var Page = React.createClass({
-  mixins: [FluxMixin, SidebarMixin],
+  mixins: [AuthenticatedMixin, FluxMixin, SidebarMixin],
   render: function() {
     var classes = React.addons.classSet({
       'container-open': this.state.open

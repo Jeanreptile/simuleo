@@ -1,7 +1,7 @@
 var Fluxxor = require('../../../../node_modules/fluxxor');
     constants = require('../constants/constants');
 
-var SimulStore = Fluxxor.createStore({
+var SimulConfigStore = Fluxxor.createStore({
   initialize: function() {
     this.loading = false;
     this.finished = false;
@@ -41,4 +41,4 @@ var SimulStore = Fluxxor.createStore({
   }
 });
 
-module.exports = SimulStore;
+module.exports = SimulConfigStore;

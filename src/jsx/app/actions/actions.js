@@ -2,7 +2,6 @@ var constants = require('../constants/constants');
 
 module.exports = {
 
-
     //Simulation config
     addSimul: function(contexte, vendeur, acheteur) {
     this.dispatch(constants.ADD_SIMUL);
@@ -31,7 +30,28 @@ module.exports = {
       }.bind(this));
   },
 
-  
+
+  // Login
+  loginUser: function(jwt) {
+    var savedJwt = localStorage.getItem('jwt');
+
+    if (savedJwt !== jwt) {
+      var nextPath = RouterContainer.get().getCurrentQuery().nextPath || '/';
+
+      RouterContainer.get().transitionTo(nextPath);
+      localStorage.setItem('jwt', jwt);
+    }
+
+    this.dispatch(constants.LOGIN_USER, {jwt: jwt});
+  },
+
+  logoutUser: function() {
+    RouterContainer.get().transitionTo('/login');
+    localStorage.removeItem('jwt');
+
+    this.dispatch(constants.LOGOUT_USER);
+  },
+
   //Classes
 
   loadClasses: function() {

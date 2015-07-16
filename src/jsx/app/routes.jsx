@@ -21,7 +21,7 @@ module.exports = (
     <Route path='/simul_negociation/*/*' handler={simul_negociation} />
     <Route path='/simulations' handler={simulations} />
     <Route path='/test' handler={test} />
-    <Route path='/login' handler={login} />
+      <Route path='/login' handler={login} />
     <NotFoundRoute handler={notfound} />
   </Route>
 );

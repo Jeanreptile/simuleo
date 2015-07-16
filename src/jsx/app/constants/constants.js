@@ -1,7 +1,11 @@
 var constants = {
+  //Login
+
+  LOGIN_USER: 'LOGIN_USER',
+  LOGOUT_USER: 'LOGOUT_USER',
 
   //Simulation config
-  
+
   ADD_SIMUL: 'ADD_SIMUL',
   ADD_SIMUL_SUCCESS: 'ADD_SIMUL_SUCCESS',
   ADD_SIMUL_FAIL: 'ADD_SIMUL_FAIL',

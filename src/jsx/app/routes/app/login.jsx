@@ -1,6 +1,9 @@
 var Header = require('../../common/header.jsx');
 var Sidebar = require('../../common/sidebar.jsx');
 var Footer = require('../../common/footer.jsx');
+var auth = require('../services/auth');
+var RedirectWhenLoggedIn = require('../mixins/redirect_when_logged_in');
+
 
 
 var Body = React.createClass({
@@ -36,7 +39,8 @@ var Body = React.createClass({
     $.post( "/api/login/", {username: this.state.email, password: this.state.password}, function(result) {
       }.bind(this))
       .done(function(result) {
-        console.log("Ok !" + JSON.stringify(result));
+        console.log("Ok !" + result.jwt);
+        this.getFlux().actions.loginUser(result.jwt)
       }.bind(this))
       .fail(function(error) {
       }.bind(this));
@@ -111,7 +115,7 @@ var LoginPage = React.createClass({
     });
     return (
       <Container id='container' className={classes}>
-        <Body flux={flux} />
+        <Body />
       </Container>
     );
   }

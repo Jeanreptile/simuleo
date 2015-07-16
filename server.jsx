@@ -7,6 +7,7 @@ var compression = require('compression');
 var cookieParser = require('cookie-parser');
 var expressBeautify = require('express-beautify')();
 var bodyParser = require('body-parser');
+var jwt = require('jsonwebtoken');
 
 require('dotenv').load();
 var rdb = require('./lib/rethink');
@@ -162,7 +163,9 @@ app.post('/api/login', function(req, res, next) {
       {
         return res.json({error: "Wrong password"});
       }
-      return res.json(response);
+      var token = jwt.sign({ email: response.email }, 'secretkeey', {expiresInMinutes: 60*12});
+      return token;
+      //return res.json(response);
   });
 });
 
