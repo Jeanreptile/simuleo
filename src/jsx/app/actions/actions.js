@@ -76,5 +76,22 @@ module.exports = {
     }.bind(this), function(error) {
       this.dispatch(constants.ADD_CLASSE_FAIL, {id: id, error: error});
     }.bind(this));
+  },
+
+  // Sign up
+  addUser: function(email, firstname, lastname, type, password) {
+    console.log("Adding USER ", email, firstname, lastname, type, password);
+    this.dispatch(constants.ADD_USER);
+    $.post( "/api/user", { email: email, firstname: firstname, lastname: lastname, type: type, password: password },
+      function(links) { }.bind(this)
+    )
+    .done(function(links) {
+        this.dispatch(constants.ADD_USER_SUCCESS, {uniqueId: links.uniqueId, email: email, firstname: firstname, lastname: lastname, type: type, password: password });
+      }.bind(this)
+    )
+    .fail(function(error) {
+        this.dispatch(constants.ADD_USER_FAIL, {error: error});
+      }.bind(this)
+    );
   }
 };

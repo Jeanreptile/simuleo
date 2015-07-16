@@ -7,12 +7,14 @@ var Fluxxor = require('../../../node_modules/fluxxor'),
 
 var ClasseStore = require('./stores/classeStore'),
     SimulConfigStore = require('./stores/simulConfigStore'),
-    LoginStore = require('./stores/loginStore');
+    LoginStore = require('./stores/loginStore'),
+    UserStore = require('./stores/userStore');
 
 var stores = {
   SimulConfigStore: new SimulConfigStore(),
   ClasseStore: new ClasseStore(),
-  LoginStore: new LoginStore()
+  LoginStore: new LoginStore(),
+  UserStore: new UserStore()
   };
 
 var flux = new Fluxxor.Flux(stores, actions);
