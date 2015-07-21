@@ -1,13 +1,19 @@
 var Header = require('../../common/header.jsx');
 var Sidebar = require('../../common/sidebar.jsx');
 var Footer = require('../../common/footer.jsx');
-var auth = require('../services/auth');
-var RedirectWhenLoggedIn = require('../mixins/redirect_when_logged_in');
+var auth = require('../../services/auth');
+var RedirectWhenLoggedIn = require('../../mixins/redirect_when_logged_in');
 
+var React = require('react'),
+    Router = require('react-router'),
+    { Route, RouteHandler, Link } = Router;
 
 
 var Body = React.createClass({
-  mixins:[React.addons.LinkedStateMixin],
+  mixins: [ Router.Navigation, React.addons.LinkedStateMixin],
+  statics: {
+    attemptedTransition: null
+  },
   getStateFromFlux: function() {
     var flux = this.getFlux();
     return {
@@ -17,16 +23,7 @@ var Body = React.createClass({
   },
 
   getInitialState: function() {
-    return { email: "", password: "" };
-  },
-  login: function(e) {
-    e.preventDefault();
-   // Here, we call an external AuthService. We’ll create it in the next step
-   /*
-   Auth.login(this.state.user, this.state.password)
-     .catch(function(err) {
-       console.log(“Error logging in”, err);
-     });*/
+    return { email: "", password: "", error: ""};
   },
   componentDidMount: function() {
     $('html').addClass('authentication');
@@ -36,18 +33,22 @@ var Body = React.createClass({
   },
   login: function(e){
     e.preventDefault();
-    $.post( "/api/login/", {username: this.state.email, password: this.state.password}, function(result) {
-      }.bind(this))
-      .done(function(result) {
-        console.log("Ok !" + result.jwt);
-        this.getFlux().actions.loginUser(result.jwt)
-      }.bind(this))
-      .fail(function(error) {
-      }.bind(this));
+    auth.login(this.state.email, this.state.password, function (loggedIn, errors) {
+     if (!loggedIn)
+       return this.setState({ error: errors });
+     if (Body.attemptedTransition) {
+       var transition = Body.attemptedTransition;
+       Body.attemptedTransition = null;
+       transition.retry();
+     } else {
+       this.replaceWith('/'); // jump after login
+     }
+   }.bind(this));
   },
   render: function() {
+    var errors = this.state.error ? <p>Mauvaises informations de connexion.<br /> {this.state.error}</p> : '';
     return (
-      <Container id='auth-container' className='login'>
+      <Container id='auth-container'>
         <Container id='auth-row'>
           <Container id='auth-cell'>
             <Grid>
@@ -85,8 +86,9 @@ var Body = React.createClass({
                                       <Link to='/app/signup'>Créer un compte</Link>
                                     </Col>
                                     <Col xs={6} collapseLeft collapseRight className='text-right'>
-                                      <Button outlined lg type='submit' bsStyle='blue' onClick={this.login.bind(this)}>Login</Button>
+                                      <Button outlined lg type='submit' bsStyle='blue' onClick={this.login}>Login</Button>
                                     </Col>
+                                    {errors}
                                   </Row>
                                 </Grid>
                               </FormGroup>
@@ -108,7 +110,7 @@ var Body = React.createClass({
 
 var classSet = React.addons.classSet;
 var LoginPage = React.createClass({
-  mixins: [SidebarMixin],
+  mixins: [SidebarMixin, RedirectWhenLoggedIn],
   render: function() {
     var classes = classSet({
       'container-open': this.state.open

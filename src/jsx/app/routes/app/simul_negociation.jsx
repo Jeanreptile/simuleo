@@ -3,6 +3,7 @@ var Sidebar = require('../../common/sidebar.jsx');
 var Footer = require('../../common/footer.jsx');
 
 var Fluxxor = require('../../../../../node_modules/fluxxor');
+var Authentication = require('../../mixins/authentication');
 
 
 window.React = React;
@@ -245,7 +246,7 @@ var Vendeur = React.createClass({
 });
 
 var Page = React.createClass({
-  mixins: [FluxMixin, SidebarMixin],
+  mixins: [Authentication, FluxMixin, SidebarMixin],
   render: function() {
     var classes = React.addons.classSet({
       'container-open': this.state.open

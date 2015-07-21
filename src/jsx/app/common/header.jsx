@@ -1,3 +1,6 @@
+var Router = require('react-router'),
+{ Route, RouteHandler, Link } = Router;
+
 var Brand = React.createClass({
   render: function() {
     return (
@@ -20,9 +23,10 @@ var Navigation = React.createClass({
     return (
       <NavContent {...props}>
         <Nav>
-          <NavItem className='logout' href='#'>
-            <Icon bundle='fontello' glyph='off-1' />
+          <NavItem>
+                  <Link to='/logout'><Icon bundle='fontello' glyph='off-1' /></Link>
           </NavItem>
+
         </Nav>
       </NavContent>
     );

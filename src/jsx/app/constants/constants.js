@@ -10,6 +10,9 @@ var constants = {
   ADD_SIMUL_SUCCESS: 'ADD_SIMUL_SUCCESS',
   ADD_SIMUL_FAIL: 'ADD_SIMUL_FAIL',
 
+  // students
+  INIT_STUDENTS: 'INIT_STUDENTS',
+
 
   //Simulations
   LOAD_SIMUL: "LOAD_SIMUL",

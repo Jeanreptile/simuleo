@@ -5,23 +5,40 @@ var Footer = require('../../common/footer.jsx');
 var Fluxxor = require('../../../../../node_modules/fluxxor');
 var ReactStyle = require('../../react-styles/src/ReactStyle.jsx');
 
+var Authentication = require('../../mixins/authentication');
+var auth = require('../../services/auth');
+
 window.React = React;
 
 var FluxMixin = Fluxxor.FluxMixin(React),
     StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
+
+    var SetIntervalMixin = {
+      componentWillMount: function() {
+        this.intervals = [];
+      },
+      setInterval: function() {
+        this.intervals.push(setInterval.apply(null, arguments));
+      },
+      componentWillUnmount: function() {
+        this.intervals.map(clearInterval);
+      }
+    };
+
 var Body = React.createClass({
   mixins: [FluxMixin, StoreWatchMixin("SimulConfigStore")],
   getInitialState: function() {
-    return { newClasse: "" };
+    var user = auth.getUser();
+    return { newClasse: "", user: user };
   },
 
   getStateFromFlux: function() {
-    var store = this.getFlux().store("SimulConfigStore");
+    var Simulstore = this.getFlux().store("SimulConfigStore");
     return {
-      loading: store.loading,
-      finished: store.finished,
-      info: store.info
+      loading: Simulstore.loading,
+      finished: Simulstore.finished,
+      info: Simulstore.info
     };
   },
 
@@ -32,7 +49,7 @@ var Body = React.createClass({
        <Grid>
           <Row>
             <Col xs={12}>
-                {this.state.finished ? <Recap info={this.state.info}/> : <FormSimul />}
+                {this.state.finished ? <Recap info={this.state.info}/> : <FormSimul {...this.state}/>}
             </Col>
           </Row>
         </Grid>
@@ -42,13 +59,19 @@ var Body = React.createClass({
   }
 });
 
-
 var FormSimul = React.createClass({
-  mixins: [FluxMixin],
+  mixins: [SetIntervalMixin,FluxMixin,React.addons.LinkedStateMixin, StoreWatchMixin("ClasseStore", "StudentStore")],
 
   getInitialState: function() {
-   return { montant_acheteur: "", montant_vendeur: "", contexte:"" };
+   return { contexte_vendeur: "", contexte_acheteur: "", groupIds: [], groupsData: []};
  },
+  getStateFromFlux: function() {
+    var ClasseStore = this.getFlux().store("ClasseStore");
+    var StudentStore = this.getFlux().store("StudentStore");
+    return {
+      classes: _.values(ClasseStore.classes)
+    };
+  },
 
   createStep: function(e) {
     e.preventDefault();
@@ -92,7 +115,98 @@ var FormSimul = React.createClass({
     }
     $('#remove-step').find('input:visible').eq(0).focus();
   },
+
+  componentWillUnmount: function() {
+    $('#create-step').unbind('submit', this.createStep);
+    $('#insert-step').unbind('submit', this.insertStep);
+    $('#remove-step').unbind('submit', this.removeStep);
+  },
+  handleGroupChanged: function(groupId, type, value){
+    var oldGroupsData = this.state.groupsData;
+    oldGroupsData.push({groupsId: groupId, type: type, value: value});
+    this.setState({groupsData: oldGroupsData});
+  },
+  render: function() {
+    return (
+              <PanelContainer noOverflow controlStyles='bg-pink fg-white'>
+                <Panel>
+                  <PanelHeader className='bg-pink fg-white' style={{margin: 0}}>
+                    <Grid>
+                      <Row>
+                        <Col xs={12}>
+                          <h2>Simulation negociation – configuration</h2>
+                        </Col>
+                      </Row>
+                    </Grid>
+                  </PanelHeader>
+                  <PanelBody>
+                    <Form id='form-2'>
+                      <div id='wizard-2'>
+                        <h1>Informations</h1>
+                        <div>
+                          <Grid>
+                            <Row>
+                              <Col sm={6} xs={12} collapseLeft xsOnlyCollapseRight>
+                                <FormGroup>
+                                  <Label htmlFor='contexte'>Contexte acheteur</Label>
+                                  <Textarea rows='15' id='contexte_acheteur' name='contexte_acheteur' className='required'
+                                    valueLink={this.linkState('contexte_acheteur')}
+                                    onChange={this.handleChangeInfo}/>
+                                </FormGroup>
+                              </Col>
+                              <Col sm={6} xs={12} collapseLeft xsOnlyCollapseRight>
+                                <FormGroup>
+                                  <Label htmlFor='contexte'>Contexte vendeur</Label>
+                                  <Textarea rows='15' id='contexte_acheteur' name='contexte_acheteur' className='required'
+                                    valueLink={this.linkState('contexte_vendeur')}
+                                    onChange={this.handleChangeInfo}/>
+                                </FormGroup>
+                              </Col>
+                            </Row>
+                          </Grid>
+                        </div>
+
+                        <h1>Sélection des groupes</h1>
+                        <div>
+                            <FormGroup>
+                              <Label>Sélection des groupes</Label>
+                              <div>
+                                {this.state.classes.map(function(classe, i ) {
+                                return <Radio key={classe.classe.id} inline value={classe.classe.id} name='inline-radio-options' onChange={this.handleClasseAdded.bind(this, classe.classe.students)}>
+                                  {classe.classe.class_name}
+                                </Radio>
+                              }.bind(this))}
+                              </div>
+                              <hr/>
+                            </FormGroup>
+                            <Grid>
+                              <Row>
+                                {this.state.groupIds.map(function(groupId){
+                                  return <MyForm key={groupId} groupId={groupId} callbackOnChange={this.handleGroupChanged} />
+                                }.bind(this))}
+                              </Row>
+                            </Grid>
+                      </div>
+                      </div>
+                    </Form>
+                  </PanelBody>
+                </Panel>
+              </PanelContainer>
+    );
+  },
+  handleClasseAdded: function(e, thisEl) {
+    //thisEl.preventDefault();
+    this.getFlux().actions.initStudents(e);
+    var length = (e.length)/2;
+    var ids = [];
+    for (i = 1; i < length +1; i++)
+    {
+      ids.push(i);
+    }
+    this.setState({groupIds: ids});
+  },
   componentDidMount: function() {
+    this.getFlux().actions.loadClasses(this.props.user.email);
     var isLtr = $('html').attr('dir') === 'ltr';
     var styles = {};
 
@@ -130,108 +244,115 @@ var FormSimul = React.createClass({
         return $('#form-2').valid();
       },
       onFinished: function (event, currentIndex) {
-        this.getFlux().actions.addSimul(this.state.contexte, this.state.montant_vendeur, this.state.montant_acheteur);
+        //this.getFlux().actions.addSimul(this.state.contexte, this.state.montant_vendeur, this.state.montant_acheteur);
+        console.log("YO");
+        console.log("Alors : " + JSON.stringify(this.state.groupsData));
       }.bind(this)
+    });
+
+    $("#dropdownselect45").change(function() {
+      console.log("HELLLO ??");
     });
 
 
     $('#create-step').bind('submit', this.createStep);
     $('#insert-step').bind('submit', this.insertStep);
     $('#remove-step').bind('submit', this.removeStep);
-  },
+  }
+});
 
-  componentWillUnmount: function() {
-    $('#create-step').unbind('submit', this.createStep);
-    $('#insert-step').unbind('submit', this.insertStep);
-    $('#remove-step').unbind('submit', this.removeStep);
+
+var MyForm = React.createClass({
+  mixins: [FluxMixin],
+  handleChange: function(type, value) {
+    this.props.callbackOnChange(this.props.groupId, type, value);
   },
   render: function() {
-    return (
-              <PanelContainer noOverflow controlStyles='bg-pink fg-white'>
-                <Panel>
-                  <PanelHeader className='bg-pink fg-white' style={{margin: 0}}>
-                    <Grid>
-                      <Row>
-                        <Col xs={12}>
-                          <h2>Simulation negociation – configuration</h2>
-                        </Col>
-                      </Row>
-                    </Grid>
-                  </PanelHeader>
-                  <PanelBody>
-                    <Form id='form-2'>
-                      <div id='wizard-2'>
-                        <h1>Informations</h1>
-                        <div>
-                          <Grid>
-                            <Row>
-                              <Col sm={4} xs={12} collapseLeft xsOnlyCollapseRight>
-                                <FormGroup>
-                                  <Label htmlFor='contexte'>Contexte</Label>
-                                  <Textarea rows='4' id='contexte' name='contexte' className='required'
-                                    value={this.state.contexte}
-                                    onChange={this.handleChangeInfo}/>
-                                </FormGroup>
-                              </Col>
-                              <Col sm={4} xs={6} collapseLeft className='form-border'>
-                                <FormGroup>
-                                  <Label htmlFor='montant_acheteur'>Montant maximal de l'acheteur</Label>
-                                  <Input type='text' id='montant_acheteur' name='montant_acheteur' className='required'
-                                    value={this.state.montant_acheteur}
-                                    onChange={this.handleChangeInfo}/>
-                                </FormGroup>
-                                <FormGroup>
-                                  <Label htmlFor='montant_vendeur'>Montant minimal du vendeur</Label>
-                                  <Input type='text' id='montant_vendeur' name='montant_vendeur' className='required'
-                                    value={this.state.montant_vendeur}
-                                    onChange={this.handleChangeInfo}/>
-                                </FormGroup>
-                              </Col>
-                              <Col sm={4} xs={6} collapseRight>
-                                <p>
-                                  Rentrer les informations.
-                                </p>
-                              </Col>
-                            </Row>
-                          </Grid>
-                        </div>
-                      </div>
-                    </Form>
-                  </PanelBody>
-                </Panel>
-              </PanelContainer>
-    );
+    console.log("IN RENDER" + JSON.stringify(this.props));
+    return(
+        <Col sm={4} smCollapseRight>
+                            <PanelContainer controlStyles='bg-blue fg-white'>
+                              <Panel>
+                                <PanelHeader className='bg-blue'>
+                                  <Grid>
+                                    <Row>
+                                      <Col xs={12} className='fg-white'>
+                                        <h3>Groupe {this.props.groupId}</h3>
+                                      </Col>
+                                    </Row>
+                                  </Grid>
+                                </PanelHeader>
+                                <PanelBody>
+                                  <Grid>
+                                    <Row>
+                                      <Col xs={12}>
+                                          <ul>
+                                            <li>
+                                              <FormGroup>
+                                                <Label htmlFor='acheteur'>Acheteur</Label>
+                                                <MySelect {...this.props} type="acheteur" callbackOnChange={this.handleChange}/>
+                                              </FormGroup>
+                                            </li>
+                                            <li>
+                                              <FormGroup>
+                                                <Label htmlFor='vendeur'>Vendeur</Label>
+                                                <MySelect {...this.props} type="vendeur" callbackOnChange={this.handleChange}/>
+                                              </FormGroup>
+                                            </li>
+                                          </ul>
+                                      </Col>
+                                    </Row>
+                                  </Grid>
+                                </PanelBody>
+                              </Panel>
+                            </PanelContainer>
+                          </Col>
+                        )}
+});
+
+var MySelect = React.createClass({
+  mixins: [SetIntervalMixin, FluxMixin, StoreWatchMixin("StudentStore")],
+
+  getInitialState: function() {
+   return { studentsOptions: [], dropdownId: ""};
+ },
+  getStateFromFlux: function() {
+    var StudentStore = this.getFlux().store("StudentStore");
+    return {
+      studentsList: StudentStore.students
+    };
   },
-  handleChangeInfo: function(e) {
-    if(e.target.name == 'montant_acheteur')
-      this.setState({montant_acheteur: e.target.value});
-    if(e.target.name == 'montant_vendeur')
-      this.setState({montant_vendeur: e.target.value});
-    if(e.target.name == 'contexte')
-      this.setState({contexte: e.target.value});
-  },
+    change: function(event){
+        this.props.callbackOnChange(this.props.type, event.target.value);
+    },
+    render: function(){
+    console.log("IN RENDER" + JSON.stringify(this.props));
+       return(
+            <Select id={this.state.dropdownId} defaultValue='1' onChange={this.change} value={this.state.value}>
+              <option key='1' value='1'>Sélectionner étudiant</option>
+              {this.state.studentsOptions}
+            </Select>
+       );
+    },
+    updateStudentOptions: function(){
+
+    },
+    componentDidMount: function() {
+      this.setState({dropdownId: this.props.type + this.props.groupId});
+      if (this.state.studentsList){
+        this.state.studentsList.map( function(student){
+          var full_name = student.first_name + " " + student.last_name;
+          var value = student.id;
+          this.state.studentsOptions.push(<option key={student.first_name} value={value}>{full_name}</option>)
+        }.bind(this))
+      }
+    }
 });
 
 
 var Recap = React.createClass({
   mixins: [FluxMixin],
   render: function() {
-    /*
-    var statusText, statusStyle = {};
-    switch(this.props.classe.info) {
-    case "OK":
-      statusText = "";
-      break;
-    case "ADDING":
-      statusText = "adding...";
-      statusStyle = { color: "#ccc" };
-      break;
-    case "ERROR":
-      statusText = "error: " + this.props.word.error;
-      statusStyle = { color: "red" };
-      break;
-    }
-    */
     return (
       <div>
             <Col sm={6}>
@@ -252,19 +373,10 @@ var Recap = React.createClass({
                         <Col xs={12}>
                           <ul>
                             <li>
-                              Contexte : {this.props.info["contexte"]}
+                              Montant acheteur: {this.props.info["contexte_acheteur"]}
                             </li>
                             <li>
-                              Montant acheteur: {this.props.info["montant_acheteur"]}
-                            </li>
-                            <li>
-                              Montant vendeur: {this.props.info["montant_vendeur"]}
-                            </li>
-                            <li>
-                              Lien acheteur: {this.props.info["acheteur"]}
-                            </li>
-                            <li>
-                              Lien vendeur: {this.props.info["vendeur"]}
+                              Montant vendeur: {this.props.info["contexte_vendeur"]}
                             </li>
                           </ul>
                         </Col>
@@ -280,7 +392,7 @@ var Recap = React.createClass({
 });
 
 var Page = React.createClass({
-  mixins: [FluxMixin, SidebarMixin],
+  mixins: [Authentication, FluxMixin, SidebarMixin],
   render: function() {
     var classes = React.addons.classSet({
       'container-open': this.state.open

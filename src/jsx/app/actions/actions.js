@@ -1,20 +1,23 @@
 var constants = require('../constants/constants');
 
 module.exports = {
-
     //Simulation config
     addSimul: function(contexte, vendeur, acheteur) {
-    this.dispatch(constants.ADD_SIMUL);
-
-    $.post( "/api/simul_negociation", {acheteur: acheteur, vendeur: vendeur, contexte: contexte}, function(links) {
-      }.bind(this))
-      .done(function(links) {
-        this.dispatch(constants.ADD_SIMUL_SUCCESS, {uniqueId: links.uniqueId, acheteur : acheteur, vendeur: vendeur, contexte: contexte});
-      }.bind(this))
-      .fail(function(error) {
-         this.dispatch(constants.ADD_SIMUL_FAIL, {error: error});
-      }.bind(this));
-  },
+      this.dispatch(constants.ADD_SIMUL);
+      $.post( "/api/simul_negociation", {acheteur: acheteur, vendeur: vendeur, contexte: contexte}, function(links) {
+        }.bind(this))
+        .done(function(links) {
+          this.dispatch(constants.ADD_SIMUL_SUCCESS, {uniqueId: links.uniqueId, acheteur : acheteur, vendeur: vendeur, contexte: contexte});
+        }.bind(this))
+        .fail(function(error) {
+           this.dispatch(constants.ADD_SIMUL_FAIL, {error: error});
+        }.bind(this));
+    },
+  // Simulation 1 config – students
+    initStudents: function(students)
+    {
+      this.dispatch(constants.INIT_STUDENTS, {students: students});
+    },
 
 
   //Simulations
@@ -54,10 +57,9 @@ module.exports = {
 
   //Classes
 
-  loadClasses: function() {
+  loadClasses: function(emailProf) {
     this.dispatch(constants.LOAD_CLASSES);
-
-    $.get( "/classess", function(classes) {
+    $.get( "/classess/" + emailProf, function(classes) {
         this.dispatch(constants.LOAD_CLASSES_SUCCESS, {classes: classes});
       }.bind(this))
       .done(function() {

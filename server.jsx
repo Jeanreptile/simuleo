@@ -153,30 +153,31 @@ app.post('/api/simul_negociation', function(req, res, next) {
 });
 
 app.post('/api/login', function(req, res, next) {
-  console.log("username isis " + req.body.username + " and password is " + req.body.password);
-  rdb.findUser(req.body.contexte, req.body.acheteur, req.body.vendeur).then(function (response) {
+  console.log("username is " + req.body.username + " and password is " + req.body.password);
+  rdb.findUserByEmail(req.body.username).then(function (response) {
       if(!response) {
           return res.json({error: "User does not exist"});
       }
-      console.log("response is " + JSON.stringify(response.password));
       if (req.body.password != response.password)
       {
         return res.json({error: "Wrong password"});
       }
       var token = jwt.sign({ email: response.email }, 'secretkeey', {expiresInMinutes: 60*12});
-      return token;
+      return res.json({token: token, user: response});
       //return res.json(response);
   });
 });
 
-app.get('/classess', function(req, res, next) {
-  rdb.findAllClasses().then(function (classes) {
+
+app.get('/classess/:emailProf', function(req, res, next) {
+  rdb.findAllClassesByProf(req.params.emailProf).then(function (classes) {
       if(!classes) {
           var userNotFoundError = new Error('Not any classes found !');
           userNotFoundError.status = 404;
           //return next(userNotFoundError);
           return res.json("nope");
       }
+
       return res.json(classes);
   });
 });

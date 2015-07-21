@@ -3,7 +3,9 @@ var Sidebar = require('../../common/sidebar.jsx');
 var Footer = require('../../common/footer.jsx');
 
 var Fluxxor = require('../../../../../node_modules/fluxxor');
-var AuthenticatedMixin = require('../../mixins/authenticatedMixin');
+var Authentication = require('../../mixins/authentication');
+
+var auth = require('../../services/auth');
 
 
 window.React = React;
@@ -13,7 +15,7 @@ var FluxMixin = Fluxxor.FluxMixin(React),
     StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var Body = React.createClass({
-  mixins: [AuthenticatedMixin, FluxMixin, StoreWatchMixin("ClasseStore")],
+  mixins: [FluxMixin, StoreWatchMixin("ClasseStore")],
   getInitialState: function() {
     return { newClasse: {} };
   },
@@ -34,21 +36,20 @@ var Body = React.createClass({
        {this.state.loading ? <p>Loading...</p> : null}
        <Grid>
          <h1>Classes</h1>
-         <p>HEHO {this.props.user}</p>
         {this.state.classes.map(function(classe, i ) {
           console.log("React Console : " + classe.classe.class_name + "||" + i );
           if ((i + 0) % 4 == 0)
             {
             return(
-              <Col sm={6}>
-                <Classe key={classe.id} classe={classe} />
+              <Col sm={6} key={classe.id}>
+                <Classe classe={classe} />
               </Col>
             )
           }
           else{
             return(
-            <Col sm={6}>
-             <Classe {...this.props} key={classe.id} classe={classe} />
+            <Col sm={6} key={classe.id}>
+             <Classe {...this.props} classe={classe} />
             </Col>
             )
           }
@@ -58,7 +59,8 @@ var Body = React.createClass({
     );
   },
   componentDidMount: function() {
-    this.getFlux().actions.loadClasses();
+    var user = auth.getUser();
+    this.getFlux().actions.loadClasses(user.email);
   },
 
   handleSuggestedWordChange: function(e) {
@@ -99,18 +101,21 @@ var Classe = React.createClass({
                 <Row>
                   <Col xs={12}>
                     <h4 style={{marginTop: 0}}>{this.props.classe.classe.class_name} </h4>
-                    <p>TESTTT {this.props.user}</p>
                     <Table striped>
                       <thead>
                         <tr>
+                          <th>Prénom</th>
                           <th>Nom</th>
+                          <th>Email</th>
                         </tr>
                       </thead>
                       <tbody>
                         {this.props.classe.classe.students.map(function(student) {
                           return(
-                            <tr>
-                              <td>{student.name}</td>
+                            <tr key = {student.id}>
+                              <td>{student.first_name}</td>
+                              <td>{student.last_name}</td>
+                              <td>{student.email}</td>
                             </tr>
                           )
                         })}
@@ -128,7 +133,7 @@ var Classe = React.createClass({
 });
 
 var Page = React.createClass({
-  mixins: [AuthenticatedMixin, FluxMixin, SidebarMixin],
+  mixins: [Authentication, FluxMixin, SidebarMixin],
   render: function() {
     var classes = React.addons.classSet({
       'container-open': this.state.open

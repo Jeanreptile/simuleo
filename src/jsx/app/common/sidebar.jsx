@@ -1,5 +1,20 @@
+var auth = require('../services/auth');
+
 var ApplicationSidebar = React.createClass({
   render: function() {
+
+    //detect if student or prof
+    if(this.props.user.type == "prof") {
+      navItems = <SidebarNav style={{marginBottom: 0}}><SidebarNavItem glyph='icon-fontello-gauge' name='Dashboard' href='/' />
+              <SidebarNavItem glyph='icon-ikons-grid-1' name='Simulations' href='/simulations' />
+              <SidebarNavItem glyph='icon-stroke-gap-icons-Files' name='Mes classes' href='/classes' /></SidebarNav>;
+
+    }
+    else {
+      navItems = <SidebarNav style={{marginBottom: 0}}><SidebarNavItem glyph='icon-ikons-grid-1' name='Mes Simulations' href='/simulations' />
+      </SidebarNav>;
+    }
+
     return (
       <div>
         <Grid>
@@ -7,18 +22,7 @@ var ApplicationSidebar = React.createClass({
             <Col xs={12}>
               <div className='sidebar-header'>PAGES</div>
               <div className='sidebar-nav-container'>
-                <SidebarNav style={{marginBottom: 0}}>
-                  <SidebarNavItem glyph='icon-fontello-gauge' name='Dashboard' href='/' />
-                  <SidebarNavItem glyph='icon-ikons-grid-1' name='Simulations' href='/simulations' />
-                  <SidebarNavItem glyph='icon-stroke-gap-icons-Files' name='Classes' href='/classes' />
-                  <SidebarNavItem glyph='icon-feather-mail' name={<span>Menu <BLabel className='bg-darkgreen45 fg-white'>3</BLabel></span>}>
-                    <SidebarNav>
-                      <SidebarNavItem glyph='icon-feather-inbox' name='Inbox' href='/test'/>
-                      <SidebarNavItem glyph='icon-outlined-mail-open' name='Mail' />
-                      <SidebarNavItem glyph='icon-dripicons-message' name='Compose' />
-                    </SidebarNav>
-                  </SidebarNavItem>
-                </SidebarNav>
+                  {navItems}
               </div>
             </Col>
           </Row>
@@ -45,6 +49,7 @@ var DummySidebar = React.createClass({
 
 var SidebarSection = React.createClass({
   render: function() {
+    var user = auth.getUser();
     return (
       <div id='sidebar' {...this.props}>
         <div id='avatar'>
@@ -54,12 +59,12 @@ var SidebarSection = React.createClass({
                 <img src='/imgs/avatars/avatarfin.png' width='40' height='40' />
               </Col>
               <Col xs={8} collapseLeft id='avatar-col'>
-                <div style={{top: 23, fontSize: 16, lineHeight: 1, position: 'relative'}}>Jordan Belfort</div>
+                <div style={{top: 23, fontSize: 16, lineHeight: 1, position: 'relative'}}>{user.first_name} {user.last_name} </div>
               </Col>
             </Row>
           </Grid>
         </div>
-            <ApplicationSidebar />
+            <ApplicationSidebar user={user}/>
       </div>
     );
   }

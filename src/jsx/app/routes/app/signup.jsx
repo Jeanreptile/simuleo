@@ -114,14 +114,14 @@ var Body = React.createClass({
 });
 
 var Page = React.createClass({
-  mixins: [SidebarMixin],
+  mixins: [FluxMixin, SidebarMixin],
   render: function() {
     var classes = React.addons.classSet({
       'container-open': this.state.open
     });
     return (
       <Container id='container' className={classes}>
-        <Body flux={flux} />
+        <Body />
       </Container>
     );
   }

@@ -8,13 +8,15 @@ var Fluxxor = require('../../../node_modules/fluxxor'),
 var ClasseStore = require('./stores/classeStore'),
     SimulConfigStore = require('./stores/simulConfigStore'),
     LoginStore = require('./stores/loginStore'),
-    UserStore = require('./stores/userStore');
+    UserStore = require('./stores/userStore'),
+    StudentStore = require('./stores/studentStore');
 
 var stores = {
   SimulConfigStore: new SimulConfigStore(),
   ClasseStore: new ClasseStore(),
   LoginStore: new LoginStore(),
-  UserStore: new UserStore()
+  StudentStore: new StudentStore(),
+  UserStore: new UserStore(),
   };
 
 var flux = new Fluxxor.Flux(stores, actions);
@@ -54,7 +56,6 @@ var InitializeRouter = function(View) {
      'page': window.location.pathname + window.location.search  + window.location.hash
     });
   }
-
 
   React.render(<View flux={flux} />, document.getElementById('app-container'), function() {
     // l20n initialized only after everything is rendered/updated

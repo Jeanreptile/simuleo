@@ -1,6 +1,7 @@
 var Header = require('../../common/header.jsx');
 var Sidebar = require('../../common/sidebar.jsx');
 var Footer = require('../../common/footer.jsx');
+var Authentication = require('../../mixins/authentication');
 
 var Body = React.createClass({
   render: function() {
@@ -25,7 +26,7 @@ var Body = React.createClass({
 });
 
 var Page = React.createClass({
-  mixins: [SidebarMixin],
+  mixins: [Authentication, SidebarMixin],
   render: function() {
     var classes = React.addons.classSet({
       'container-open': this.state.open
