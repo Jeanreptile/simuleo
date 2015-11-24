@@ -2,8 +2,9 @@ var constants = require('../constants/constants');
 
 module.exports = {
     //Simulation config
-    addSimul: function(contexte, vendeur, acheteur) {
+    addSimul: function(groups) {
       this.dispatch(constants.ADD_SIMUL);
+      /*
       $.post( "/api/simul_negociation", {acheteur: acheteur, vendeur: vendeur, contexte: contexte}, function(links) {
         }.bind(this))
         .done(function(links) {
@@ -11,7 +12,10 @@ module.exports = {
         }.bind(this))
         .fail(function(error) {
            this.dispatch(constants.ADD_SIMUL_FAIL, {error: error});
-        }.bind(this));
+        }.bind(this));*/
+        setTimeout(function(){
+          this.dispatch(constants.ADD_SIMUL_SUCCESS, {tutu: "1213"});
+        }.bind(this), 5000)
     },
   // Simulation 1 config – students
     initStudents: function(students)
@@ -19,6 +23,10 @@ module.exports = {
       this.dispatch(constants.INIT_STUDENTS, {students: students});
     },
 
+    removeStudent: function(studentId)
+    {
+      this.dispatch(constants.REMOVE_STUDENT, {studentId: studentId});
+    },
 
   //Simulations
   loadSimul: function(type, uniqueId) {

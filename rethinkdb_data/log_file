@@ -166,3 +166,75 @@
 2015-07-19T16:37:34.046126000 0.619942s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
 2015-07-19T16:37:34.046130000 0.619947s notice: Server ready, "Olympe_local_99o" 8b41b0ec-0099-4992-808c-c843ac538282
 2015-07-19T16:37:34.567887000 1.141704s notice: A newer version of the RethinkDB server is available: 2.0.4. You can read the changelog at <https://github.com/rethinkdb/rethinkdb/releases>.
+2015-07-22T20:39:01.245003000 164622.762447s notice: Server got SIGINT from pid 888, uid 501; shutting down...
+2015-07-22T20:39:01.248753000 164622.766195s notice: Shutting down client connections...
+2015-07-22T20:39:01.252058000 164622.769499s notice: All client connections closed.
+2015-07-22T20:39:01.252392000 164622.769833s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2015-07-22T20:39:01.328720000 164622.846162s notice: Storage engine shut down.
+2015-10-22T14:29:17.716266000 0.356157s notice: Running rethinkdb 2.0.3 (CLANG 6.1.0 (clang-602.0.53))...
+2015-10-22T14:29:17.750111000 0.389996s notice: Running on Darwin 15.0.0 x86_64
+2015-10-22T14:29:17.750277000 0.390160s notice: Loading data from directory /Users/jeanreptile/Documents/Projects/simuleo/rethinkdb_data
+2015-10-22T14:29:17.869007000 0.508891s info: Automatically using cache size of 219 MB
+2015-10-22T14:29:17.871449000 0.511333s notice: Listening for intracluster connections on port 29015
+2015-10-22T14:29:17.877119000 0.517003s notice: Listening for client driver connections on port 28015
+2015-10-22T14:29:17.877401000 0.517286s notice: Listening for administrative HTTP connections on port 8090
+2015-10-22T14:29:17.877420000 0.517304s notice: Listening on addresses: 127.0.0.1, ::1
+2015-10-22T14:29:17.877430000 0.517314s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2015-10-22T14:29:17.877439000 0.517323s notice: Server ready, "Olympe_local_99o" 8b41b0ec-0099-4992-808c-c843ac538282
+2015-10-22T14:29:18.404870000 1.044754s notice: A newer version of the RethinkDB server is available: 2.1.5-2. You can read the changelog at <https://github.com/rethinkdb/rethinkdb/releases>.
+2015-10-22T21:52:31.627455000 17430.779747s notice: Server got SIGINT from pid 661, uid 501; shutting down...
+2015-10-22T21:52:31.630689000 17430.782982s notice: Shutting down client connections...
+2015-10-22T21:52:31.634955000 17430.787247s notice: All client connections closed.
+2015-10-22T21:52:31.634988000 17430.787279s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2015-10-22T21:52:31.711200000 17430.863494s notice: Storage engine shut down.
+2015-10-25T16:41:37.364070000 0.360181s notice: Running rethinkdb 2.0.3 (CLANG 6.1.0 (clang-602.0.53))...
+2015-10-25T16:41:37.376504000 0.372613s notice: Running on Darwin 15.0.0 x86_64
+2015-10-25T16:41:37.376710000 0.372817s notice: Loading data from directory /Users/jeanreptile/Documents/Projects/simuleo/rethinkdb_data
+2015-10-25T16:41:37.508830000 0.504937s info: Automatically using cache size of 292 MB
+2015-10-25T16:41:37.510543000 0.506650s notice: Listening for intracluster connections on port 29015
+2015-10-25T16:41:37.514226000 0.510333s notice: Listening for client driver connections on port 28015
+2015-10-25T16:41:37.514447000 0.510554s notice: Listening for administrative HTTP connections on port 8090
+2015-10-25T16:41:37.514451000 0.510558s notice: Listening on addresses: 127.0.0.1, ::1
+2015-10-25T16:41:37.514462000 0.510568s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2015-10-25T16:41:37.514469000 0.510575s notice: Server ready, "Olympe_local_99o" 8b41b0ec-0099-4992-808c-c843ac538282
+2015-10-25T16:41:38.077321000 1.073370s notice: A newer version of the RethinkDB server is available: 2.1.5-2. You can read the changelog at <https://github.com/rethinkdb/rethinkdb/releases>.
+2015-10-26T15:47:38.571119000 0.048679s notice: Running rethinkdb 2.0.3 (CLANG 6.1.0 (clang-602.0.53))...
+2015-10-26T15:47:38.577442000 0.054997s notice: Running on Darwin 15.0.0 x86_64
+2015-10-26T15:47:38.577617000 0.055171s notice: Loading data from directory /Users/jeanreptile/Documents/Projects/simuleo/rethinkdb_data
+2015-10-26T15:47:38.631055000 0.108609s info: Automatically using cache size of 1014 MB
+2015-10-26T15:47:38.633642000 0.111196s notice: Listening for intracluster connections on port 29015
+2015-10-26T15:47:38.639371000 0.116926s notice: Listening for client driver connections on port 28015
+2015-10-26T15:47:38.639607000 0.117161s notice: Listening for administrative HTTP connections on port 8090
+2015-10-26T15:47:38.639616000 0.117169s notice: Listening on addresses: 127.0.0.1, ::1
+2015-10-26T15:47:38.639617000 0.117170s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2015-10-26T15:47:38.639621000 0.117174s notice: Server ready, "Olympe_local_99o" 8b41b0ec-0099-4992-808c-c843ac538282
+2015-10-26T15:47:39.183347000 0.660843s notice: A newer version of the RethinkDB server is available: 2.1.5-2. You can read the changelog at <https://github.com/rethinkdb/rethinkdb/releases>.
+2015-10-30T08:32:18.415125000 0.051541s notice: Running rethinkdb 2.0.3 (CLANG 6.1.0 (clang-602.0.53))...
+2015-10-30T08:32:18.424026000 0.060438s notice: Running on Darwin 15.0.0 x86_64
+2015-10-30T08:32:18.424246000 0.060656s notice: Loading data from directory /Users/jeanreptile/Documents/Projects/simuleo/rethinkdb_data
+2015-10-30T08:32:18.502890000 0.139301s info: Automatically using cache size of 787 MB
+2015-10-30T08:32:18.505265000 0.141675s notice: Listening for intracluster connections on port 29015
+2015-10-30T08:32:18.509459000 0.145869s notice: Listening for client driver connections on port 28015
+2015-10-30T08:32:18.509698000 0.146108s notice: Listening for administrative HTTP connections on port 8090
+2015-10-30T08:32:18.509706000 0.146116s notice: Listening on addresses: 127.0.0.1, ::1
+2015-10-30T08:32:18.509712000 0.146121s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2015-10-30T08:32:18.509718000 0.146127s notice: Server ready, "Olympe_local_99o" 8b41b0ec-0099-4992-808c-c843ac538282
+2015-10-30T08:32:19.389413000 1.025764s notice: A newer version of the RethinkDB server is available: 2.1.5-2. You can read the changelog at <https://github.com/rethinkdb/rethinkdb/releases>.
+2015-10-31T00:43:45.486569000 47739.994015s notice: Server got SIGINT from pid 1749, uid 501; shutting down...
+2015-10-31T00:43:45.487365000 47739.994807s notice: Shutting down client connections...
+2015-10-31T00:43:45.488079000 47739.995521s notice: All client connections closed.
+2015-10-31T00:43:45.488090000 47739.995531s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2015-10-31T00:43:45.529165000 47740.036607s notice: Storage engine shut down.
+2015-11-23T14:37:08.489179000 0.572816s notice: Running rethinkdb 2.0.3 (CLANG 6.1.0 (clang-602.0.53))...
+2015-11-23T14:37:08.508048000 0.591682s notice: Running on Darwin 15.0.0 x86_64
+2015-11-23T14:37:08.508260000 0.591893s notice: Loading data from directory /Users/jeanreptile/Documents/Projects/simuleo/rethinkdb_data
+2015-11-23T14:37:08.663733000 0.747366s info: Automatically using cache size of 100 MB
+2015-11-23T14:37:08.663756000 0.747388s warn: Cache size does not leave much memory for server and query overhead (available memory: 1031 MB).
+2015-11-23T14:37:08.663770000 0.747402s warn: Cache size is very low and may impact performance.
+2015-11-23T14:37:08.667249000 0.750882s notice: Listening for intracluster connections on port 29015
+2015-11-23T14:37:08.674055000 0.757687s notice: Listening for client driver connections on port 28015
+2015-11-23T14:37:08.674322000 0.757954s notice: Listening for administrative HTTP connections on port 8090
+2015-11-23T14:37:08.674324000 0.757956s notice: Listening on addresses: 127.0.0.1, ::1
+2015-11-23T14:37:08.674331000 0.757963s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2015-11-23T14:37:08.674332000 0.757964s notice: Server ready, "Olympe_local_99o" 8b41b0ec-0099-4992-808c-c843ac538282
+2015-11-23T14:37:09.249225000 1.332802s notice: A newer version of the RethinkDB server is available: 2.2.1. You can read the changelog at <https://github.com/rethinkdb/rethinkdb/releases>.

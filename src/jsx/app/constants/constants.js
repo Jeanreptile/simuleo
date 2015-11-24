@@ -12,6 +12,7 @@ var constants = {
 
   // students
   INIT_STUDENTS: 'INIT_STUDENTS',
+  REMOVE_STUDENT: 'REMOVE_STUDENT',
 
 
   //Simulations

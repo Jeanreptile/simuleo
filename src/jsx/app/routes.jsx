@@ -6,7 +6,10 @@ var blank = require('./routes/app/blank.jsx');
 var classes = require('./routes/app/classes.jsx');
 var simul_negociation = require('./routes/app/simul_negociation.jsx');
 var simul_negociation_config = require('./routes/app/simul_negociation_config.jsx');
-var simulations = require('./routes/app/simulations.jsx');
+var simul_create = require('./routes/app/simul_create.jsx');
+var simul_model = require('./routes/app/simul_model.jsx');
+var simul_instance = require('./routes/app/simul_instance.jsx');
+var simul_instance_groups = require('./routes/app/simul_instance_groups.jsx');
 var signup = require('./routes/app/signup.jsx');
 var login = require('./routes/app/login.jsx');
 var logout = require('./routes/app/logout.jsx');
@@ -20,7 +23,10 @@ module.exports = (
     <Route path='/classes' handler={classes} />
     <Route path='/simul_negociation/config' handler={simul_negociation_config} />
     <Route path='/simul_negociation/*/*' handler={simul_negociation} />
-    <Route path='/simulations' handler={simulations} />
+    <Route path='/simul/create' handler={simul_create} />
+    <Route path='/simul_model' handler={simul_model} />
+    <Route path='/simul_instance' handler={simul_instance} />
+    <Route path='/simul_instance/groups' handler={simul_instance_groups} />
     <Route path='/signup' handler={signup} />
     <Route path='/login' handler={login} />
     <Route path='/logout' handler={logout} />

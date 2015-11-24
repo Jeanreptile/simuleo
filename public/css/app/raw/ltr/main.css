@@ -1,5 +1,5 @@
 @charset "UTF-8";
-/*! rubix - v2.3.0 - 2015-07-21 [copyright: SketchPixy LLP, email: support@sketchpixy.com] */
+/*! rubix - v2.3.0 - 2015-11-24 [copyright: SketchPixy LLP, email: support@sketchpixy.com] */
 /* REQUIRED: DO NOT REMOVE */
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 html {
@@ -10784,7 +10784,7 @@ disabled look for disabled choices in the results dropdown
   background: #DFF0D8 !important; }
 
 /*
-    Common 
+    Common
 */
 .wizard, .tabcontrol {
   display: block;
@@ -10830,7 +10830,7 @@ disabled look for disabled choices in the results dropdown
   font-size: 1.429em; }
 
 .wizard > .steps > ul > li {
-  width: 25%; }
+  width: 16.5%; }
 
 .wizard > .steps > ul > li, .wizard > .actions > ul > li {
   float: left;
@@ -15116,6 +15116,16 @@ body:last-child .blueimp-gallery-playing > .play-pause {
   .gallery-item-link:hover .black-wrapper, .gallery-item-link:focus .black-wrapper {
     opacity: 1;
     background: rgba(0, 0, 0, 0.5); }
+
+.a-button {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+  text-decoration: none;
+  color: initial; }
+
+.marginTopper {
+  margin-top: 50px; }
 
 .fav-btn > .rubix-icon {
   font-size: 20px !important;

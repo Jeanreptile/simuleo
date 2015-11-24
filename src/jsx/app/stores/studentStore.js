@@ -7,7 +7,8 @@ var StudentStore = Fluxxor.createStore({
     this.students = [];
 
     this.bindActions(
-      constants.INIT_STUDENTS, this.onInitStudent
+      constants.INIT_STUDENTS, this.onInitStudent,
+      constants.REMOVE_STUDENT, this.removeStudent
     );
   },
   getState: function() {
@@ -21,8 +22,16 @@ var StudentStore = Fluxxor.createStore({
     this.emit("change");
   },
 
-  removeStudent: function(student){
-
+  removeStudent: function(payload){
+    var studentId = payload.studentId;
+    var students = this.students;
+    students.forEach(function(student, i){
+      if (student.id === studentId){
+        this.students = students.splice(i, 1);
+      }
+    });
+    console.log("new students list " + this.students);
+    this.emit("change");
   }
 });
 

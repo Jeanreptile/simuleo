@@ -5,13 +5,15 @@ var ApplicationSidebar = React.createClass({
 
     //detect if student or prof
     if(this.props.user.type == "prof") {
-      navItems = <SidebarNav style={{marginBottom: 0}}><SidebarNavItem glyph='icon-fontello-gauge' name='Dashboard' href='/' />
-              <SidebarNavItem glyph='icon-ikons-grid-1' name='Simulations' href='/simulations' />
-              <SidebarNavItem glyph='icon-stroke-gap-icons-Files' name='Mes classes' href='/classes' /></SidebarNav>;
+      navItems = <SidebarNav style={{marginBottom: 0}}>
+                  <SidebarNavItem glyph='icon-fontello-gauge' name='Simulations' href='/simul_instance' />
+                  <SidebarNavItem glyph='icon-ikons-grid-1' name='Classes' href='/classes' />
+                  <SidebarNavItem glyph='icon-stroke-gap-icons-Files' name='Simulation Models' href='/simul_model' />
+                </SidebarNav>;
 
     }
     else {
-      navItems = <SidebarNav style={{marginBottom: 0}}><SidebarNavItem glyph='icon-ikons-grid-1' name='Mes Simulations' href='/simulations' />
+      navItems = <SidebarNav style={{marginBottom: 0}}><SidebarNavItem active={this.props.active}  glyph='icon-ikons-grid-1' name='Mes Simulations' href='/simulations' />
       </SidebarNav>;
     }
 

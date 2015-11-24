@@ -13,7 +13,6 @@ window.React = React;
 var FluxMixin = Fluxxor.FluxMixin(React),
     StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
-
     var SetIntervalMixin = {
       componentWillMount: function() {
         this.intervals = [];
@@ -45,7 +44,6 @@ var Body = React.createClass({
   render: function() {
     return (
       <Container id='body'>
-       {this.state.loading ? <p>Loading...</p> : null}
        <Grid>
           <Row>
             <Col xs={12}>
@@ -60,14 +58,13 @@ var Body = React.createClass({
 });
 
 var FormSimul = React.createClass({
-  mixins: [SetIntervalMixin,FluxMixin,React.addons.LinkedStateMixin, StoreWatchMixin("ClasseStore", "StudentStore")],
+  mixins: [SetIntervalMixin,FluxMixin,React.addons.LinkedStateMixin, StoreWatchMixin("ClasseStore")],
 
   getInitialState: function() {
-   return { contexte_vendeur: "", contexte_acheteur: "", groupIds: [], groupsData: []};
+   return { contexte_vendeur: "", contexte_acheteur: "", groupIds: [], groupsData: [], errors: {}, maxGroups: "", maxRoles:"", count: 0};
  },
   getStateFromFlux: function() {
     var ClasseStore = this.getFlux().store("ClasseStore");
-    var StudentStore = this.getFlux().store("StudentStore");
     return {
       classes: _.values(ClasseStore.classes)
     };
@@ -123,8 +120,31 @@ var FormSimul = React.createClass({
   },
   handleGroupChanged: function(groupId, type, value){
     var oldGroupsData = this.state.groupsData;
-    oldGroupsData.push({groupsId: groupId, type: type, value: value});
+    var groupChanged = false;
+    oldGroupsData.forEach(function(groupData){
+      if (groupData["groupId"] === groupId){
+        groupChanged = true;
+        var typeChanged = false;
+        groupData["roles"].forEach(function(groupData){
+          if (groupData["type"] === type) {
+            typeChanged = true;
+            groupData["value"] = value;
+          }
+        });
+        if (!typeChanged) {
+          groupData["roles"].push({type: type, value: value});
+          var count = parseInt(this.state.count) + 1;
+          this.setState({count: count});
+        }
+      }
+    }.bind(this));
+    if (!groupChanged){
+      oldGroupsData.push({groupId: groupId, roles: [{type: type, value: value}]});
+          var count = parseInt(this.state.count) + 1;
+          this.setState({count: count});
+    }
     this.setState({groupsData: oldGroupsData});
+    this.getFlux().actions.removeStudent(value);
   },
   render: function() {
     return (
@@ -176,6 +196,7 @@ var FormSimul = React.createClass({
                                   {classe.classe.class_name}
                                 </Radio>
                               }.bind(this))}
+                              {this.state.errors}
                               </div>
                               <hr/>
                             </FormGroup>
@@ -198,6 +219,8 @@ var FormSimul = React.createClass({
     //thisEl.preventDefault();
     this.getFlux().actions.initStudents(e);
     var length = (e.length)/2;
+    this.setState({maxGroups: length});
+    this.setState({maxRoles: 2})
     var ids = [];
     for (i = 1; i < length +1; i++)
     {
@@ -244,16 +267,11 @@ var FormSimul = React.createClass({
         return $('#form-2').valid();
       },
       onFinished: function (event, currentIndex) {
-        //this.getFlux().actions.addSimul(this.state.contexte, this.state.montant_vendeur, this.state.montant_acheteur);
-        console.log("YO");
-        console.log("Alors : " + JSON.stringify(this.state.groupsData));
+        var total = parseInt(this.state.maxRoles) * parseInt(this.state.maxGroups);
+          this.getFlux().actions.addSimul(this.state.groupsData);
+          console.log("Ok !");
       }.bind(this)
     });
-
-    $("#dropdownselect45").change(function() {
-      console.log("HELLLO ??");
-    });
-
 
     $('#create-step').bind('submit', this.createStep);
     $('#insert-step').bind('submit', this.insertStep);
@@ -268,7 +286,6 @@ var MyForm = React.createClass({
     this.props.callbackOnChange(this.props.groupId, type, value);
   },
   render: function() {
-    console.log("IN RENDER" + JSON.stringify(this.props));
     return(
         <Col sm={4} smCollapseRight>
                             <PanelContainer controlStyles='bg-blue fg-white'>
@@ -326,24 +343,32 @@ var MySelect = React.createClass({
         this.props.callbackOnChange(this.props.type, event.target.value);
     },
     render: function(){
-    console.log("IN RENDER" + JSON.stringify(this.props));
        return(
             <Select id={this.state.dropdownId} defaultValue='1' onChange={this.change} value={this.state.value}>
-              <option key='1' value='1'>Sélectionner étudiant</option>
-              {this.state.studentsOptions}
             </Select>
        );
     },
-    updateStudentOptions: function(){
-
+    componentWillUpdate: function(netProps, nextState){
+      var select = this.getDOMNode(this.state.dropdownId);
+      if (select.options.selectedIndex === 0)
+      select.options.length = 0;
+      select.options.add(new Option("Sélectionner étudiant", "1"));
+      nextState.studentsList.map( function(student){
+        var full_name = student.first_name + " " + student.last_name;
+        var value = student.id;
+        select.options.add(new Option(full_name, value));
+      }.bind(this))
     },
     componentDidMount: function() {
       this.setState({dropdownId: this.props.type + this.props.groupId});
+      var select = this.getDOMNode(this.state.dropdownId);
+      select.options.length = 0;
+      select.options.add(new Option("Sélectionner étudiant", "1"));
       if (this.state.studentsList){
         this.state.studentsList.map( function(student){
           var full_name = student.first_name + " " + student.last_name;
           var value = student.id;
-          this.state.studentsOptions.push(<option key={student.first_name} value={value}>{full_name}</option>)
+          select.options.add(new Option(full_name, value));
         }.bind(this))
       }
     }
@@ -351,11 +376,24 @@ var MySelect = React.createClass({
 
 
 var Recap = React.createClass({
-  mixins: [FluxMixin],
+  mixins: [FluxMixin, StoreWatchMixin("SimulConfigStore"), SetIntervalMixin],
+  getInitialState: function() {
+    var user = auth.getUser();
+    return {allFormRecaps: [], user: user };
+  },
+
+  getStateFromFlux: function() {
+    var Simulstore = this.getFlux().store("SimulConfigStore");
+    return {
+      loading: Simulstore.loading,
+      finished: Simulstore.finished,
+      info: Simulstore.info
+    };
+  },
   render: function() {
     return (
       <div>
-            <Col sm={6}>
+            <Col sm={12}>
               <PanelContainer controlStyles='bg-green fg-white'>
                 <Panel>
                   <PanelHeader className='bg-green'>
@@ -363,23 +401,14 @@ var Recap = React.createClass({
                       <Row>
                         <Col xs={12} className='fg-white'>
                           <h2>Récapitulatif</h2>
+                          {this.state.loading ? <p>Chargement...</p> : null}
                         </Col>
                       </Row>
                     </Grid>
                   </PanelHeader>
                   <PanelBody>
                     <Grid>
-                      <Row>
-                        <Col xs={12}>
-                          <ul>
-                            <li>
-                              Montant acheteur: {this.props.info["contexte_acheteur"]}
-                            </li>
-                            <li>
-                              Montant vendeur: {this.props.info["contexte_vendeur"]}
-                            </li>
-                          </ul>
-                        </Col>
+                      <Row id="toto23">
                       </Row>
                     </Grid>
                   </PanelBody>
@@ -388,7 +417,63 @@ var Recap = React.createClass({
             </Col>
       </div>
     );
+  },
+  componentWillUpdate: function(nextProps, nextState){
+    if (!nextState.loading)
+    {
+    var select = this.getDOMNode("toto23");
+    select.append(<FormRecap key="2333" groupId="69" vendeurId="45" acheteurId="32" />);
+    }
+  },
+  test:function(){
+    console.log("loading is " + this.state.loading);
+  },
+  componentDidMount: function(){
+    this.setInterval(this.test, 2400);
   }
+});
+
+var FormRecap = React.createClass({
+  render: function() {
+    return(
+        <Col sm={4} smCollapseRight>
+                            <PanelContainer controlStyles='bg-blue fg-white'>
+                              <Panel>
+                                <PanelHeader className='bg-blue'>
+                                  <Grid>
+                                    <Row>
+                                      <Col xs={12} className='fg-white'>
+                                        <h3>Groupe {this.props.groupId}</h3>
+                                      </Col>
+                                    </Row>
+                                  </Grid>
+                                </PanelHeader>
+                                <PanelBody>
+                                  <Grid>
+                                    <Row>
+                                      <Col xs={12}>
+                                          <ul>
+                                            <li>
+                                              <FormGroup>
+                                                <Label htmlFor='acheteur'>Acheteur</Label>
+                                                {this.props.vendeurId}
+                                              </FormGroup>
+                                            </li>
+                                            <li>
+                                              <FormGroup>
+                                                <Label htmlFor='vendeur'>Vendeur</Label>
+                                                {this.props.vendeurId}
+                                              </FormGroup>
+                                            </li>
+                                          </ul>
+                                      </Col>
+                                    </Row>
+                                  </Grid>
+                                </PanelBody>
+                              </Panel>
+                            </PanelContainer>
+                          </Col>
+                        )}
 });
 
 var Page = React.createClass({

@@ -14,23 +14,27 @@ var SimulConfigStore = Fluxxor.createStore({
       constants.ADD_SIMUL_FAIL, this.onAddSimulFail
     );
   },
-
   onAddSimul: function(payload) {
     //var word = {id: payload.id, word: payload.word, status: "ADDING"};
     //this.words[payload.id] = word;
     //APICALL
     //this.emit("change");
     this.finished = true;
+    this.loading = true;
     this.emit("change");
   },
 
   onAddSimulSuccess: function(payload) {
     //this.
+    this.loading = false;
+    console.log("ben alors ?" + this.loading);
+    /*
     this.info["acheteur"] = "http://localhost:8080/simul_negociation/" + payload.uniqueId + "/acheteur";
     this.info["vendeur"] = "http://localhost:8080/simul_negociation/" + payload.uniqueId + "/vendeur";;
     this.info["montant_acheteur"] = payload.acheteur;
     this.info["contexte"] = payload.contexte;
     this.info["montant_vendeur"] = payload.vendeur;
+    */
     this.emit("change");
   },
 
