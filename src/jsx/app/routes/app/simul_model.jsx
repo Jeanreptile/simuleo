@@ -1,5 +1,5 @@
 var Header = require('../../common/header.jsx');
-var Sidebar = require('../../common/sidebar.jsx')("toto");
+var Sidebar = require('../../common/sidebar.jsx');
 var Footer = require('../../common/footer.jsx');
 
 var Fluxxor = require('../../../../../node_modules/fluxxor');
@@ -89,25 +89,7 @@ var FluxMixin = Fluxxor.FluxMixin(React),
 
 var SimulationItem = React.createClass({
   getInitialState: function() {
-    return {
-      active: this.props.active || false,
-    };
-  },
-  handleIncrement: function(e) {
-    if(this.state.active) return;
-    this.setState({
-      active: true,
-      counts: this.state.counts+1
-    });
-  },
-  render: function() {
-    return (
-      <PanelContainer>
-        <Panel>
-          <PanelHeader>
-            <Grid className='gallery-item'>
-              <Row>
-                <Col xs={12} style={{padding: 12.5}}>
+    /*
                   <a className='item-link' href={this.props.url} title={this.props.title}>
                     <div className='black-wrapper text-center'>
                       <Table style={{height: '100%', width: '100%'}}>
@@ -125,12 +107,29 @@ var SimulationItem = React.createClass({
                     <h4 className='fg-darkgrayishblue75 hidden-xs' style={{textTransform: 'uppercase'}}>{this.props.title}</h4>
                     <h6 className='fg-darkgrayishblue75 visible-xs' style={{textTransform: 'uppercase'}}>{this.props.title}</h6>
                   </div>
-                </Col>
-              </Row>
-            </Grid>
-          </PanelHeader>
-        </Panel>
-      </PanelContainer>
+                  */
+    return {
+      active: this.props.active || false,
+    };
+  },
+  handleIncrement: function(e) {
+    if(this.state.active) return;
+    this.setState({
+      active: true,
+      counts: this.state.counts+1
+    });
+  },
+  render: function() {
+    return (
+          <Dropdown>
+            <DropdownButton lg container={this} menu='menu' bsStyle='white'>
+              <h4 className='fg-darkgrayishblue75 hidden-xs' style={{textTransform: 'uppercase'}}>{this.props.title} &nbsp; <Caret/></h4>
+            </DropdownButton>
+            <Menu ref='menu' bsStyle='darkgray'>
+              <MenuItem href='#'><Link to="/simul/edit"><Icon glyph='icon-flatline-pencil'/> Edit</Link></MenuItem>
+              <MenuItem href='#'><Link to="/simul/setup"><Icon glyph="icon-fontello-cog-1"/> Set up</Link></MenuItem>
+            </Menu>
+          </Dropdown>
     );
   }
 });
@@ -166,20 +165,23 @@ var Body = React.createClass({
       <Container id='body'>
         <Grid>
         <h1 className="text-center">Simulations Model &nbsp;
-          <a href='/simul/create' class="a-button">
+          <Link to="/simul/create">
             <Button bsStyle='darkgreen45' url='/simul/create'>
               <Icon bundle='fontello' glyph='plus' />
             </Button>
-          </a>
+          </Link>
         </h1>
           <Row className='gallery-view marginTopper'>
-            <Col xs={6} sm={4} collapseRight>
+            <Col xs={6} sm={3} collapseRight>
               <SimulationItem title='negociation' subtitle='10th Dec - 12th Dec' url='/simul_negociation/config'/>
             </Col>
-            <Col xs={6} sm={4} collapseRight>
+            <Col xs={6} sm={3} collapseRight>
               <SimulationItem title='desert island' subtitle='10th Dec - 12th Dec' url='/simul_negociation/config'/>
             </Col>
-            <Col xs={6} sm={4} collapseRight>
+            <Col xs={6} sm={3} collapseRight>
+              <SimulationItem title='everest' subtitle='10th Dec - 12th Dec' url='/simul_negociation/config'/>
+            </Col>
+            <Col xs={6} sm={3} collapseRight>
               <SimulationItem title='everest' subtitle='10th Dec - 12th Dec' url='/simul_negociation/config'/>
             </Col>
           </Row>

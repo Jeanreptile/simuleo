@@ -13,6 +13,8 @@ var simul_instance_groups = require('./routes/app/simul_instance_groups.jsx');
 var signup = require('./routes/app/signup.jsx');
 var login = require('./routes/app/login.jsx');
 var logout = require('./routes/app/logout.jsx');
+var classe = require('./routes/app/class.jsx');
+var simul_setup = require('./routes/app/simul_setup.jsx');
 
 
 /* ROUTES */
@@ -20,11 +22,13 @@ module.exports = (
   <Route handler={ReactRouter.RouteHandler}>
     <DefaultRoute handler={blank} />
     <Route path='/' handler={blank} />
+    <Route path='/class' handler={classe} />
     <Route path='/classes' handler={classes} />
     <Route path='/simul_negociation/config' handler={simul_negociation_config} />
     <Route path='/simul_negociation/*/*' handler={simul_negociation} />
     <Route path='/simul/create' handler={simul_create} />
     <Route path='/simul_model' handler={simul_model} />
+    <Route path='/simul/setup' handler={simul_setup} />
     <Route path='/simul_instance' handler={simul_instance} />
     <Route path='/simul_instance/groups' handler={simul_instance_groups} />
     <Route path='/signup' handler={signup} />

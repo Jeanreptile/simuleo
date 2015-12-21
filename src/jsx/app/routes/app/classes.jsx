@@ -37,7 +37,6 @@ var Body = React.createClass({
        <Grid>
          <h1>Classes</h1>
         {this.state.classes.map(function(classe, i ) {
-          console.log("React Console : " + classe.classe.class_name + "||" + i );
           if ((i + 0) % 4 == 0)
             {
             return(
@@ -94,40 +93,35 @@ var Classe = React.createClass({
     }
     return (
       <div>
-        <PanelContainer>
-          <Panel>
-            <PanelBody>
-              <Grid>
-                <Row>
-                  <Col xs={12}>
-                    <h4 style={{marginTop: 0}}>{this.props.classe.classe.class_name} </h4>
-                    <Table striped>
-                      <thead>
-                        <tr>
-                          <th>Prénom</th>
-                          <th>Nom</th>
-                          <th>Email</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {this.props.classe.classe.students.map(function(student) {
-                          return(
-                            <tr key = {student.id}>
-                              <td>{student.first_name}</td>
-                              <td>{student.last_name}</td>
-                              <td>{student.email}</td>
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                    </Table>
-                  </Col>
-                </Row>
-              </Grid>
-            </PanelBody>
-          </Panel>
-        </PanelContainer>
-      </div>
+      <PanelContainer>
+        <Panel>
+          <PanelHeader>
+            <Grid className='gallery-item'>
+              <Row>
+                <Col xs={12} style={{padding: 0.1}} className={"bg-blue"}>
+                  <Link to='/class' className="item-link" title={this.props.title}>
+                    <div className='black-wrapper text-center'>
+                      <Table style={{height: '100%', width: '100%'}}>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <Icon glyph='icon-stroke-gap-icons-Goto icon-3x' />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </Table>
+                    </div>
+                  </Link>
+                  <div className='text-center'>
+                    <h4 className='fg-white'>{this.props.classe.classe.class_name} </h4>
+                  </div>
+                </Col>
+              </Row>
+            </Grid>
+          </PanelHeader>
+        </Panel>
+      </PanelContainer>
+    </div>
     );
   }
 });

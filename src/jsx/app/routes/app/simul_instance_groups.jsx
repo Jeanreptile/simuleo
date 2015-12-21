@@ -300,7 +300,7 @@ var Page = React.createClass({
     });
     return (
       <Container id='container' className={classes}>
-        <Sidebar active="true" />
+        <Sidebar activeIs="simul" />
         <Header />
         <Body flux={flux}/>
         <Footer />

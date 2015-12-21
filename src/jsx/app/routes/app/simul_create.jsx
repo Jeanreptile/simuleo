@@ -10,6 +10,10 @@ var auth = require('../../services/auth');
 
 window.React = React;
 
+var constants = {
+  ADD_SIMUL_ROLE: "ADD_SIMUL_ROLE",
+};
+
 var FluxMixin = Fluxxor.FluxMixin(React),
     StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
@@ -26,18 +30,16 @@ var FluxMixin = Fluxxor.FluxMixin(React),
     };
 
 var Body = React.createClass({
-  mixins: [FluxMixin, StoreWatchMixin("SimulConfigStore")],
+  mixins: [FluxMixin, StoreWatchMixin("SimulModelStore")],
   getInitialState: function() {
     var user = auth.getUser();
     return { newClasse: "", user: user };
   },
 
   getStateFromFlux: function() {
-    var Simulstore = this.getFlux().store("SimulConfigStore");
+    var SimulModelStore = this.getFlux().store("SimulModelStore");
     return {
-      loading: Simulstore.loading,
-      finished: Simulstore.finished,
-      info: Simulstore.info
+      //loading: Simulstore.loading,
     };
   },
 
@@ -61,14 +63,17 @@ var FormSimul = React.createClass({
   mixins: [SetIntervalMixin,FluxMixin,React.addons.LinkedStateMixin, StoreWatchMixin("ClasseStore")],
 
   getInitialState: function() {
-   return { contexte_vendeur: "", contexte_acheteur: "", groupIds: [], groupsData: [], errors: {}, maxGroups: "", maxRoles:"", count: 0};
+   return { simulName: "", simulContext: "", roleToAddMessage:"", roleToAddName:""};
  },
   getStateFromFlux: function() {
     var ClasseStore = this.getFlux().store("ClasseStore");
     return {
-      classes: _.values(ClasseStore.classes)
+      classes: _.values(ClasseStore.classes),
+      rolesAdded: this.getFlux().store("SimulModelStore").roles
     };
   },
+
+  //Form
 
   createStep: function(e) {
     e.preventDefault();
@@ -147,6 +152,7 @@ var FormSimul = React.createClass({
     this.getFlux().actions.removeStudent(value);
   },
   render: function() {
+    rolesAdded = this.state.rolesAdded;
     return (
               <PanelContainer noOverflow controlStyles='bg-green fg-white'>
                 <Panel>
@@ -169,7 +175,7 @@ var FormSimul = React.createClass({
                               <Col sm={8} xs={12} collapseLeft xsOnlyCollapseRight className="form-border">
                                 <FormGroup>
                                   <Label htmlFor='contexte'>Enter a name *</Label>
-                                  <Input autoFocus type='text' id='name_simul' placeholder='Ex.: Negociation' className='required' />
+                                  <Input autoFocus valueLink={this.linkState('simulName')} type='text' id='name_simul' placeholder='Ex.: Negociation' className='required' />
                                   <hr />
                                   <Label htmlFor='dropdownselect'>Create simulation from an existing model </Label>
                                   <Select id='dropdownselect' defaultValue='1'>
@@ -181,8 +187,7 @@ var FormSimul = React.createClass({
                                   <hr />
                                   <Label htmlFor='contexte'>Add a context message</Label>
                                   <Textarea rows='5' id='simul_context' name='simul_context' className='required'
-                                    valueLink=''
-                                    onChange=''
+                                    valueLink={this.linkState('simulContext')}
                                     placeholder="Ex.: The two of you are in a car dealership..."
                                     />
                                 </FormGroup>
@@ -208,19 +213,19 @@ var FormSimul = React.createClass({
                               <Col sm={4} xs={3} collapseLeft >
                                 <FormGroup>
                                   <Label >Name</Label>
-                                  <Input type='text' id='role_name' name='role_name' />
+                                  <Input type='text' id='role_name' name='role_name' valueLink={this.linkState('roleToAddName')} />
                                 </FormGroup>
                               </Col>
                               <Col sm={4} xs={3} collapseLeft>
                                 <FormGroup>
                                   <Label >Message</Label>
-                                  <Textarea rows={1} id='message' name='message' />
+                                  <Textarea rows={1} id='message' name='message' valueLink={this.linkState('roleToAddMessage')} />
                                 </FormGroup>
                               </Col>
                               <Col sm={2} xs={3} collapseLeft >
                                 <FormGroup>
                                   <Label >Add </Label>
-                                  <Button outlined style={{marginBottom: 5}} bsStyle='success'>
+                                  <Button outlined style={{marginBottom: 5}} bsStyle='success' onClick={this.addRole} >
                                     <Icon bundle='fontello' glyph='plus' />
                                   </Button>
                                 </FormGroup>
@@ -233,14 +238,12 @@ var FormSimul = React.createClass({
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr>
-                                    <td>Buyer</td>
-                                    <td>Your goal is to buy a car</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Seller</td>
-                                    <td>Your goal is to sell a car</td>
-                                  </tr>
+                                  {Object.keys(rolesAdded).map(function(roleName) {
+                                    return(<tr>
+                                      <td>{roleName}</td>
+                                      <td>{rolesAdded[roleName]}</td>
+                                    </tr>)
+                                  })}
                                 </tbody>
                               </Table>
                             </Col>
@@ -634,6 +637,11 @@ var FormSimul = React.createClass({
               </PanelContainer>
     );
   },
+  addRole: function(e) {
+    console.log(JSON.stringify(this.state.roleToAddMessage));
+    console.log(JSON.stringify(this.state.roleToAddName));
+    this.getFlux().actions.addSimulRole(this.state.roleToAddName, this.state.roleToAddMessage);
+  },
   handleClasseAdded: function(e, thisEl) {
     //thisEl.preventDefault();
     this.getFlux().actions.initStudents(e);
@@ -698,100 +706,6 @@ var FormSimul = React.createClass({
   }
 });
 
-
-var MyForm = React.createClass({
-  mixins: [FluxMixin],
-  handleChange: function(type, value) {
-    this.props.callbackOnChange(this.props.groupId, type, value);
-  },
-  render: function() {
-    return(
-        <Col sm={4} smCollapseRight>
-                            <PanelContainer controlStyles='bg-blue fg-white'>
-                              <Panel>
-                                <PanelHeader className='bg-blue'>
-                                  <Grid>
-                                    <Row>
-                                      <Col xs={12} className='fg-white'>
-                                        <h3>Groupe {this.props.groupId}</h3>
-                                      </Col>
-                                    </Row>
-                                  </Grid>
-                                </PanelHeader>
-                                <PanelBody>
-                                  <Grid>
-                                    <Row>
-                                      <Col xs={12}>
-                                          <ul>
-                                            <li>
-                                              <FormGroup>
-                                                <Label htmlFor='acheteur'>Acheteur</Label>
-                                                <MySelect {...this.props} type="acheteur" callbackOnChange={this.handleChange}/>
-                                              </FormGroup>
-                                            </li>
-                                            <li>
-                                              <FormGroup>
-                                                <Label htmlFor='vendeur'>Vendeur</Label>
-                                                <MySelect {...this.props} type="vendeur" callbackOnChange={this.handleChange}/>
-                                              </FormGroup>
-                                            </li>
-                                          </ul>
-                                      </Col>
-                                    </Row>
-                                  </Grid>
-                                </PanelBody>
-                              </Panel>
-                            </PanelContainer>
-                          </Col>
-                        )}
-});
-
-var MySelect = React.createClass({
-  mixins: [SetIntervalMixin, FluxMixin, StoreWatchMixin("StudentStore")],
-
-  getInitialState: function() {
-   return { studentsOptions: [], dropdownId: ""};
- },
-  getStateFromFlux: function() {
-    var StudentStore = this.getFlux().store("StudentStore");
-    return {
-      studentsList: StudentStore.students
-    };
-  },
-    change: function(event){
-        this.props.callbackOnChange(this.props.type, event.target.value);
-    },
-    render: function(){
-       return(
-            <Select id={this.state.dropdownId} defaultValue='1' onChange={this.change} value={this.state.value}>
-            </Select>
-       );
-    },
-    componentWillUpdate: function(netProps, nextState){
-      var select = this.getDOMNode(this.state.dropdownId);
-      if (select.options.selectedIndex === 0)
-      select.options.length = 0;
-      select.options.add(new Option("Sélectionner étudiant", "1"));
-      nextState.studentsList.map( function(student){
-        var full_name = student.first_name + " " + student.last_name;
-        var value = student.id;
-        select.options.add(new Option(full_name, value));
-      }.bind(this))
-    },
-    componentDidMount: function() {
-      this.setState({dropdownId: this.props.type + this.props.groupId});
-      var select = this.getDOMNode(this.state.dropdownId);
-      select.options.length = 0;
-      select.options.add(new Option("Sélectionner étudiant", "1"));
-      if (this.state.studentsList){
-        this.state.studentsList.map( function(student){
-          var full_name = student.first_name + " " + student.last_name;
-          var value = student.id;
-          select.options.add(new Option(full_name, value));
-        }.bind(this))
-      }
-    }
-});
 
 
 var Recap = React.createClass({
@@ -903,7 +817,7 @@ var Page = React.createClass({
     });
     return (
       <Container id='container' className={classes}>
-        <Sidebar />
+        <Sidebar activeIs="simul_model"/>
         <Header />
         <Body />
         <Footer />

@@ -3,17 +3,36 @@ var auth = require('../services/auth');
 var ApplicationSidebar = React.createClass({
   render: function() {
 
+
+    activeSimul = false;
+    activeClass = false;
+    activeSimulModel = false;
+
+    console.log("props are" + JSON.stringify(this.props));
+
+    if (this.props.activeIs){
+      if (this.props.activeIs === "class"){
+        activeClass = true;
+      }
+      else if (this.props.activeIs === "simul_model") {
+        activeSimulModel = true;
+      }
+      else if (this.props.activeIs === "simul") {
+        activeSimul = true;
+      }
+    }
+
     //detect if student or prof
     if(this.props.user.type == "prof") {
       navItems = <SidebarNav style={{marginBottom: 0}}>
-                  <SidebarNavItem glyph='icon-fontello-gauge' name='Simulations' href='/simul_instance' />
-                  <SidebarNavItem glyph='icon-ikons-grid-1' name='Classes' href='/classes' />
-                  <SidebarNavItem glyph='icon-stroke-gap-icons-Files' name='Simulation Models' href='/simul_model' />
+                  <SidebarNavItem active={activeSimul} glyph='icon-fontello-gauge' name='Simulations' href='/simul_instance' />
+                  <SidebarNavItem active={activeClass} glyph='icon-ikons-grid-1' name='Classes' href='/classes' />
+                  <SidebarNavItem active={activeSimulModel} glyph='icon-stroke-gap-icons-Files' name='Simulation Models' href='/simul_model' />
                 </SidebarNav>;
 
     }
     else {
-      navItems = <SidebarNav style={{marginBottom: 0}}><SidebarNavItem active={this.props.active}  glyph='icon-ikons-grid-1' name='Mes Simulations' href='/simulations' />
+      navItems = <SidebarNav style={{marginBottom: 0}}><SidebarNavItem glyph='icon-ikons-grid-1' name='Mes Simulations' href='/simulations' />
       </SidebarNav>;
     }
 
@@ -66,7 +85,7 @@ var SidebarSection = React.createClass({
             </Row>
           </Grid>
         </div>
-            <ApplicationSidebar user={user}/>
+            <ApplicationSidebar activeIs={this.props.activeIs} user={user}/>
       </div>
     );
   }

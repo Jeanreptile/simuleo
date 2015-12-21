@@ -9,9 +9,11 @@ var ClasseStore = require('./stores/classeStore'),
     SimulConfigStore = require('./stores/simulConfigStore'),
     LoginStore = require('./stores/loginStore'),
     UserStore = require('./stores/userStore'),
+    SimulModelStore = require('./stores/SimulModelStore'),
     StudentStore = require('./stores/studentStore');
 
 var stores = {
+  SimulModelStore: new SimulModelStore(),
   SimulConfigStore: new SimulConfigStore(),
   ClasseStore: new ClasseStore(),
   LoginStore: new LoginStore(),

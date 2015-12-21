@@ -1,6 +1,10 @@
 var constants = require('../constants/constants');
 
 module.exports = {
+
+    addSimulRole: function(roleName, roleMessage) {
+      this.dispatch(constants.ADD_SIMUL_ROLE, {roleName: roleName, roleMessage: roleMessage});
+    },
     //Simulation config
     addSimul: function(groups) {
       this.dispatch(constants.ADD_SIMUL);
