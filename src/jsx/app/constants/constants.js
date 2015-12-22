@@ -11,8 +11,9 @@ var constants = {
   ADD_SIMUL_FAIL: 'ADD_SIMUL_FAIL',
 
 
-// Simulation Model Creation
+  // Simulation Model Creation
   ADD_SIMUL_ROLE: 'ADD_SIMUL_ROLE',
+  ADD_SIMUL_MODEL_RESOURCE: 'ADD_SIMUL_MODEL_RESOURCE',
 
   // students
   INIT_STUDENTS: 'INIT_STUDENTS',

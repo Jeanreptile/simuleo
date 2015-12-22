@@ -286,3 +286,54 @@
 2015-12-21T19:12:09.325266000 0.689667s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
 2015-12-21T19:12:09.325278000 0.689679s notice: Server ready, "Olympe_local_99o" 8b41b0ec-0099-4992-808c-c843ac538282
 2015-12-21T19:12:09.834768000 1.199171s notice: A newer version of the RethinkDB server is available: 2.2.1. You can read the changelog at <https://github.com/rethinkdb/rethinkdb/releases>.
+2015-12-21T22:11:00.150238000 0.003661s notice: Recursively removing directory /Users/camille/Documents/ING3/MTI/PFEE/simuleo/rethinkdb_data/tmp
+2015-12-21T22:11:00.151502000 0.004928s notice: Running rethinkdb 2.2.2 (CLANG 4.2 (clang-425.0.28))...
+2015-12-21T22:11:00.157294000 0.010717s notice: Running on Darwin 15.2.0 x86_64
+2015-12-21T22:11:00.157393000 0.010815s notice: Loading data from directory /Users/camille/Documents/ING3/MTI/PFEE/simuleo/rethinkdb_data
+2015-12-21T22:11:00.161857000 0.015279s notice: Migrating cluster metadata to v2.2
+2015-12-21T22:11:00.163031000 0.016453s error: Inaccessible database file: "/Users/camille/Documents/ING3/MTI/PFEE/simuleo/rethinkdb_data/a20783ca-8dc9-436a-a8e9-fc59d274d03f": No such file or directory\nSome possible reasons:\n- the database file couldn't be created or opened for reading and writing
+2015-12-21T22:12:24.945069000 0.009256s notice: Running rethinkdb 2.2.2 (CLANG 4.2 (clang-425.0.28))...
+2015-12-21T22:12:24.953215000 0.017396s notice: Running on Darwin 15.2.0 x86_64
+2015-12-21T22:12:24.953275000 0.017455s notice: Loading data from directory /Users/camille/Documents/ING3/MTI/PFEE/simuleo/rethinkdb_data
+2015-12-21T22:12:24.957991000 0.022171s notice: Migrating cluster metadata to v2.2
+2015-12-21T22:12:24.978968000 0.043148s notice: Migrating file to serializer version 2.2.
+2015-12-21T22:12:24.979115000 0.043296s notice: Migrating file to serializer version 2.2.
+2015-12-21T22:12:24.979264000 0.043444s notice: Migrating file to serializer version 2.2.
+2015-12-21T22:12:25.114863000 0.179043s notice: Migrating file to serializer version 2.2.
+2015-12-21T22:12:25.163091000 0.227271s notice: Migrating auth metadata
+2015-12-21T22:12:25.192644000 0.256824s info: Automatically using cache size of 100 MB
+2015-12-21T22:12:25.192654000 0.256833s warn: Cache size is larger than available memory.
+2015-12-21T22:12:25.192657000 0.256836s warn: Cache size is very low and may impact performance.
+2015-12-21T22:12:25.193522000 0.257702s notice: Listening for intracluster connections on port 29015
+2015-12-21T22:12:25.228964000 0.293144s notice: Listening for client driver connections on port 28015
+2015-12-21T22:12:25.229059000 0.293239s notice: Listening for administrative HTTP connections on port 8090
+2015-12-21T22:12:25.229060000 0.293240s notice: Listening on addresses: 127.0.0.1, ::1
+2015-12-21T22:12:25.229061000 0.293241s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2015-12-21T22:12:25.229139000 0.293319s notice: Server ready, "Olympe_local_99o" 8b41b0ec-0099-4992-808c-c843ac538282
+2015-12-21T22:12:26.312547000 1.376663s info: Table 99e5f815-0fb3-4000-82ef-5b2f89d1f7d5: Starting a new Raft election for term 1.
+2015-12-21T22:12:26.339547000 1.403663s info: Table 99e5f815-0fb3-4000-82ef-5b2f89d1f7d5: This server is Raft leader for term 1. Latest log index is 0.
+2015-12-21T22:12:26.850513000 1.914629s info: Table a20783ca-8dc9-436a-a8e9-fc59d274d03f: Starting a new Raft election for term 1.
+2015-12-21T22:12:26.895757000 1.959873s info: Table a20783ca-8dc9-436a-a8e9-fc59d274d03f: This server is Raft leader for term 1. Latest log index is 0.
+2015-12-21T22:12:27.115097000 2.179213s info: Table 77190dc3-f81d-42c3-a278-9f909f5ab645: Starting a new Raft election for term 1.
+2015-12-21T22:12:27.147893000 2.212009s info: Table 77190dc3-f81d-42c3-a278-9f909f5ab645: This server is Raft leader for term 1. Latest log index is 0.
+2015-12-21T23:19:08.267521000 4003.193713s notice: Server got SIGINT from pid 10897, uid 501; shutting down...
+2015-12-21T23:19:08.267755000 4003.193947s notice: Shutting down client connections...
+2015-12-21T23:19:08.267955000 4003.194147s notice: All client connections closed.
+2015-12-21T23:19:08.267960000 4003.194151s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2015-12-21T23:19:08.286289000 4003.212481s notice: Storage engine shut down.
+2015-12-22T15:52:01.981062000 0.376295s notice: Running rethinkdb 2.2.2 (CLANG 4.2 (clang-425.0.28))...
+2015-12-22T15:52:01.991605000 0.386840s notice: Running on Darwin 15.2.0 x86_64
+2015-12-22T15:52:01.991769000 0.386997s notice: Loading data from directory /Users/camille/Documents/ING3/MTI/PFEE/simuleo/rethinkdb_data
+2015-12-22T15:52:02.029840000 0.425067s info: Automatically using cache size of 784 MB
+2015-12-22T15:52:02.031127000 0.426355s notice: Listening for intracluster connections on port 29015
+2015-12-22T15:52:02.064683000 0.459911s notice: Listening for client driver connections on port 28015
+2015-12-22T15:52:02.064816000 0.460043s notice: Listening for administrative HTTP connections on port 8090
+2015-12-22T15:52:02.064881000 0.460108s notice: Listening on addresses: 127.0.0.1, ::1
+2015-12-22T15:52:02.064883000 0.460110s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2015-12-22T15:52:02.064883001 0.460110s notice: Server ready, "Olympe_local_99o" 8b41b0ec-0099-4992-808c-c843ac538282
+2015-12-22T15:52:03.204705000 1.599869s info: Table a20783ca-8dc9-436a-a8e9-fc59d274d03f: Starting a new Raft election for term 2.
+2015-12-22T15:52:03.223654000 1.618818s info: Table a20783ca-8dc9-436a-a8e9-fc59d274d03f: This server is Raft leader for term 2. Latest log index is 3.
+2015-12-22T15:52:03.345918000 1.741082s info: Table 99e5f815-0fb3-4000-82ef-5b2f89d1f7d5: Starting a new Raft election for term 2.
+2015-12-22T15:52:03.365850000 1.761013s info: Table 99e5f815-0fb3-4000-82ef-5b2f89d1f7d5: This server is Raft leader for term 2. Latest log index is 3.
+2015-12-22T15:52:03.402228000 1.797391s info: Table 77190dc3-f81d-42c3-a278-9f909f5ab645: Starting a new Raft election for term 2.
+2015-12-22T15:52:03.433192000 1.828356s info: Table 77190dc3-f81d-42c3-a278-9f909f5ab645: This server is Raft leader for term 2. Latest log index is 4.

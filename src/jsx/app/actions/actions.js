@@ -5,6 +5,11 @@ module.exports = {
     addSimulRole: function(roleName, roleMessage) {
       this.dispatch(constants.ADD_SIMUL_ROLE, {roleName: roleName, roleMessage: roleMessage});
     },
+    addSimulModelResource: function(resourceName, resourceHigherValue, resourceLowerValue, resourceInitialValue, resourceIsShared, resourceIsCritical, resourceRole) {
+      this.dispatch(constants.ADD_SIMUL_MODEL_RESOURCE, { resourceName: resourceName, resourceHigherValue: resourceHigherValue,
+        resourceLowerValue: resourceLowerValue, resourceInitialValue: resourceInitialValue, resourceIsShared: resourceIsShared,
+        resourceIsCritical: resourceIsCritical });
+    },
     //Simulation config
     addSimul: function(groups) {
       this.dispatch(constants.ADD_SIMUL);

@@ -63,13 +63,16 @@ var FormSimul = React.createClass({
   mixins: [SetIntervalMixin,FluxMixin,React.addons.LinkedStateMixin, StoreWatchMixin("ClasseStore")],
 
   getInitialState: function() {
-   return { simulName: "", simulContext: "", roleToAddMessage:"", roleToAddName:""};
+   return { simulName: "", simulContext: "", roleToAddMessage: "", roleToAddName: "",
+    resourceName: "", resourceHigherValue: "", resourceLowerValue: "", resourceInitialValue: "",
+    resourceIsShared: false, resourceIsCritical: false, resourceRole: ""};
  },
   getStateFromFlux: function() {
     var ClasseStore = this.getFlux().store("ClasseStore");
     return {
       classes: _.values(ClasseStore.classes),
-      rolesAdded: this.getFlux().store("SimulModelStore").roles
+      rolesAdded: this.getFlux().store("SimulModelStore").roles,
+      resourcesAdded: this.getFlux().store("SimulModelStore").resources
     };
   },
 
@@ -153,6 +156,7 @@ var FormSimul = React.createClass({
   },
   render: function() {
     rolesAdded = this.state.rolesAdded;
+    resourcesAdded = this.state.resourcesAdded;
     return (
               <PanelContainer noOverflow controlStyles='bg-green fg-white'>
                 <Panel>
@@ -188,8 +192,7 @@ var FormSimul = React.createClass({
                                   <Label htmlFor='contexte'>Add a context message</Label>
                                   <Textarea rows='5' id='simul_context' name='simul_context' className='required'
                                     valueLink={this.linkState('simulContext')}
-                                    placeholder="Ex.: The two of you are in a car dealership..."
-                                    />
+                                    placeholder="Ex.: The two of you are in a car dealership..." />
                                 </FormGroup>
                               </Col>
                               <Col sm={4} xs={6} >
@@ -261,93 +264,106 @@ var FormSimul = React.createClass({
                         <div>
                           <Grid>
                             <Row>
-                              <Col sm={8} collapseLeft className="form-border">
-                                <Col sm={3} xs={3} collapseLeft >
+                              <Col sm={12} collapseLeft>
+                              <Row>
+                                <Col sm={3} xs={3} >
                                   <FormGroup>
                                     <Label >Name</Label>
-                                    <Input type='text' id='role_name' name='role_name' />
+                                    <Input type='text' id='resource_name' name='resource_name' valueLink={this.linkState('resourceName')} />
                                   </FormGroup>
                                 </Col>
                                 <Col sm={2} xs={3} collapseLeft>
                                   <FormGroup>
                                     <Label >Higher value</Label>
-                                    <Input type='number' id='higher_value' name='higher_value' />
+                                    <Input type='number' id='higher_value' name='higher_value' valueLink={this.linkState('resourceHigherValue')} />
                                   </FormGroup>
                                 </Col>
                                 <Col sm={2} xs={3} collapseLeft>
                                   <FormGroup>
                                     <Label >Lower value</Label>
-                                    <Input type='number' id='higher_value' name='higher_value' />
+                                    <Input type='number' id='lower_value' name='lower_value' valueLink={this.linkState('resourceLowerValue')} />
                                   </FormGroup>
                                 </Col>
                                 <Col sm={2} xs={3} collapseLeft>
                                   <FormGroup>
                                     <Label >Initial value</Label>
-                                    <Input type='number' id='higher_value' name='higher_value' />
+                                    <Input type='number' id='initial_value' name='initial_value' valueLink={this.linkState('resourceInitialValue')} />
                                   </FormGroup>
                                 </Col>
-                                <Col sm={2} xs={3} collapseLeft>
-                                  <FormGroup>
-                                      <Checkbox value='option1' name='horizontal-checkbox-options'>
-                                        Shared <i>(default is individual)</i>
-                                      </Checkbox>
-                                      <Checkbox value='option2' name='horizontal-checkbox-options'>
-                                        Critical
-                                      </Checkbox>
-                                  </FormGroup>
+                                <Col sm={3} collapseLeft>
+                                  <Label htmlFor='dropdownselectResourceRole'>Role</Label>
+                                  <Select id='dropdownselectResourceRole' valueLink={this.linkState('resourceRole')}>
+                                    {Object.keys(rolesAdded).map(function(roleName) {
+                                      return (
+                                          <option value={roleName}>{roleName}</option>
+                                        )
+                                    })}
+                                  </Select>
                                 </Col>
-                                <Col sm={1} xs={3} collapseLeft >
-                                  <FormGroup>
+                                </Row>
+                                <Row>
+                                  <Col sm={4}>
+                                    <Checkbox name='horizontal-checkbox-options' checkedLink={this.linkState('resourceIsShared')}>
+                                      Shared <i>(default is individual)</i>
+                                    </Checkbox>
+                                  </Col>
+                                  <Col sm={3}>
+                                    <Checkbox name='horizontal-checkbox-options' checkedLink={this.linkState('resourceIsCritical')}>
+                                      Critical
+                                    </Checkbox>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                  <Col sm={12} xs={12} className="text-right">
+                                      <Label></Label>
+                                      <Button outlined bsStyle='success' onClick={this.addResource}>
+                                          <span>Add </span>
+                                      </Button>
+                                  </Col>
+                                </Row>
+                                </Col>
+                                </Row>
+                                <hr />
+                                <Row>
+                                  <Col sm={9} collapseLeft>
+                                    <Table striped condensed>
+                                      <thead>
+                                        <tr>
+                                          <th>Name</th>
+                                          <th>Lower value</th>
+                                          <th>Higher value</th>
+                                          <th>Initial value</th>
+                                          <th>Shared</th>
+                                          <th>Critical</th>
+                                          <th>Role</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {resourcesAdded.map(function(object, i) {
+                                          return (
+                                            <tr>
+                                              <td>{object.name}</td>
+                                              <td>{object.lowerValue}</td>
+                                              <td>{object.higherValue}</td>
+                                              <td>{object.initialValue}</td>
+                                              <td>{object.isShared.toString()}</td>
+                                              <td>{object.isCritical.toString()}</td>
+                                              <td>{object.role}</td>
+                                            </tr>
+                                          )
+                                        })}
+                                      </tbody>
+                                    </Table>
+                                  </Col>
+                                  <Col sm={3} xs={6} collapseRight clasName='form-border'>
+                                    <p>
+                                      All fields marked (*) are Mandatory.<br />
+                                    You must at least define one role.
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Toela baf lah hel latat bi neridejufoe lome byverol mifim, que tirel daloel bybyby ved. Bit beri medeb lifabu bubu quedeh dume, bel vajoes damediquy hemib valo lebehah. Se, jali fy bif beb hoeboedeque defep moefohe dodah baquine bena faf du vabel. Som fibe pyj je te han bulemaha fam be, jilel quole bad.<br />
                                     <br />
-                                    <Label></Label>
-                                    <Button outlined bsStyle='success'>
-                                        <span>Add </span>
-                                    </Button>
-                                  </FormGroup>
-                                </Col>
-                                <Col sm={12} collapseLeft>
-                                  <hr />
-                                <Table bordered striped condensed>
-                                  <thead>
-                                    <tr>
-                                      <th>Name</th>
-                                      <th>Lower value</th>
-                                      <th>Higher value</th>
-                                      <th>Initial value</th>
-                                      <th>Shared</th>
-                                      <th>Critical</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td>Wood</td>
-                                      <td>0</td>
-                                      <td>500</td>
-                                      <td>20</td>
-                                      <td>YES</td>
-                                      <td>NO</td>
-                                    </tr>
-                                    <tr>
-                                      <td>Life</td>
-                                      <td>0</td>
-                                      <td>100</td>
-                                      <td>60</td>
-                                      <td>NO</td>
-                                      <td>YES</td>
-                                    </tr>
-                                  </tbody>
-                                </Table>
-                              </Col>
-                              </Col>
-                              <Col sm={4} xs={6} collapseRight clasName='form-border'>
-                                <p>
-                                  All fields marked (*) are Mandatory.<br />
-                                You must at least define one role.
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Toela baf lah hel latat bi neridejufoe lome byverol mifim, que tirel daloel bybyby ved. Bit beri medeb lifabu bubu quedeh dume, bel vajoes damediquy hemib valo lebehah. Se, jali fy bif beb hoeboedeque defep moefohe dodah baquine bena faf du vabel. Som fibe pyj je te han bulemaha fam be, jilel quole bad.<br />
-                                <br />
-                                </p>
-                              </Col>
-                            </Row>
+                                    </p>
+                                  </Col>
+                                </Row>
                           </Grid>
                         </div>
 
@@ -641,6 +657,14 @@ var FormSimul = React.createClass({
     console.log(JSON.stringify(this.state.roleToAddMessage));
     console.log(JSON.stringify(this.state.roleToAddName));
     this.getFlux().actions.addSimulRole(this.state.roleToAddName, this.state.roleToAddMessage);
+  },
+  addResource: function(e) {
+    console.log(this.state.resourceName);
+    console.log(this.state.resourceHigherValue);
+    console.log(JSON.stringify(this.state.resourceRole));
+    this.getFlux().actions.addSimulModelResource(this.state.resourceName, this.state.resourceHigherValue,
+      this.state.resourceLowerValue, this.state.resourceInitialValue, this.state.resourceIsShared, 
+      this.state.resourceIsCritical, this.state.resourceRole);
   },
   handleClasseAdded: function(e, thisEl) {
     //thisEl.preventDefault();
