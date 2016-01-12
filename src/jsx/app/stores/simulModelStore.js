@@ -5,19 +5,38 @@ var SimulModelStore = Fluxxor.createStore({
   initialize: function() {
     this.loading = true;
     this.roles = {};
+    this.resources = [];
 
     this.bindActions(
-      constants.ADD_SIMUL_ROLE, this.onAddRole
+      constants.ADD_SIMUL_ROLE, this.onAddRole,
+      constants.ADD_SIMUL_MODEL_RESOURCE, this.onAddResource
     );
   },
 
   onAddRole: function(payload) {
     this.roles[payload.roleName] = payload.roleMessage;
+    console.log("ROLE IS " + JSON.stringify(this.roles));
     this.emit("change");
+<<<<<<< HEAD
+=======
   },
   getRoles: function() {
     return this.roles;
   },
+  onAddResource: function(payload) {
+    var resource = {
+      'name': payload.resourceName,
+      'higherValue': payload.resourceHigherValue,
+      'lowerValue': payload.resourceLowerValue,
+      'initialValue': payload.resourceInitialValue,
+      'isShared': payload.resourceIsShared,
+      'isCritical': payload.resourceIsCritical,
+      'role': payload.resourceRole
+    };
+    this.resources.push(resource);
+    this.emit("change");
+>>>>>>> 432779241a04d490b2f17cdd10c0a95fd9c1edde
+  }
 });
 
 

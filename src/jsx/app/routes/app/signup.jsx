@@ -2,16 +2,22 @@ var Header = require('../../common/header.jsx');
 var Sidebar = require('../../common/sidebar.jsx');
 var Footer = require('../../common/footer.jsx');
 
+var auth = require('../../services/auth');
 var Fluxxor = require('../../../../../node_modules/fluxxor');
 var ReactStyle = require('../../react-styles/src/ReactStyle.jsx');
 
-window.React = React;
+var React = require('react'),
+    Router = require('react-router'),
+    { Route, RouteHandler, Link } = Router
 
 var FluxMixin = Fluxxor.FluxMixin(React),
     StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var Body = React.createClass({
-  mixins: [FluxMixin, StoreWatchMixin("UserStore")],
+  mixins: [FluxMixin,Router.Navigation, StoreWatchMixin("UserStore"), React.addons.LinkedStateMixin],
+  statics: {
+    attemptedTransition: null
+  },
   getInitialState: function() {
     return { email: "", firstname: "", lastname: "", type: "", password:"", password2:"" };
   },
@@ -24,76 +30,115 @@ var Body = React.createClass({
       info: store.info
     };
   },
-  handleSubmit: function(e) {
+  signup: function(e){
     e.preventDefault();
-    console.log("SUBMIT");
-    this.getFlux().actions.addUser(
-      this.state.email,
-      this.state.firstname,
-      this.state.lastname,
-      this.state.type,
-      this.state.password);
-    // if (!text || !author) {
-    //   return;
-    // }
-    // // TODO: send request to the server
-    // React.findDOMNode(this.refs.author).value = '';
-    // React.findDOMNode(this.refs.text).value = '';
-    return;
+    var myRadio = $('input[name=radiotype]:checked');
+    if (this.state.email === "" || this.state.password === "" || this.state.firstname === "" || this.state.lastname === "")
+      return this.setState({error: "Vous devez remplir tous les champs."})
+    else {
+      auth.signup(this.state.email, this.state.password, this.state.firstname, this.state.lastname, myRadio.val(), function (loggedIn, errors) {
+       if (!loggedIn)
+         return this.setState({ error: errors });
+       if (Body.attemptedTransition) {
+         var transition = Body.attemptedTransition;
+         Body.attemptedTransition = null;
+         transition.retry();
+       } else {
+         this.replaceWith('/simul_model'); // jump after login
+       }
+     }.bind(this));
+    }
   },
   render: function() {
+    var errors = this.state.error ? <p>Mauvaises informations de connexion.<br /> {this.state.error}</p> : '';
     return (
-      <Container id='body'>
-        <Grid>
-          <Row>
-            <Col sm={12}>
-              <PanelContainer>
-                <Panel>
-                  <PanelBody className='text-center'>
-                    <h1>Création de compte</h1>
-                    <p>Veuillez compléter ces informations.</p>
-                    <Form id='form-2' onSubmit={this.handleSubmit}>
-                      <Grid>
-                        <Row>
-                          <Col sm={4} xs={6} collapseRight className='form-border'>
-                            <FormGroup>
-                              <Label htmlFor='email'>Email</Label>
-                              <Input type='text' id='email' name='email' className='required'
-                                value={this.state.email} onChange={this.handleChangeInfo}/>
-                            </FormGroup>
-                            <FormGroup>
-                              <Label htmlFor='firstname'>Prénom</Label>
-                              <Input type='text' id='firstname' name='firstname' className='required'
-                                value={this.state.firstname} onChange={this.handleChangeInfo}/>
-                            </FormGroup>
-                            <FormGroup>
-                              <Label htmlFor='lastname'>Nom</Label>
-                              <Input type='text' id='lastname' name='lastname' className='required'
-                                value={this.state.lastname} onChange={this.handleChangeInfo}/>
-                            </FormGroup>
-                          </Col>
-                          <Col sm={4} xs={6} collapseRight className='form-border'>
-                            <FormGroup>
-                              <Label htmlFor='password'>Mot de passe</Label>
-                              <Input type='text' id='password' name='password' className='required'
-                                value={this.state.password} onChange={this.handleChangeInfo}/>
-                            </FormGroup>
-                            <FormGroup>
-                              <Label htmlFor='password2'>Confirmer le mot de passe</Label>
-                              <Input type='text' id='password2' name='password2' className='required'
-                                value={this.state.password2} onChange={this.handleChangeInfo}/>
-                            </FormGroup>
-                            <input type="submit" value="Valider" />
-                          </Col>
-                        </Row>
-                      </Grid>
-                    </Form>
-                  </PanelBody>
-                </Panel>
-              </PanelContainer>
-            </Col>
-          </Row>
-        </Grid>
+      <Container id='auth-container' className='signup'>
+        <Container id='auth-row'>
+          <Container id='auth-cell'>
+            <Grid>
+              <Row>
+                <Col sm={12}>
+                  <PanelContainer noControls>
+                    <Panel>
+                      <PanelBody style={{padding: 0}}>
+                        <div className='text-center bg-darkblue fg-white'>
+                          <h3 style={{margin: 0, padding: 25}}>Création de compte</h3>
+                        </div>
+                        {errors}
+                        <div>
+                          <div style={{padding: 25, paddingTop: 0, paddingBottom: 0, margin: 'auto', marginBottom: 25, marginTop: 25}}>
+                            <Form onSubmit={this.back}>
+                              <FormGroup>
+                                <InputGroup lg>
+                                  <InputGroupAddon>
+                                    <Icon glyph='icon-fontello-mail' />
+                                  </InputGroupAddon>
+                                  <Input type='email' valueLink={this.linkState('email')} id='emailaddress' className='border-focus-blue' placeholder='adresse@email.com' />
+                                </InputGroup>
+                              </FormGroup>
+                              <FormGroup>
+                                <InputGroup lg>
+                                  <InputGroupAddon>
+                                    <Icon glyph='icon-fontello-key' />
+                                  </InputGroupAddon>
+                                  <Input type='password' valueLink={this.linkState('password')} id='password' className='border-focus-blue' placeholder='Mot de passe' />
+                                </InputGroup>
+                              </FormGroup>
+                              <FormGroup>
+                                <InputGroup lg>
+                                  <InputGroupAddon>
+                                    <Icon glyph='icon-fontello-user' />
+                                  </InputGroupAddon>
+                                  <Input autoFocus type='text' valueLink={this.linkState('firstname')} id='firstname' className='border-focus-blue' placeholder='Prénom' />
+                                </InputGroup>
+                              </FormGroup>
+                              <FormGroup>
+                                <InputGroup lg>
+                                  <InputGroupAddon>
+                                    <Icon glyph='icon-fontello-user' />
+                                  </InputGroupAddon>
+                                  <Input autoFocus type='text' valueLink={this.linkState('lastname')} id='lastname' className='border-focus-blue' placeholder='Nom de famille' />
+                                </InputGroup>
+                              </FormGroup>
+                              <FormGroup>
+                                <InputGroup lg>
+                                  <InputGroupAddon>
+                                    <Label control>Type</Label>
+                                  </InputGroupAddon>
+                                  <Col sm={9}>
+                                    <Radio value='student' defaultChecked name='radiotype'>
+                                      Élève
+                                    </Radio>
+                                    <Radio value='prof' name='radiotype'>
+                                      Professeur
+                                    </Radio>
+                                  </Col>
+                                </InputGroup>
+                              </FormGroup>
+                              <FormGroup>
+                                <Grid>
+                                  <Row>
+                                    <Col xs={6} collapseLeft collapseRight style={{paddingTop: 10}}>
+                                      <Link to='/login'>Déjà un compte ?</Link>
+                                    </Col>
+                                    <Col xs={6} collapseLeft collapseRight className='text-right'>
+                                      <Button type='submit' outlined lg bsStyle='blue' block onClick={this.signup}>Créer le compte</Button>
+                                    </Col>
+                                    {errors}
+                                  </Row>
+                                </Grid>
+                              </FormGroup>
+                            </Form>
+                          </div>
+                        </div>
+                      </PanelBody>
+                    </Panel>
+                  </PanelContainer>
+                </Col>
+              </Row>
+            </Grid>
+          </Container>
+        </Container>
       </Container>
     );
   },

@@ -2,6 +2,9 @@ var Header = require('../common/header.jsx');
 var Sidebar = require('../common/sidebar.jsx');
 var Footer = require('../common/footer.jsx');
 
+var Authentication = require('../mixins/authentication');
+
+
 var Body = React.createClass({
   render: function() {
     return (
@@ -35,7 +38,7 @@ var Body = React.createClass({
 
 var classSet = React.addons.classSet;
 var PageNotFound = React.createClass({
-  mixins: [SidebarMixin],
+  mixins: [Authentication, SidebarMixin],
   render: function() {
     var classes = classSet({
       'container-open': this.state.open

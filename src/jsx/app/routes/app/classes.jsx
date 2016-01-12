@@ -91,6 +91,8 @@ var Classe = React.createClass({
       statusStyle = { color: "red" };
       break;
     }
+    console.log(JSON.stringify(this.props.classe))
+    var urlToClass = "/class/id=" + this.props.classe.id;
     return (
       <div>
       <PanelContainer>
@@ -99,7 +101,7 @@ var Classe = React.createClass({
             <Grid className='gallery-item'>
               <Row>
                 <Col xs={12} style={{padding: 0.1}} className={"bg-blue"}>
-                  <Link to='/class' className="item-link" title={this.props.title}>
+                  <Link to="totoClass" params={{test: "teub"}} className="item-link" title={this.props.title}>
                     <div className='black-wrapper text-center'>
                       <Table style={{height: '100%', width: '100%'}}>
                         <tbody>
