@@ -41,7 +41,7 @@ var Body = React.createClass({
        Body.attemptedTransition = null;
        transition.retry();
      } else {
-       this.replaceWith('/'); // jump after login
+       this.replaceWith('/simul_model'); // jump after login
      }
    }.bind(this));
   },
@@ -83,10 +83,10 @@ var Body = React.createClass({
                                 <Grid>
                                   <Row>
                                     <Col xs={6} collapseLeft collapseRight style={{paddingTop: 10}}>
-                                      <Link to='/app/signup'>Créer un compte</Link>
+                                      <Link to='/signup'>Créer un compte</Link>
                                     </Col>
                                     <Col xs={6} collapseLeft collapseRight className='text-right'>
-                                      <Button outlined lg type='submit' bsStyle='blue' onClick={this.login}>Login</Button>
+                                      <Button outlined lg type='submit' bsStyle='blue' onClick={this.login}>Se connecter</Button>
                                     </Col>
                                     {errors}
                                   </Row>

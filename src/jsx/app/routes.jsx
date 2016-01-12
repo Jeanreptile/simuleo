@@ -22,7 +22,7 @@ module.exports = (
   <Route handler={ReactRouter.RouteHandler}>
     <DefaultRoute handler={blank} />
     <Route path='/' handler={blank} />
-    <Route path='/class' handler={classe} />
+    <Route name="totoClass" path='/class/:test' handler={classe} />
     <Route path='/classes' handler={classes} />
     <Route path='/simul_negociation/config' handler={simul_negociation_config} />
     <Route path='/simul_negociation/*/*' handler={simul_negociation} />

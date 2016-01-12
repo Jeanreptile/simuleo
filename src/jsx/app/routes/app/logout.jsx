@@ -1,6 +1,8 @@
 var auth = require('../../services/auth');
 
-window.React = React
+var React = require('react'),
+    Router = require('react-router'),
+    { Route, RouteHandler, Link } = Router;
 
 var Logout = React.createClass({
 
@@ -15,6 +17,7 @@ var Logout = React.createClass({
   componentDidMount: function () {
     console.log("React in Logout");
     auth.logout();
+    window.location.href = '/login'; //relative to domain
   },
   render: function () {
     return <p>You are now logged out</p>;

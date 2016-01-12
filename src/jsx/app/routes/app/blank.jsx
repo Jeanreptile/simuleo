@@ -3,6 +3,7 @@ var Sidebar = require('../../common/sidebar.jsx');
 var Footer = require('../../common/footer.jsx');
 var Authentication = require('../../mixins/authentication');
 
+
 var Body = React.createClass({
   render: function() {
     return (

@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var expressBeautify = require('express-beautify')();
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
+var bCrypt = require('bcrypt-nodejs')
 
 require('dotenv').load();
 var rdb = require('./lib/rethink');
@@ -152,20 +153,54 @@ app.post('/api/simul_negociation', function(req, res, next) {
   });
 });
 
-app.post('/api/login', function(req, res, next) {
-  console.log("username is " + req.body.username + " and password is " + req.body.password);
-  rdb.findUserByEmail(req.body.username).then(function (response) {
-      if(!response) {
-          return res.json({error: "User does not exist"});
+var createHash = function(password){
+    return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+}
+
+var isValidPassword = function(pass1, pass2){
+    return bCrypt.compareSync(pass1, pass2);
+}
+
+
+app.post('/api/signup', function(req, res, next) {
+  rdb.findUserByEmail(req.body.email).then(function (response) {
+      if(response) {
+          return res.json({error: "Un utilisateur existe déjà avec cet email"});
       }
-      if (req.body.password != response.password)
+      else {
+        hashPass = createHash(req.body.password)
+        console.log("ueaj " + req.body.typeUser)
+        rdb.createUser(req.body.email, req.body.firstname, req.body.lastname, req.body.typeUser, hashPass).then(function (response)
+        {
+          if (!response)
+          {
+            return res.json({error: "Erreur en créant l'utilisateur"});
+          }
+          else{
+            var token = jwt.sign({ email: response.email }, 'secretkeey', {expiresInMinutes: 60*12});
+            return res.json({token: token, user: response});
+          }
+        })
+      }
+
+  });
+});
+
+app.post('/api/login', function(req, res, next) {
+  var emailuser = req.body.email
+  rdb.findUserByEmail(emailuser).then(function (response) {
+      if(!response) {
+          return res.json({error: "Aucun utilisateur avec cet email"});
+      }
+      if (!(isValidPassword(req.body.password, response.password)))
       {
-        return res.json({error: "Wrong password"});
+        return res.json({error: "Mauvais mot de passe"});
       }
       var token = jwt.sign({ email: response.email }, 'secretkeey', {expiresInMinutes: 60*12});
       return res.json({token: token, user: response});
-      //return res.json(response);
-  });
+  }).catch(function (err) {
+    console.log(err);
+});
 });
 
 

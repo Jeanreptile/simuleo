@@ -22,6 +22,7 @@ var SimulModelStore = Fluxxor.createStore({
 
   onAddRole: function(payload) {
     this.roles[payload.roleName] = payload.roleMessage;
+    console.log("ROLE IS " + JSON.stringify(this.roles));
     this.emit("change");
   },
   getRoles: function() {

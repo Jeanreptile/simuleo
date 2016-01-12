@@ -15,8 +15,9 @@ var FluxMixin = Fluxxor.FluxMixin(React),
     StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var Body = React.createClass({
-  mixins: [FluxMixin, StoreWatchMixin("ClasseStore")],
+  mixins: [ReactRouter.State, FluxMixin, StoreWatchMixin("ClasseStore")],
   getInitialState: function() {
+
     return { newClasse: {} };
   },
 
@@ -30,6 +31,7 @@ var Body = React.createClass({
   },
 
   render: function() {
+    console.log("get test 1 : " + this.getParams().test);
     return (
       <Container id='body'>
         <Grid>

@@ -1,6 +1,10 @@
 @charset "UTF-8";
+<<<<<<< HEAD
 /*! rubix - v2.3.0 - 2016-01-10 [copyright: SketchPixy LLP, email: support@sketchpixy.com] */
 @charset "UTF-8";
+=======
+/*! rubix - v2.3.0 - 2016-01-09 [copyright: SketchPixy LLP, email: support@sketchpixy.com] */
+>>>>>>> 5558e2667797866e3ade62ddad415104a57a724c
 @keyframes vex-flipin-horizontal {
   0% {
     opacity: 0;
