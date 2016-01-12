@@ -17,8 +17,6 @@ var SimulModelStore = Fluxxor.createStore({
     this.roles[payload.roleName] = payload.roleMessage;
     console.log("ROLE IS " + JSON.stringify(this.roles));
     this.emit("change");
-<<<<<<< HEAD
-=======
   },
   getRoles: function() {
     return this.roles;
@@ -35,7 +33,6 @@ var SimulModelStore = Fluxxor.createStore({
     };
     this.resources.push(resource);
     this.emit("change");
->>>>>>> 432779241a04d490b2f17cdd10c0a95fd9c1edde
   }
 });
 
