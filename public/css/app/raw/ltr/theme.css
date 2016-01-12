@@ -1,5 +1,6 @@
 @charset "UTF-8";
-/*! rubix - v2.3.0 - 2015-12-21 [copyright: SketchPixy LLP, email: support@sketchpixy.com] */
+/*! rubix - v2.3.0 - 2016-01-10 [copyright: SketchPixy LLP, email: support@sketchpixy.com] */
+@charset "UTF-8";
 @keyframes vex-flipin-horizontal {
   0% {
     opacity: 0;
@@ -8,7 +9,6 @@
     -moz-transform: rotateY(-90deg);
     -ms-transform: rotateY(-90deg);
     -o-transform: rotateY(-90deg); }
-
   100% {
     opacity: 1;
     transform: rotateY(0deg);
@@ -25,7 +25,6 @@
     -moz-transform: rotateY(-90deg);
     -ms-transform: rotateY(-90deg);
     -o-transform: rotateY(-90deg); }
-
   100% {
     opacity: 1;
     transform: rotateY(0deg);
@@ -42,7 +41,6 @@
     -moz-transform: rotateY(0deg);
     -ms-transform: rotateY(0deg);
     -o-transform: rotateY(0deg); }
-
   100% {
     opacity: 0;
     transform: rotateY(90deg);
@@ -59,7 +57,6 @@
     -moz-transform: rotateY(0deg);
     -ms-transform: rotateY(0deg);
     -o-transform: rotateY(0deg); }
-
   100% {
     opacity: 0;
     transform: rotateY(90deg);
@@ -298,32 +295,24 @@
 @-webkit-keyframes ui-spinner-rotate-right {
   0% {
     -webkit-transform: rotate(0deg); }
-
   25% {
     -webkit-transform: rotate(180deg); }
-
   50% {
     -webkit-transform: rotate(180deg); }
-
   75% {
     -webkit-transform: rotate(360deg); }
-
   100% {
     -webkit-transform: rotate(360deg); } }
 
 @-webkit-keyframes ui-spinner-rotate-left {
   0% {
     -webkit-transform: rotate(0deg); }
-
   25% {
     -webkit-transform: rotate(0deg); }
-
   50% {
     -webkit-transform: rotate(180deg); }
-
   75% {
     -webkit-transform: rotate(180deg); }
-
   100% {
     -webkit-transform: rotate(360deg); } }
 
@@ -331,19 +320,15 @@
   0% {
     -webkit-transform: rotate(0deg);
             transform: rotate(0deg); }
-
   25% {
     -webkit-transform: rotate(180deg);
             transform: rotate(180deg); }
-
   50% {
     -webkit-transform: rotate(180deg);
             transform: rotate(180deg); }
-
   75% {
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg); }
-
   100% {
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg); } }
@@ -352,19 +337,15 @@
   0% {
     -webkit-transform: rotate(0deg);
             transform: rotate(0deg); }
-
   25% {
     -webkit-transform: rotate(0deg);
             transform: rotate(0deg); }
-
   50% {
     -webkit-transform: rotate(180deg);
             transform: rotate(180deg); }
-
   75% {
     -webkit-transform: rotate(180deg);
             transform: rotate(180deg); }
-
   100% {
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg); } }
@@ -402,7 +383,6 @@ ul.messenger.messenger-spinner-active .messenger-spinner .messenger-spinner {
   -webkit-animation-name: ui-spinner-rotate-left;
   animation-name: ui-spinner-rotate-left;
   -webkit-transform-origin: 0 50%;
-  -ms-transform-origin: 0 50%;
   transform-origin: 0 50%; }
 
 .messenger-spinner .messenger-spinner-side-right {
@@ -415,7 +395,6 @@ ul.messenger.messenger-spinner-active .messenger-spinner .messenger-spinner {
   -webkit-animation-name: ui-spinner-rotate-right;
   animation-name: ui-spinner-rotate-right;
   -webkit-transform-origin: 100% 50%;
-  -ms-transform-origin: 100% 50%;
   transform-origin: 100% 50%; }
 
 ul.messenger-theme-flat {
@@ -584,7 +563,11 @@ ul.messenger-theme-flat .messenger-spinner {
 // ===================================================================================================================*/
 /* =====================================================================================================================
 // Skin details */
-.irs-line-mid, .irs-line-left, .irs-line-right, .irs-diapason, .irs-slider {
+.irs-line-mid,
+.irs-line-left,
+.irs-line-right,
+.irs-diapason,
+.irs-slider {
   background: url(/imgs/sprite-skin-flat.png) repeat-x; }
 
 .irs {
@@ -663,6 +646,7 @@ ul.messenger-theme-flat .messenger-spinner {
 
 .bs-example > .dropdown > .dropdown-toggle {
   float: left; }
+
 .bs-example > .dropdown > .dropdown-menu {
   clear: left;
   display: block;
@@ -671,7 +655,6 @@ ul.messenger-theme-flat .messenger-spinner {
 
 /* ADD/REMOVE/CHANGE THEMES HERE */
 /* GLOBAL SETTINGS */
-@debug #E76049;
 a {
   color: #2EB398; }
   a:hover, a:focus {
@@ -780,28 +763,42 @@ a {
 html {
   letter-spacing: 0.5px; }
 
-html.orange .datepicker table tr td.active, html.orange .datepicker table tr td.active:hover, html.orange .datepicker table tr td.active.disabled, html.orange .datepicker table tr td.active.disabled:hover, html.orange .datepicker table tr td span.active, html.orange .datepicker table tr td span.active:hover, html.orange .datepicker table tr td span.active.disabled, html.orange .datepicker table tr td span.active.disabled:hover {
+html.orange .datepicker table tr td.active,
+html.orange .datepicker table tr td.active:hover,
+html.orange .datepicker table tr td.active.disabled,
+html.orange .datepicker table tr td.active.disabled:hover,
+html.orange .datepicker table tr td span.active,
+html.orange .datepicker table tr td span.active:hover,
+html.orange .datepicker table tr td span.active.disabled,
+html.orange .datepicker table tr td span.active.disabled:hover {
   background: #E76049 !important; }
+
 html.orange .list-bg-theme > .list-group-item.active {
   background: #E76049 !important;
   color: white !important; }
+
 html.orange .list-fg-theme > .list-group-item {
   color: #E76049; }
+
 html.orange .rubix-panel-header .nav-theme.nav-tabs > li > a {
   color: white; }
   html.orange .rubix-panel-header .nav-theme.nav-tabs > li > a:hover, html.orange .rubix-panel-header .nav-theme.nav-tabs > li > a:focus {
     color: white; }
+
 html.orange .rubix-panel-header .nav-theme.nav-tabs > li.active > a:hover, html.orange .rubix-panel-header .nav-theme.nav-tabs > li.active > a:focus {
   color: #E76049; }
+
 html.orange .nav-theme.nav-tabs {
   border-color: #E76049; }
   html.orange .nav-theme.nav-tabs > li > a, html.orange .nav-theme.nav-tabs > li > a:hover, html.orange .nav-theme.nav-tabs > li > a:focus, html.orange .nav-theme.nav-tabs > li.active > a {
     color: #E76049;
     border-color: #E76049;
-    border-bottom-color: rgba(0, 0, 0, 0); }
+    border-bottom-color: transparent; }
+
 html.orange .nav-theme.nav-pills > li > a:hover, html.orange .nav-theme.nav-pills > li > a:focus, html.orange .nav-theme.nav-pills > li.active > a {
   background: #E76049;
   color: white; }
+
 html.orange .menu-theme, html.orange .dropup .menu-theme {
   border-color: #E76049; }
   html.orange .menu-theme > li > a:hover, html.orange .dropup .menu-theme > li > a:hover {
@@ -809,6 +806,7 @@ html.orange .menu-theme, html.orange .dropup .menu-theme {
   html.orange .menu-theme > .active > a, html.orange .menu-theme > .active > a:hover, html.orange .menu-theme > .active > a:focus, html.orange .dropup .menu-theme > .active > a, html.orange .dropup .menu-theme > .active > a:hover, html.orange .dropup .menu-theme > .active > a:focus {
     color: white;
     background: #E76049; }
+
 html.orange .btn-theme {
   outline: none;
   background: #E76049;
@@ -822,8 +820,8 @@ html.orange .btn-theme {
   html.orange .btn-theme:hover, html.orange .btn-theme:focus, html.orange .btn-theme:active, html.orange .btn-theme.active {
     outline: none;
     color: white;
-    background: #ed8676;
-    border-color: #ed8676; }
+    background: #ed8776;
+    border-color: #ed8776; }
     html.orange .btn-theme:hover.btn-outlined, html.orange .btn-theme:focus.btn-outlined, html.orange .btn-theme:active.btn-outlined, html.orange .btn-theme.active.btn-outlined {
       background: #E76049;
       color: white;
@@ -839,22 +837,29 @@ html.orange .btn-theme {
         background: #E76049;
         color: white;
         border-color: #E76049; }
+
 html.orange .tl-theme .rubix-timeline-body > ul > li:before {
   border-color: #E76049; }
+
 html.orange .border-theme {
   border-color: #E76049 !important; }
   html.orange .border-theme .rubix-timeline-body > ul {
     border-color: #E76049; }
   html.orange .border-theme.rubix-timeline-view:before {
     border-color: #E76049; }
+
 html.orange .border-hover-theme:hover {
   border-color: #E76049 !important; }
+
 html.orange .border-focus-theme:focus {
   border-color: #E76049 !important; }
+
 html.orange .fg-focus-theme:focus {
   color: #E76049; }
+
 html.orange .fg-hover-theme:hover {
   color: #E76049; }
+
 html.orange .fg-theme {
   color: #E76049; }
   html.orange .fg-theme > .tab-container > .nav-tabs > .b-tab > a {
@@ -863,10 +868,13 @@ html.orange .fg-theme {
     color: #E76049; }
   html.orange .fg-theme.fg-tab-active .tab-container > .nav-tabs > .b-tab.active > a {
     color: #E76049; }
+
 html.orange .bg-focus-theme:focus {
   background: #E76049; }
+
 html.orange .bg-hover-theme:hover {
   background: #E76049; }
+
 html.orange .bg-theme {
   background: #E76049; }
   html.orange .bg-theme > .tab-container > .nav-tabs > .b-tab.open > a {
@@ -1103,14 +1111,14 @@ html.orange {
             text-align: center;
             display: table-cell;
             vertical-align: middle;
-            border-right: 1px solid #cf4c2e; }
+            border-right: 1px solid #cf4d2e; }
             html.orange body #sidebar .sidebar-controls-container > .sidebar-controls > .sidebar-control-btn > a {
               outline: none;
               color: #993F31; }
               html.orange body #sidebar .sidebar-controls-container > .sidebar-controls > .sidebar-control-btn > a:hover, html.orange body #sidebar .sidebar-controls-container > .sidebar-controls > .sidebar-control-btn > a:focus {
                 border: none; }
             html.orange body #sidebar .sidebar-controls-container > .sidebar-controls > .sidebar-control-btn.active {
-              background: #ba4c3b !important; }
+              background: #ba4e3b !important; }
               html.orange body #sidebar .sidebar-controls-container > .sidebar-controls > .sidebar-control-btn.active > a {
                 color: #FA7252; }
             html.orange body #sidebar .sidebar-controls-container > .sidebar-controls > .sidebar-control-btn:hover {
@@ -1207,8 +1215,8 @@ html.orange {
             content: '';
             position: absolute;
             display: inline-block;
-            border-top: 12px solid rgba(0, 0, 0, 0);
-            border-bottom: 12px solid rgba(0, 0, 0, 0);
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
             border-right: 10px solid #E9F0F5; }
     html.orange body .sidebar-nav-container > .sidebar-nav {
       border: none;
@@ -1273,21 +1281,17 @@ html .sidebar-nav > li > a > .toggle-button {
   right: 15px;
   position: absolute;
   -webkit-transform-origin: 4px;
-      -ms-transform-origin: 4px;
           transform-origin: 4px;
   -webkit-transition: all 0.125s ease;
           transition: all 0.125s ease; }
   html .sidebar-nav > li > a > .toggle-button.open {
     -webkit-transform: rotate(-90deg);
-        -ms-transform: rotate(-90deg);
             transform: rotate(-90deg); }
   html .sidebar-nav > li > a > .toggle-button.opposite {
     -webkit-transform-origin: 12px;
-        -ms-transform-origin: 12px;
             transform-origin: 12px; }
     html .sidebar-nav > li > a > .toggle-button.opposite.open {
       -webkit-transform: rotate(90deg);
-          -ms-transform: rotate(90deg);
               transform: rotate(90deg); }
 
 html.touch, html.touch > body, html.touch #app-container, html.touch #app-container > #container {
@@ -1326,8 +1330,10 @@ html.touch #sidebar {
     overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar; }
+
 html.touch #footer-container, html.touch #footer {
   display: block !important; }
+
 html.touch #footer {
   position: relative !important; }
 
@@ -1459,7 +1465,6 @@ html.static.boxed {
       margin-top: 25px; }
 
 /* GLOBAL SETTINGS */
-@debug #2EB398;
 a {
   color: #2EB398; }
   a:hover, a:focus {
@@ -1568,28 +1573,42 @@ a {
 html {
   letter-spacing: 0.5px; }
 
-html.green .datepicker table tr td.active, html.green .datepicker table tr td.active:hover, html.green .datepicker table tr td.active.disabled, html.green .datepicker table tr td.active.disabled:hover, html.green .datepicker table tr td span.active, html.green .datepicker table tr td span.active:hover, html.green .datepicker table tr td span.active.disabled, html.green .datepicker table tr td span.active.disabled:hover {
+html.green .datepicker table tr td.active,
+html.green .datepicker table tr td.active:hover,
+html.green .datepicker table tr td.active.disabled,
+html.green .datepicker table tr td.active.disabled:hover,
+html.green .datepicker table tr td span.active,
+html.green .datepicker table tr td span.active:hover,
+html.green .datepicker table tr td span.active.disabled,
+html.green .datepicker table tr td span.active.disabled:hover {
   background: #2EB398 !important; }
+
 html.green .list-bg-theme > .list-group-item.active {
   background: #2EB398 !important;
   color: white !important; }
+
 html.green .list-fg-theme > .list-group-item {
   color: #2EB398; }
+
 html.green .rubix-panel-header .nav-theme.nav-tabs > li > a {
   color: white; }
   html.green .rubix-panel-header .nav-theme.nav-tabs > li > a:hover, html.green .rubix-panel-header .nav-theme.nav-tabs > li > a:focus {
     color: white; }
+
 html.green .rubix-panel-header .nav-theme.nav-tabs > li.active > a:hover, html.green .rubix-panel-header .nav-theme.nav-tabs > li.active > a:focus {
   color: #2EB398; }
+
 html.green .nav-theme.nav-tabs {
   border-color: #2EB398; }
   html.green .nav-theme.nav-tabs > li > a, html.green .nav-theme.nav-tabs > li > a:hover, html.green .nav-theme.nav-tabs > li > a:focus, html.green .nav-theme.nav-tabs > li.active > a {
     color: #2EB398;
     border-color: #2EB398;
-    border-bottom-color: rgba(0, 0, 0, 0); }
+    border-bottom-color: transparent; }
+
 html.green .nav-theme.nav-pills > li > a:hover, html.green .nav-theme.nav-pills > li > a:focus, html.green .nav-theme.nav-pills > li.active > a {
   background: #2EB398;
   color: white; }
+
 html.green .menu-theme, html.green .dropup .menu-theme {
   border-color: #2EB398; }
   html.green .menu-theme > li > a:hover, html.green .dropup .menu-theme > li > a:hover {
@@ -1597,6 +1616,7 @@ html.green .menu-theme, html.green .dropup .menu-theme {
   html.green .menu-theme > .active > a, html.green .menu-theme > .active > a:hover, html.green .menu-theme > .active > a:focus, html.green .dropup .menu-theme > .active > a, html.green .dropup .menu-theme > .active > a:hover, html.green .dropup .menu-theme > .active > a:focus {
     color: white;
     background: #2EB398; }
+
 html.green .btn-theme {
   outline: none;
   background: #2EB398;
@@ -1610,8 +1630,8 @@ html.green .btn-theme {
   html.green .btn-theme:hover, html.green .btn-theme:focus, html.green .btn-theme:active, html.green .btn-theme.active {
     outline: none;
     color: white;
-    background: #45cfb1;
-    border-color: #45cfb1; }
+    background: #45cfb3;
+    border-color: #45cfb3; }
     html.green .btn-theme:hover.btn-outlined, html.green .btn-theme:focus.btn-outlined, html.green .btn-theme:active.btn-outlined, html.green .btn-theme.active.btn-outlined {
       background: #2EB398;
       color: white;
@@ -1627,22 +1647,29 @@ html.green .btn-theme {
         background: #2EB398;
         color: white;
         border-color: #2EB398; }
+
 html.green .tl-theme .rubix-timeline-body > ul > li:before {
   border-color: #2EB398; }
+
 html.green .border-theme {
   border-color: #2EB398 !important; }
   html.green .border-theme .rubix-timeline-body > ul {
     border-color: #2EB398; }
   html.green .border-theme.rubix-timeline-view:before {
     border-color: #2EB398; }
+
 html.green .border-hover-theme:hover {
   border-color: #2EB398 !important; }
+
 html.green .border-focus-theme:focus {
   border-color: #2EB398 !important; }
+
 html.green .fg-focus-theme:focus {
   color: #2EB398; }
+
 html.green .fg-hover-theme:hover {
   color: #2EB398; }
+
 html.green .fg-theme {
   color: #2EB398; }
   html.green .fg-theme > .tab-container > .nav-tabs > .b-tab > a {
@@ -1651,10 +1678,13 @@ html.green .fg-theme {
     color: #2EB398; }
   html.green .fg-theme.fg-tab-active .tab-container > .nav-tabs > .b-tab.active > a {
     color: #2EB398; }
+
 html.green .bg-focus-theme:focus {
   background: #2EB398; }
+
 html.green .bg-hover-theme:hover {
   background: #2EB398; }
+
 html.green .bg-theme {
   background: #2EB398; }
   html.green .bg-theme > .tab-container > .nav-tabs > .b-tab.open > a {
@@ -1891,7 +1921,7 @@ html.green {
             text-align: center;
             display: table-cell;
             vertical-align: middle;
-            border-right: 1px solid #259179; }
+            border-right: 1px solid #25917b; }
             html.green body #sidebar .sidebar-controls-container > .sidebar-controls > .sidebar-control-btn > a {
               outline: none;
               color: #1B6858; }
@@ -1995,8 +2025,8 @@ html.green {
             content: '';
             position: absolute;
             display: inline-block;
-            border-top: 12px solid rgba(0, 0, 0, 0);
-            border-bottom: 12px solid rgba(0, 0, 0, 0);
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
             border-right: 10px solid #E9F0F5; }
     html.green body .sidebar-nav-container > .sidebar-nav {
       border: none;
@@ -2061,21 +2091,17 @@ html .sidebar-nav > li > a > .toggle-button {
   right: 15px;
   position: absolute;
   -webkit-transform-origin: 4px;
-      -ms-transform-origin: 4px;
           transform-origin: 4px;
   -webkit-transition: all 0.125s ease;
           transition: all 0.125s ease; }
   html .sidebar-nav > li > a > .toggle-button.open {
     -webkit-transform: rotate(-90deg);
-        -ms-transform: rotate(-90deg);
             transform: rotate(-90deg); }
   html .sidebar-nav > li > a > .toggle-button.opposite {
     -webkit-transform-origin: 12px;
-        -ms-transform-origin: 12px;
             transform-origin: 12px; }
     html .sidebar-nav > li > a > .toggle-button.opposite.open {
       -webkit-transform: rotate(90deg);
-          -ms-transform: rotate(90deg);
               transform: rotate(90deg); }
 
 html.touch, html.touch > body, html.touch #app-container, html.touch #app-container > #container {
@@ -2114,8 +2140,10 @@ html.touch #sidebar {
     overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar; }
+
 html.touch #footer-container, html.touch #footer {
   display: block !important; }
+
 html.touch #footer {
   position: relative !important; }
 
@@ -2247,7 +2275,6 @@ html.static.boxed {
       margin-top: 25px; }
 
 /* GLOBAL SETTINGS */
-@debug #79B0EC;
 a {
   color: #2EB398; }
   a:hover, a:focus {
@@ -2356,28 +2383,42 @@ a {
 html {
   letter-spacing: 0.5px; }
 
-html.default .datepicker table tr td.active, html.default .datepicker table tr td.active:hover, html.default .datepicker table tr td.active.disabled, html.default .datepicker table tr td.active.disabled:hover, html.default .datepicker table tr td span.active, html.default .datepicker table tr td span.active:hover, html.default .datepicker table tr td span.active.disabled, html.default .datepicker table tr td span.active.disabled:hover {
+html.default .datepicker table tr td.active,
+html.default .datepicker table tr td.active:hover,
+html.default .datepicker table tr td.active.disabled,
+html.default .datepicker table tr td.active.disabled:hover,
+html.default .datepicker table tr td span.active,
+html.default .datepicker table tr td span.active:hover,
+html.default .datepicker table tr td span.active.disabled,
+html.default .datepicker table tr td span.active.disabled:hover {
   background: #79B0EC !important; }
+
 html.default .list-bg-theme > .list-group-item.active {
   background: #79B0EC !important;
   color: white !important; }
+
 html.default .list-fg-theme > .list-group-item {
   color: #79B0EC; }
+
 html.default .rubix-panel-header .nav-theme.nav-tabs > li > a {
   color: white; }
   html.default .rubix-panel-header .nav-theme.nav-tabs > li > a:hover, html.default .rubix-panel-header .nav-theme.nav-tabs > li > a:focus {
     color: white; }
+
 html.default .rubix-panel-header .nav-theme.nav-tabs > li.active > a:hover, html.default .rubix-panel-header .nav-theme.nav-tabs > li.active > a:focus {
   color: #79B0EC; }
+
 html.default .nav-theme.nav-tabs {
   border-color: #79B0EC; }
   html.default .nav-theme.nav-tabs > li > a, html.default .nav-theme.nav-tabs > li > a:hover, html.default .nav-theme.nav-tabs > li > a:focus, html.default .nav-theme.nav-tabs > li.active > a {
     color: #79B0EC;
     border-color: #79B0EC;
-    border-bottom-color: rgba(0, 0, 0, 0); }
+    border-bottom-color: transparent; }
+
 html.default .nav-theme.nav-pills > li > a:hover, html.default .nav-theme.nav-pills > li > a:focus, html.default .nav-theme.nav-pills > li.active > a {
   background: #79B0EC;
   color: white; }
+
 html.default .menu-theme, html.default .dropup .menu-theme {
   border-color: #79B0EC; }
   html.default .menu-theme > li > a:hover, html.default .dropup .menu-theme > li > a:hover {
@@ -2385,6 +2426,7 @@ html.default .menu-theme, html.default .dropup .menu-theme {
   html.default .menu-theme > .active > a, html.default .menu-theme > .active > a:hover, html.default .menu-theme > .active > a:focus, html.default .dropup .menu-theme > .active > a, html.default .dropup .menu-theme > .active > a:hover, html.default .dropup .menu-theme > .active > a:focus {
     color: white;
     background: #79B0EC; }
+
 html.default .btn-theme {
   outline: none;
   background: #79B0EC;
@@ -2398,8 +2440,8 @@ html.default .btn-theme {
   html.default .btn-theme:hover, html.default .btn-theme:focus, html.default .btn-theme:active, html.default .btn-theme.active {
     outline: none;
     color: white;
-    background: #a6cbf2;
-    border-color: #a6cbf2; }
+    background: #a6caf2;
+    border-color: #a6caf2; }
     html.default .btn-theme:hover.btn-outlined, html.default .btn-theme:focus.btn-outlined, html.default .btn-theme:active.btn-outlined, html.default .btn-theme.active.btn-outlined {
       background: #79B0EC;
       color: white;
@@ -2415,22 +2457,29 @@ html.default .btn-theme {
         background: #79B0EC;
         color: white;
         border-color: #79B0EC; }
+
 html.default .tl-theme .rubix-timeline-body > ul > li:before {
   border-color: #79B0EC; }
+
 html.default .border-theme {
   border-color: #79B0EC !important; }
   html.default .border-theme .rubix-timeline-body > ul {
     border-color: #79B0EC; }
   html.default .border-theme.rubix-timeline-view:before {
     border-color: #79B0EC; }
+
 html.default .border-hover-theme:hover {
   border-color: #79B0EC !important; }
+
 html.default .border-focus-theme:focus {
   border-color: #79B0EC !important; }
+
 html.default .fg-focus-theme:focus {
   color: #79B0EC; }
+
 html.default .fg-hover-theme:hover {
   color: #79B0EC; }
+
 html.default .fg-theme {
   color: #79B0EC; }
   html.default .fg-theme > .tab-container > .nav-tabs > .b-tab > a {
@@ -2439,10 +2488,13 @@ html.default .fg-theme {
     color: #79B0EC; }
   html.default .fg-theme.fg-tab-active .tab-container > .nav-tabs > .b-tab.active > a {
     color: #79B0EC; }
+
 html.default .bg-focus-theme:focus {
   background: #79B0EC; }
+
 html.default .bg-hover-theme:hover {
   background: #79B0EC; }
+
 html.default .bg-theme {
   background: #79B0EC; }
   html.default .bg-theme > .tab-container > .nav-tabs > .b-tab.open > a {
@@ -2783,8 +2835,8 @@ html.default {
             content: '';
             position: absolute;
             display: inline-block;
-            border-top: 12px solid rgba(0, 0, 0, 0);
-            border-bottom: 12px solid rgba(0, 0, 0, 0);
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
             border-right: 10px solid #E9F0F5; }
     html.default body .sidebar-nav-container > .sidebar-nav {
       border: none;
@@ -2849,21 +2901,17 @@ html .sidebar-nav > li > a > .toggle-button {
   right: 15px;
   position: absolute;
   -webkit-transform-origin: 4px;
-      -ms-transform-origin: 4px;
           transform-origin: 4px;
   -webkit-transition: all 0.125s ease;
           transition: all 0.125s ease; }
   html .sidebar-nav > li > a > .toggle-button.open {
     -webkit-transform: rotate(-90deg);
-        -ms-transform: rotate(-90deg);
             transform: rotate(-90deg); }
   html .sidebar-nav > li > a > .toggle-button.opposite {
     -webkit-transform-origin: 12px;
-        -ms-transform-origin: 12px;
             transform-origin: 12px; }
     html .sidebar-nav > li > a > .toggle-button.opposite.open {
       -webkit-transform: rotate(90deg);
-          -ms-transform: rotate(90deg);
               transform: rotate(90deg); }
 
 html.touch, html.touch > body, html.touch #app-container, html.touch #app-container > #container {
@@ -2902,8 +2950,10 @@ html.touch #sidebar {
     overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar; }
+
 html.touch #footer-container, html.touch #footer {
   display: block !important; }
+
 html.touch #footer {
   position: relative !important; }
 
@@ -3035,7 +3085,6 @@ html.static.boxed {
       margin-top: 25px; }
 
 /* GLOBAL SETTINGS */
-@debug #B4A1DD;
 a {
   color: #2EB398; }
   a:hover, a:focus {
@@ -3144,28 +3193,42 @@ a {
 html {
   letter-spacing: 0.5px; }
 
-html.purple .datepicker table tr td.active, html.purple .datepicker table tr td.active:hover, html.purple .datepicker table tr td.active.disabled, html.purple .datepicker table tr td.active.disabled:hover, html.purple .datepicker table tr td span.active, html.purple .datepicker table tr td span.active:hover, html.purple .datepicker table tr td span.active.disabled, html.purple .datepicker table tr td span.active.disabled:hover {
+html.purple .datepicker table tr td.active,
+html.purple .datepicker table tr td.active:hover,
+html.purple .datepicker table tr td.active.disabled,
+html.purple .datepicker table tr td.active.disabled:hover,
+html.purple .datepicker table tr td span.active,
+html.purple .datepicker table tr td span.active:hover,
+html.purple .datepicker table tr td span.active.disabled,
+html.purple .datepicker table tr td span.active.disabled:hover {
   background: #B4A1DD !important; }
+
 html.purple .list-bg-theme > .list-group-item.active {
   background: #B4A1DD !important;
   color: white !important; }
+
 html.purple .list-fg-theme > .list-group-item {
   color: #B4A1DD; }
+
 html.purple .rubix-panel-header .nav-theme.nav-tabs > li > a {
   color: white; }
   html.purple .rubix-panel-header .nav-theme.nav-tabs > li > a:hover, html.purple .rubix-panel-header .nav-theme.nav-tabs > li > a:focus {
     color: white; }
+
 html.purple .rubix-panel-header .nav-theme.nav-tabs > li.active > a:hover, html.purple .rubix-panel-header .nav-theme.nav-tabs > li.active > a:focus {
   color: #B4A1DD; }
+
 html.purple .nav-theme.nav-tabs {
   border-color: #B4A1DD; }
   html.purple .nav-theme.nav-tabs > li > a, html.purple .nav-theme.nav-tabs > li > a:hover, html.purple .nav-theme.nav-tabs > li > a:focus, html.purple .nav-theme.nav-tabs > li.active > a {
     color: #B4A1DD;
     border-color: #B4A1DD;
-    border-bottom-color: rgba(0, 0, 0, 0); }
+    border-bottom-color: transparent; }
+
 html.purple .nav-theme.nav-pills > li > a:hover, html.purple .nav-theme.nav-pills > li > a:focus, html.purple .nav-theme.nav-pills > li.active > a {
   background: #B4A1DD;
   color: white; }
+
 html.purple .menu-theme, html.purple .dropup .menu-theme {
   border-color: #B4A1DD; }
   html.purple .menu-theme > li > a:hover, html.purple .dropup .menu-theme > li > a:hover {
@@ -3173,6 +3236,7 @@ html.purple .menu-theme, html.purple .dropup .menu-theme {
   html.purple .menu-theme > .active > a, html.purple .menu-theme > .active > a:hover, html.purple .menu-theme > .active > a:focus, html.purple .dropup .menu-theme > .active > a, html.purple .dropup .menu-theme > .active > a:hover, html.purple .dropup .menu-theme > .active > a:focus {
     color: white;
     background: #B4A1DD; }
+
 html.purple .btn-theme {
   outline: none;
   background: #B4A1DD;
@@ -3203,22 +3267,29 @@ html.purple .btn-theme {
         background: #B4A1DD;
         color: white;
         border-color: #B4A1DD; }
+
 html.purple .tl-theme .rubix-timeline-body > ul > li:before {
   border-color: #B4A1DD; }
+
 html.purple .border-theme {
   border-color: #B4A1DD !important; }
   html.purple .border-theme .rubix-timeline-body > ul {
     border-color: #B4A1DD; }
   html.purple .border-theme.rubix-timeline-view:before {
     border-color: #B4A1DD; }
+
 html.purple .border-hover-theme:hover {
   border-color: #B4A1DD !important; }
+
 html.purple .border-focus-theme:focus {
   border-color: #B4A1DD !important; }
+
 html.purple .fg-focus-theme:focus {
   color: #B4A1DD; }
+
 html.purple .fg-hover-theme:hover {
   color: #B4A1DD; }
+
 html.purple .fg-theme {
   color: #B4A1DD; }
   html.purple .fg-theme > .tab-container > .nav-tabs > .b-tab > a {
@@ -3227,10 +3298,13 @@ html.purple .fg-theme {
     color: #B4A1DD; }
   html.purple .fg-theme.fg-tab-active .tab-container > .nav-tabs > .b-tab.active > a {
     color: #B4A1DD; }
+
 html.purple .bg-focus-theme:focus {
   background: #B4A1DD; }
+
 html.purple .bg-hover-theme:hover {
   background: #B4A1DD; }
+
 html.purple .bg-theme {
   background: #B4A1DD; }
   html.purple .bg-theme > .tab-container > .nav-tabs > .b-tab.open > a {
@@ -3571,8 +3645,8 @@ html.purple {
             content: '';
             position: absolute;
             display: inline-block;
-            border-top: 12px solid rgba(0, 0, 0, 0);
-            border-bottom: 12px solid rgba(0, 0, 0, 0);
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
             border-right: 10px solid #E9F0F5; }
     html.purple body .sidebar-nav-container > .sidebar-nav {
       border: none;
@@ -3637,21 +3711,17 @@ html .sidebar-nav > li > a > .toggle-button {
   right: 15px;
   position: absolute;
   -webkit-transform-origin: 4px;
-      -ms-transform-origin: 4px;
           transform-origin: 4px;
   -webkit-transition: all 0.125s ease;
           transition: all 0.125s ease; }
   html .sidebar-nav > li > a > .toggle-button.open {
     -webkit-transform: rotate(-90deg);
-        -ms-transform: rotate(-90deg);
             transform: rotate(-90deg); }
   html .sidebar-nav > li > a > .toggle-button.opposite {
     -webkit-transform-origin: 12px;
-        -ms-transform-origin: 12px;
             transform-origin: 12px; }
     html .sidebar-nav > li > a > .toggle-button.opposite.open {
       -webkit-transform: rotate(90deg);
-          -ms-transform: rotate(90deg);
               transform: rotate(90deg); }
 
 html.touch, html.touch > body, html.touch #app-container, html.touch #app-container > #container {
@@ -3690,8 +3760,10 @@ html.touch #sidebar {
     overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar; }
+
 html.touch #footer-container, html.touch #footer {
   display: block !important; }
+
 html.touch #footer {
   position: relative !important; }
 
@@ -3823,7 +3895,6 @@ html.static.boxed {
       margin-top: 25px; }
 
 /* GLOBAL SETTINGS */
-@debug #A8553A;
 a {
   color: #2EB398; }
   a:hover, a:focus {
@@ -3932,28 +4003,42 @@ a {
 html {
   letter-spacing: 0.5px; }
 
-html.brown .datepicker table tr td.active, html.brown .datepicker table tr td.active:hover, html.brown .datepicker table tr td.active.disabled, html.brown .datepicker table tr td.active.disabled:hover, html.brown .datepicker table tr td span.active, html.brown .datepicker table tr td span.active:hover, html.brown .datepicker table tr td span.active.disabled, html.brown .datepicker table tr td span.active.disabled:hover {
+html.brown .datepicker table tr td.active,
+html.brown .datepicker table tr td.active:hover,
+html.brown .datepicker table tr td.active.disabled,
+html.brown .datepicker table tr td.active.disabled:hover,
+html.brown .datepicker table tr td span.active,
+html.brown .datepicker table tr td span.active:hover,
+html.brown .datepicker table tr td span.active.disabled,
+html.brown .datepicker table tr td span.active.disabled:hover {
   background: #A8553A !important; }
+
 html.brown .list-bg-theme > .list-group-item.active {
   background: #A8553A !important;
   color: white !important; }
+
 html.brown .list-fg-theme > .list-group-item {
   color: #A8553A; }
+
 html.brown .rubix-panel-header .nav-theme.nav-tabs > li > a {
   color: white; }
   html.brown .rubix-panel-header .nav-theme.nav-tabs > li > a:hover, html.brown .rubix-panel-header .nav-theme.nav-tabs > li > a:focus {
     color: white; }
+
 html.brown .rubix-panel-header .nav-theme.nav-tabs > li.active > a:hover, html.brown .rubix-panel-header .nav-theme.nav-tabs > li.active > a:focus {
   color: #A8553A; }
+
 html.brown .nav-theme.nav-tabs {
   border-color: #A8553A; }
   html.brown .nav-theme.nav-tabs > li > a, html.brown .nav-theme.nav-tabs > li > a:hover, html.brown .nav-theme.nav-tabs > li > a:focus, html.brown .nav-theme.nav-tabs > li.active > a {
     color: #A8553A;
     border-color: #A8553A;
-    border-bottom-color: rgba(0, 0, 0, 0); }
+    border-bottom-color: transparent; }
+
 html.brown .nav-theme.nav-pills > li > a:hover, html.brown .nav-theme.nav-pills > li > a:focus, html.brown .nav-theme.nav-pills > li.active > a {
   background: #A8553A;
   color: white; }
+
 html.brown .menu-theme, html.brown .dropup .menu-theme {
   border-color: #A8553A; }
   html.brown .menu-theme > li > a:hover, html.brown .dropup .menu-theme > li > a:hover {
@@ -3961,6 +4046,7 @@ html.brown .menu-theme, html.brown .dropup .menu-theme {
   html.brown .menu-theme > .active > a, html.brown .menu-theme > .active > a:hover, html.brown .menu-theme > .active > a:focus, html.brown .dropup .menu-theme > .active > a, html.brown .dropup .menu-theme > .active > a:hover, html.brown .dropup .menu-theme > .active > a:focus {
     color: white;
     background: #A8553A; }
+
 html.brown .btn-theme {
   outline: none;
   background: #A8553A;
@@ -3974,8 +4060,8 @@ html.brown .btn-theme {
   html.brown .btn-theme:hover, html.brown .btn-theme:focus, html.brown .btn-theme:active, html.brown .btn-theme.active {
     outline: none;
     color: white;
-    background: #c36c52;
-    border-color: #c36c52; }
+    background: #c36e52;
+    border-color: #c36e52; }
     html.brown .btn-theme:hover.btn-outlined, html.brown .btn-theme:focus.btn-outlined, html.brown .btn-theme:active.btn-outlined, html.brown .btn-theme.active.btn-outlined {
       background: #A8553A;
       color: white;
@@ -3991,22 +4077,29 @@ html.brown .btn-theme {
         background: #A8553A;
         color: white;
         border-color: #A8553A; }
+
 html.brown .tl-theme .rubix-timeline-body > ul > li:before {
   border-color: #A8553A; }
+
 html.brown .border-theme {
   border-color: #A8553A !important; }
   html.brown .border-theme .rubix-timeline-body > ul {
     border-color: #A8553A; }
   html.brown .border-theme.rubix-timeline-view:before {
     border-color: #A8553A; }
+
 html.brown .border-hover-theme:hover {
   border-color: #A8553A !important; }
+
 html.brown .border-focus-theme:focus {
   border-color: #A8553A !important; }
+
 html.brown .fg-focus-theme:focus {
   color: #A8553A; }
+
 html.brown .fg-hover-theme:hover {
   color: #A8553A; }
+
 html.brown .fg-theme {
   color: #A8553A; }
   html.brown .fg-theme > .tab-container > .nav-tabs > .b-tab > a {
@@ -4015,10 +4108,13 @@ html.brown .fg-theme {
     color: #A8553A; }
   html.brown .fg-theme.fg-tab-active .tab-container > .nav-tabs > .b-tab.active > a {
     color: #A8553A; }
+
 html.brown .bg-focus-theme:focus {
   background: #A8553A; }
+
 html.brown .bg-hover-theme:hover {
   background: #A8553A; }
+
 html.brown .bg-theme {
   background: #A8553A; }
   html.brown .bg-theme > .tab-container > .nav-tabs > .b-tab.open > a {
@@ -4264,7 +4360,7 @@ html.brown {
             html.brown body #sidebar .sidebar-controls-container > .sidebar-controls > .sidebar-control-btn.active {
               background: #B55B3E !important; }
               html.brown body #sidebar .sidebar-controls-container > .sidebar-controls > .sidebar-control-btn.active > a {
-                color: #6f3726; }
+                color: #6f3826; }
             html.brown body #sidebar .sidebar-controls-container > .sidebar-controls > .sidebar-control-btn:hover {
               background: rgba(0, 0, 0, 0.04); }
       html.brown body #sidebar .sidebar-item {
@@ -4359,8 +4455,8 @@ html.brown {
             content: '';
             position: absolute;
             display: inline-block;
-            border-top: 12px solid rgba(0, 0, 0, 0);
-            border-bottom: 12px solid rgba(0, 0, 0, 0);
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
             border-right: 10px solid #E9F0F5; }
     html.brown body .sidebar-nav-container > .sidebar-nav {
       border: none;
@@ -4425,21 +4521,17 @@ html .sidebar-nav > li > a > .toggle-button {
   right: 15px;
   position: absolute;
   -webkit-transform-origin: 4px;
-      -ms-transform-origin: 4px;
           transform-origin: 4px;
   -webkit-transition: all 0.125s ease;
           transition: all 0.125s ease; }
   html .sidebar-nav > li > a > .toggle-button.open {
     -webkit-transform: rotate(-90deg);
-        -ms-transform: rotate(-90deg);
             transform: rotate(-90deg); }
   html .sidebar-nav > li > a > .toggle-button.opposite {
     -webkit-transform-origin: 12px;
-        -ms-transform-origin: 12px;
             transform-origin: 12px; }
     html .sidebar-nav > li > a > .toggle-button.opposite.open {
       -webkit-transform: rotate(90deg);
-          -ms-transform: rotate(90deg);
               transform: rotate(90deg); }
 
 html.touch, html.touch > body, html.touch #app-container, html.touch #app-container > #container {
@@ -4478,8 +4570,10 @@ html.touch #sidebar {
     overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar; }
+
 html.touch #footer-container, html.touch #footer {
   display: block !important; }
+
 html.touch #footer {
   position: relative !important; }
 
@@ -4611,7 +4705,6 @@ html.static.boxed {
       margin-top: 25px; }
 
 /* GLOBAL SETTINGS */
-@debug #68A0A5;
 a {
   color: #2EB398; }
   a:hover, a:focus {
@@ -4720,28 +4813,42 @@ a {
 html {
   letter-spacing: 0.5px; }
 
-html.cyan .datepicker table tr td.active, html.cyan .datepicker table tr td.active:hover, html.cyan .datepicker table tr td.active.disabled, html.cyan .datepicker table tr td.active.disabled:hover, html.cyan .datepicker table tr td span.active, html.cyan .datepicker table tr td span.active:hover, html.cyan .datepicker table tr td span.active.disabled, html.cyan .datepicker table tr td span.active.disabled:hover {
+html.cyan .datepicker table tr td.active,
+html.cyan .datepicker table tr td.active:hover,
+html.cyan .datepicker table tr td.active.disabled,
+html.cyan .datepicker table tr td.active.disabled:hover,
+html.cyan .datepicker table tr td span.active,
+html.cyan .datepicker table tr td span.active:hover,
+html.cyan .datepicker table tr td span.active.disabled,
+html.cyan .datepicker table tr td span.active.disabled:hover {
   background: #68A0A5 !important; }
+
 html.cyan .list-bg-theme > .list-group-item.active {
   background: #68A0A5 !important;
   color: white !important; }
+
 html.cyan .list-fg-theme > .list-group-item {
   color: #68A0A5; }
+
 html.cyan .rubix-panel-header .nav-theme.nav-tabs > li > a {
   color: white; }
   html.cyan .rubix-panel-header .nav-theme.nav-tabs > li > a:hover, html.cyan .rubix-panel-header .nav-theme.nav-tabs > li > a:focus {
     color: white; }
+
 html.cyan .rubix-panel-header .nav-theme.nav-tabs > li.active > a:hover, html.cyan .rubix-panel-header .nav-theme.nav-tabs > li.active > a:focus {
   color: #68A0A5; }
+
 html.cyan .nav-theme.nav-tabs {
   border-color: #68A0A5; }
   html.cyan .nav-theme.nav-tabs > li > a, html.cyan .nav-theme.nav-tabs > li > a:hover, html.cyan .nav-theme.nav-tabs > li > a:focus, html.cyan .nav-theme.nav-tabs > li.active > a {
     color: #68A0A5;
     border-color: #68A0A5;
-    border-bottom-color: rgba(0, 0, 0, 0); }
+    border-bottom-color: transparent; }
+
 html.cyan .nav-theme.nav-pills > li > a:hover, html.cyan .nav-theme.nav-pills > li > a:focus, html.cyan .nav-theme.nav-pills > li.active > a {
   background: #68A0A5;
   color: white; }
+
 html.cyan .menu-theme, html.cyan .dropup .menu-theme {
   border-color: #68A0A5; }
   html.cyan .menu-theme > li > a:hover, html.cyan .dropup .menu-theme > li > a:hover {
@@ -4749,6 +4856,7 @@ html.cyan .menu-theme, html.cyan .dropup .menu-theme {
   html.cyan .menu-theme > .active > a, html.cyan .menu-theme > .active > a:hover, html.cyan .menu-theme > .active > a:focus, html.cyan .dropup .menu-theme > .active > a, html.cyan .dropup .menu-theme > .active > a:hover, html.cyan .dropup .menu-theme > .active > a:focus {
     color: white;
     background: #68A0A5; }
+
 html.cyan .btn-theme {
   outline: none;
   background: #68A0A5;
@@ -4762,8 +4870,8 @@ html.cyan .btn-theme {
   html.cyan .btn-theme:hover, html.cyan .btn-theme:focus, html.cyan .btn-theme:active, html.cyan .btn-theme.active {
     outline: none;
     color: white;
-    background: #88b5b8;
-    border-color: #88b5b8; }
+    background: #88b4b8;
+    border-color: #88b4b8; }
     html.cyan .btn-theme:hover.btn-outlined, html.cyan .btn-theme:focus.btn-outlined, html.cyan .btn-theme:active.btn-outlined, html.cyan .btn-theme.active.btn-outlined {
       background: #68A0A5;
       color: white;
@@ -4779,22 +4887,29 @@ html.cyan .btn-theme {
         background: #68A0A5;
         color: white;
         border-color: #68A0A5; }
+
 html.cyan .tl-theme .rubix-timeline-body > ul > li:before {
   border-color: #68A0A5; }
+
 html.cyan .border-theme {
   border-color: #68A0A5 !important; }
   html.cyan .border-theme .rubix-timeline-body > ul {
     border-color: #68A0A5; }
   html.cyan .border-theme.rubix-timeline-view:before {
     border-color: #68A0A5; }
+
 html.cyan .border-hover-theme:hover {
   border-color: #68A0A5 !important; }
+
 html.cyan .border-focus-theme:focus {
   border-color: #68A0A5 !important; }
+
 html.cyan .fg-focus-theme:focus {
   color: #68A0A5; }
+
 html.cyan .fg-hover-theme:hover {
   color: #68A0A5; }
+
 html.cyan .fg-theme {
   color: #68A0A5; }
   html.cyan .fg-theme > .tab-container > .nav-tabs > .b-tab > a {
@@ -4803,10 +4918,13 @@ html.cyan .fg-theme {
     color: #68A0A5; }
   html.cyan .fg-theme.fg-tab-active .tab-container > .nav-tabs > .b-tab.active > a {
     color: #68A0A5; }
+
 html.cyan .bg-focus-theme:focus {
   background: #68A0A5; }
+
 html.cyan .bg-hover-theme:hover {
   background: #68A0A5; }
+
 html.cyan .bg-theme {
   background: #68A0A5; }
   html.cyan .bg-theme > .tab-container > .nav-tabs > .b-tab.open > a {
@@ -5046,7 +5164,7 @@ html.cyan {
             border-right: 1px solid #58878B; }
             html.cyan body #sidebar .sidebar-controls-container > .sidebar-controls > .sidebar-control-btn > a {
               outline: none;
-              color: #91c0c4; }
+              color: #91bfc4; }
               html.cyan body #sidebar .sidebar-controls-container > .sidebar-controls > .sidebar-control-btn > a:hover, html.cyan body #sidebar .sidebar-controls-container > .sidebar-controls > .sidebar-control-btn > a:focus {
                 border: none; }
             html.cyan body #sidebar .sidebar-controls-container > .sidebar-controls > .sidebar-control-btn.active {
@@ -5147,8 +5265,8 @@ html.cyan {
             content: '';
             position: absolute;
             display: inline-block;
-            border-top: 12px solid rgba(0, 0, 0, 0);
-            border-bottom: 12px solid rgba(0, 0, 0, 0);
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
             border-right: 10px solid #E9F0F5; }
     html.cyan body .sidebar-nav-container > .sidebar-nav {
       border: none;
@@ -5213,21 +5331,17 @@ html .sidebar-nav > li > a > .toggle-button {
   right: 15px;
   position: absolute;
   -webkit-transform-origin: 4px;
-      -ms-transform-origin: 4px;
           transform-origin: 4px;
   -webkit-transition: all 0.125s ease;
           transition: all 0.125s ease; }
   html .sidebar-nav > li > a > .toggle-button.open {
     -webkit-transform: rotate(-90deg);
-        -ms-transform: rotate(-90deg);
             transform: rotate(-90deg); }
   html .sidebar-nav > li > a > .toggle-button.opposite {
     -webkit-transform-origin: 12px;
-        -ms-transform-origin: 12px;
             transform-origin: 12px; }
     html .sidebar-nav > li > a > .toggle-button.opposite.open {
       -webkit-transform: rotate(90deg);
-          -ms-transform: rotate(90deg);
               transform: rotate(90deg); }
 
 html.touch, html.touch > body, html.touch #app-container, html.touch #app-container > #container {
@@ -5266,8 +5380,10 @@ html.touch #sidebar {
     overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar; }
+
 html.touch #footer-container, html.touch #footer {
   display: block !important; }
+
 html.touch #footer {
   position: relative !important; }
 
