@@ -6,9 +6,31 @@ module.exports = {
       this.dispatch(constants.ADD_SIMUL_ROLE, {roleName: roleName, roleMessage: roleMessage});
     },
     addSimulModelResource: function(resourceName, resourceHigherValue, resourceLowerValue, resourceInitialValue, resourceIsShared, resourceIsCritical, resourceRole) {
-      this.dispatch(constants.ADD_SIMUL_MODEL_RESOURCE, { resourceName: resourceName, resourceHigherValue: resourceHigherValue,
-        resourceLowerValue: resourceLowerValue, resourceInitialValue: resourceInitialValue, resourceIsShared: resourceIsShared,
-        resourceIsCritical: resourceIsCritical });
+      this.dispatch(constants.ADD_SIMUL_MODEL_RESOURCE, { resourceName: resourceName,
+        resourceHigherValue: resourceHigherValue, resourceLowerValue: resourceLowerValue,
+        resourceInitialValue: resourceInitialValue, resourceIsShared: resourceIsShared,
+        resourceIsCritical: resourceIsCritical, resourceRole: resourceRole });
+    },
+    addSimulModelActionAvailableIf: function(actionName, actionAvailableIfResource, actionAvailableIfOperator, actionAvailableIfValue) {
+      this.dispatch(constants.ADD_SIMUL_MODEL_ACTION_AVAILABLEIF, { actionName: actionName,
+        actionAvailableIfResource: actionAvailableIfResource, actionAvailableIfOperator: actionAvailableIfOperator,
+        actionAvailableIfValue: actionAvailableIfValue });
+    },
+    addSimulModelActionAvailableForRole: function(actionName, actionAvailableForRole) {
+      this.dispatch(constants.ADD_SIMUL_MODEL_ACTION_AVAILABLEFOR, { actionName: actionName,
+        actionAvailableForRole: actionAvailableForRole });
+    },
+    addSimulModelActionEffects: function(actionName, actionEffectsResource, actionEffectsOperator, actionEffectsValue, actionEffectsValueInput) {
+      this.dispatch(constants.ADD_SIMUL_MODEL_ACTION_EFFECT, { actionName: actionName,
+        actionEffectsResource: actionEffectsResource, actionEffectsOperator: actionEffectsOperator,
+        actionEffectsValue: actionEffectsValue, actionEffectsValueInput: actionEffectsValueInput });
+    },
+    addSimulModelAction: function(actionName, actionAvailableIfResource, actionAvailableIfOperator, actionAvailableIfValue, actionAvailableForRole, actionEffectsResource, actionEffectsOperator, actionEffectsValue) {
+      this.dispatch(constants.ADD_SIMUL_MODEL_ACTION, { actionName: actionName });
+    },
+    addSimulModelEndOfRoundCondition: function(endOfRoundConditionResource1, endOfRoundConditionResource2, endOfRoundConditionOperator) {
+      this.dispatch(constants.ADD_SIMUL_MODEL_ACTION_END_OF_ROUND_CONDITION, { endOfRoundConditionResource1: endOfRoundConditionResource1,
+        endOfRoundConditionResource2: endOfRoundConditionResource2, endOfRoundConditionOperator: endOfRoundConditionOperator });
     },
     //Simulation config
     addSimul: function(groups) {

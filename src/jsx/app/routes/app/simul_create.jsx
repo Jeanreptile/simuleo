@@ -65,14 +65,20 @@ var FormSimul = React.createClass({
   getInitialState: function() {
    return { simulName: "", simulContext: "", roleToAddMessage: "", roleToAddName: "",
     resourceName: "", resourceHigherValue: "", resourceLowerValue: "", resourceInitialValue: "",
-    resourceIsShared: false, resourceIsCritical: false, resourceRole: ""};
+    resourceIsShared: false, resourceIsCritical: false, resourceRole: "",
+    actionToAddName: "", actionToAddAvailableIfResource: "", actionToAddAvailableIfOperator: "",
+    actionToAddAvailableIfValue: 0, actionToAddAvailableForRole:"", actionToAddEffectResource: "",
+    actionToAddEffectOperator:"", actionToAddEffectValue: '', actionToAddEffectValueInput: 0,
+    endOfRoundConditionResource1: "", endOfRoundConditionResource2: "", endOfRoundConditionOperator: "" };
  },
   getStateFromFlux: function() {
     var ClasseStore = this.getFlux().store("ClasseStore");
     return {
       classes: _.values(ClasseStore.classes),
       rolesAdded: this.getFlux().store("SimulModelStore").roles,
-      resourcesAdded: this.getFlux().store("SimulModelStore").resources
+      resourcesAdded: this.getFlux().store("SimulModelStore").resources,
+      actionsAdded: this.getFlux().store("SimulModelStore").actions,
+      endOfRoundConditionsAdded: this.getFlux().store("SimulModelStore").endOfRoundConditions
     };
   },
 
@@ -157,6 +163,11 @@ var FormSimul = React.createClass({
   render: function() {
     rolesAdded = this.state.rolesAdded;
     resourcesAdded = this.state.resourcesAdded;
+    actionsAdded = this.state.actionsAdded;
+    console.log("actionsAdded: " + JSON.stringify(actionsAdded));
+    console.log("actionsAdded length: " + Object.keys(actionsAdded).length);
+    console.log("actionToAddName: " + this.state.actionToAddName);
+    endOfRoundConditionsAdded = this.state.endOfRoundConditionsAdded;
     return (
               <PanelContainer noOverflow controlStyles='bg-green fg-white'>
                 <Panel>
@@ -339,16 +350,16 @@ var FormSimul = React.createClass({
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        {resourcesAdded.map(function(object, i) {
+                                        { Object.keys(resourcesAdded).map(function(resource) {
                                           return (
                                             <tr>
-                                              <td>{object.name}</td>
-                                              <td>{object.lowerValue}</td>
-                                              <td>{object.higherValue}</td>
-                                              <td>{object.initialValue}</td>
-                                              <td>{object.isShared.toString()}</td>
-                                              <td>{object.isCritical.toString()}</td>
-                                              <td>{object.role}</td>
+                                              <td>{resource}</td>
+                                              <td>{resourcesAdded[resource].lowerValue}</td>
+                                              <td>{resourcesAdded[resource].higherValue}</td>
+                                              <td>{resourcesAdded[resource].initialValue}</td>
+                                              <td>{resourcesAdded[resource].isShared.toString()}</td>
+                                              <td>{resourcesAdded[resource].isCritical.toString()}</td>
+                                              <td>{resourcesAdded[resource].role}</td>
                                             </tr>
                                           )
                                         })}
@@ -359,7 +370,6 @@ var FormSimul = React.createClass({
                                     <p>
                                       All fields marked (*) are Mandatory.<br />
                                     You must at least define one role.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Toela baf lah hel latat bi neridejufoe lome byverol mifim, que tirel daloel bybyby ved. Bit beri medeb lifabu bubu quedeh dume, bel vajoes damediquy hemib valo lebehah. Se, jali fy bif beb hoeboedeque defep moefohe dodah baquine bena faf du vabel. Som fibe pyj je te han bulemaha fam be, jilel quole bad.<br />
                                     <br />
                                     </p>
                                   </Col>
@@ -380,35 +390,36 @@ var FormSimul = React.createClass({
                                       <Row>
                                         <Col xs={12}>
                                           <Label>Description</Label>
-                                          <Input autoFocus type='text' id='description_action' placeholder='Ex.: Buy a car'/>
+                                          <Input autoFocus type='text' id='description_action' placeholder='Ex.: Buy a car' valueLink={this.linkState('actionToAddName')}/>
                                           <hr />
                                           <Label>Action available if and only if *</Label>
                                           <Col sm={3}>
-                                            <Label htmlFor='dropdownselect'>Resources</Label>
-                                            <Select id='dropdownselect' defaultValue='1'>
-                                              <option value='1'>Wood</option>
-                                              <option value='2'>Gold</option>
-                                              <option value='3'>Liquor</option>
-                                              <option value='4'>Axe</option>
+                                            <Label htmlFor='dropdownselectActionAvailableIfResources'>Resources</Label>
+                                            <Select id='dropdownselectActionAvailableIfResources' valueLink={this.linkState('actionToAddAvailableIfResource')}>
+                                              { Object.keys(resourcesAdded).map(function(resource) {
+                                                return (
+                                                  <option value={resource}>{resource}</option>
+                                                )
+                                              })}
                                             </Select>
                                           </Col>
                                           <Col sm={3}>
-                                            <Label htmlFor='dropdownselect'>Operator</Label>
-                                            <Select id='dropdownselect' defaultValue='1'>
-                                              <option value='1'>{'>'}</option>
-                                              <option value='2'>{'<='}</option>
-                                              <option value='3'>{'=='}</option>
-                                              <option value='4'>{'<>'}</option>
+                                            <Label htmlFor='dropdownselectActionAvailableIfOperator'>Operator</Label>
+                                            <Select id='dropdownselectActionAvailableIfOperator' defaultValue='>' valueLink={this.linkState('actionToAddAvailableIfOperator')}>
+                                              <option value='>'>{'>'}</option>
+                                              <option value='<='>{'<='}</option>
+                                              <option value='=='>{'=='}</option>
+                                              <option value='<>'>{'<>'}</option>
                                             </Select>
                                           </Col>
                                           <Col sm={3} collapseLeft>
                                             <Label>Value</Label>
-                                            <Input autoFocus type='text' id='description_action' placeholder='Ex.: 30'  />
+                                            <Input autoFocus type='text' id='description_action' placeholder='Ex.: 30' valueLink={this.linkState('actionToAddAvailableIfValue')} />
                                           </Col>
                                           <Col sm={1} xs={3} collapseLeft>
                                               <br />
                                               <Label></Label>
-                                              <Button outlined bsStyle='success'>
+                                              <Button outlined bsStyle='success' onClick={this.addActionAvailableIf}>
                                                   <span>Add </span>
                                               </Button>
                                           </Col>
@@ -418,33 +429,40 @@ var FormSimul = React.createClass({
                                           <Table bordered striped condensed>
                                             <thead>
                                               <tr>
-                                                <th>Resources</th>
+                                                <th>Resource</th>
                                                 <th>Operator</th>
                                                 <th>Value</th>
                                               </tr>
                                             </thead>
                                             <tbody>
-                                              <tr>
-                                                <td>Wood</td>
-                                                <td>"!"</td>
-                                                <td>50</td>
-                                              </tr>
+                                              { Object.keys(actionsAdded).length > 0 ? actionsAdded[this.state.actionToAddName].availableIf.map(function(action) {
+                                                return (
+                                                  <tr>
+                                                    <td>{action.resource}</td>
+                                                    <td>{action.operator}</td>
+                                                    <td>{action.value}</td>
+                                                  </tr>
+                                                )}) : null
+                                            }
                                             </tbody>
                                           </Table>
                                           <hr />
                                           <Label>Action available for</Label>
                                           <Col sm={4}>
-                                            <Label htmlFor='dropdownselect'>Role</Label>
-                                            <Select id='dropdownselect' defaultValue='1'>
-                                              <option value='1'>All</option>
-                                              <option value='2'>Buyer</option>
-                                              <option value='3'>Seller</option>
+                                            <Label htmlFor='dropdownselectAvailableForRole'>Role</Label>
+                                            <Select id='dropdownselectAvailableForRole' defaultValue='all' valueLink={this.linkState('actionToAddAvailableForRole')}>
+                                              <option value='all'>All</option>
+                                              { Object.keys(rolesAdded).map(function(roleName) {
+                                                return (
+                                                  <option value={roleName}>{roleName}</option>
+                                                )
+                                              })}
                                             </Select>
                                           </Col>
                                           <Col sm={1} xs={3} collapseLeft>
                                               <br />
                                               <Label></Label>
-                                              <Button outlined bsStyle='success'>
+                                              <Button outlined bsStyle='success' onClick={this.addActionAvailableForRole}>
                                                   <span>Add </span>
                                               </Button>
                                           </Col>
@@ -458,49 +476,51 @@ var FormSimul = React.createClass({
                                               </tr>
                                             </thead>
                                             <tbody>
-                                              <tr>
-                                                <td>Seller</td>
-                                              </tr>
-                                              <tr>
-                                                <td>Buyer</td>
-                                              </tr>
+                                              { Object.keys(actionsAdded).length > 0 && actionsAdded[this.state.actionToAddName].availableFor !== undefined ? actionsAdded[this.state.actionToAddName].availableFor.map(function(roleName) {
+                                                return (
+                                                  <tr>
+                                                    <td>{roleName}</td>
+                                                  </tr>
+                                                )}) : null
+                                              }
                                             </tbody>
                                           </Table>
                                           <hr />
                                           <Label>(Optionnal) Effects of the action</Label>
                                           <Col sm={3}>
-                                            <Label htmlFor='dropdownselect'>Resources</Label>
-                                            <Select id='dropdownselect' defaultValue='1'>
-                                              <option value='1'>Wood</option>
-                                              <option value='2'>Gold</option>
-                                              <option value='3'>Liquor</option>
-                                              <option value='4'>Axe</option>
+                                            <Label htmlFor='dropdownselectEffectResource'>Resources</Label>
+                                            <Select id='dropdownselectEffectResource' valueLink={this.linkState('actionToAddEffectResource')}>
+                                              { Object.keys(resourcesAdded).map(function(resource) {
+                                                return (
+                                                    <option value={resource}>{resource}</option>
+                                                  )
+                                              })}
                                             </Select>
                                           </Col>
                                           <Col sm={3}>
-                                            <Label htmlFor='dropdownselect'>Operator</Label>
-                                            <Select id='dropdownselect' defaultValue='1'>
-                                              <option value='1'>{'+'}</option>
-                                              <option value='2'>{'-'}</option>
-                                              <option value='3'>{'='}</option>
+                                            <Label htmlFor='dropdownselectEffectOperator'>Operator</Label>
+                                            <Select id='dropdownselectEffectOperator' defaultValue='1' valueLink={this.linkState('actionToAddEffectOperator')}>
+                                              <option value='+'>{'+'}</option>
+                                              <option value='-'>{'-'}</option>
+                                              <option value='='>{'='}</option>
                                             </Select>
                                           </Col>
                                           <Col sm={3} collapseLeft>
-                                            <Label>Value</Label>
-                                            <Select id='dropdownselect' defaultValue='1'>
-                                              <option value='1'>{'constant'}</option>
-                                              <option value='2'>{'user input'}</option>
+                                            <Label htmlFor='dropdownselectEffectValue'>Value</Label>
+                                            <Select id='dropdownselectEffectValue' defaultValue='constant' valueLink={this.linkState('actionToAddEffectValue')}>
+                                              <option value='constant'>{'constant'}</option>
+                                              <option value='userInput'>{'user input'}</option>
                                             </Select>
                                           </Col>
                                           <Col sm={2} collapseLeft>
                                             <Label></Label>
                                             <br/>
-                                            <Input autoFocus type='text' id='description_action' placeholder='Ex.: 30' />
+                                            <Input autoFocus type='text' id='description_action' placeholder='Ex.: 30' valueLink={this.linkState('actionToAddEffectValueInput')}/>
                                           </Col>
                                           <Col sm={1} xs={3} collapseLeft>
                                               <br />
                                               <Label></Label>
-                                              <Button outlined bsStyle='success'>
+                                              <Button outlined bsStyle='success' onClick={this.addActionEffectsOnResources}>
                                                   <span>Add </span>
                                               </Button>
                                           </Col>
@@ -516,15 +536,21 @@ var FormSimul = React.createClass({
                                               </tr>
                                             </thead>
                                             <tbody>
-                                              <tr>
-                                                <td>Money</td>
-                                                <td>"="</td>
-                                                <td>user input</td>
-                                              </tr>
+                                              { Object.keys(actionsAdded).length > 0 && actionsAdded[this.state.actionToAddName].effects !== undefined ? actionsAdded[this.state.actionToAddName].effects.map(function(effect) {
+                                                return (
+                                                  <tr>
+                                                    <td>{effect.resource}</td>
+                                                    <td>{effect.operator}</td>
+                                                    <td>{effect.value}</td>
+                                                  </tr>
+                                                )}) : null
+                                              }
                                             </tbody>
                                           </Table>
                                           <Col sm={3} collapseRight collapseLeft className="pull-right">
-                                              <Button lg style={{marginBottom: 5}} bsStyle='success'>Add Action</Button>{' '}
+                                              <Button lg style={{marginBottom: 5}} bsStyle='success' onClick={this.addAction}>
+                                                Add Action
+                                              </Button>{' '}
                                           </Col>
                                         </Col>
                                       </Row>
@@ -539,8 +565,6 @@ var FormSimul = React.createClass({
                                 You must at least define one role.
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Toela baf lah hel latat bi neridejufoe lome byverol mifim, que tirel daloel bybyby ved. Bit beri medeb lifabu bubu quedeh dume, bel vajoes damediquy hemib valo lebehah. Se, jali fy bif beb hoeboedeque defep moefohe dodah baquine bena faf du vabel. Som fibe pyj je te han bulemaha fam be, jilel quole bad.<br />
                                 <br />
-                                Beli roevime benesejib loel liqua vetefi fuvemet la febu pyfilyh madole moev, facehoeban mobaboequif. Coen, fe tylaf muleluheve, febal baquu mi mabi mybeloe lifelile sohoesudom doe moqueny. Bi bem dyna ce mefoqu nacibace dal hadali pim bafuquem, ladum sejopemi. Jerihobifa pac mo cypy lodeju poefe lylo foefoe lamel fife mef sedev dita. Jedoesifi de milalab, fadesifet, de, noeb coeme lyqui di lib vihyb loe defoebyb lac.<br />
-                                <br />
                                 </p>
                               </Col>
                             </Row>
@@ -553,36 +577,38 @@ var FormSimul = React.createClass({
                             <Row>
                               <Col sm={8} xs={12} collapseLeft xsOnlyCollapseRight className="form-border">
                                   <Col sm={3}>
-                                    <Label htmlFor='dropdownselect'>Resource 1</Label>
-                                    <Select id='dropdownselect' defaultValue='1'>
-                                      <option value='1'>Wood</option>
-                                      <option value='2'>Gold</option>
-                                      <option value='3'>Liquor</option>
-                                      <option value='4'>Axe</option>
+                                    <Label htmlFor='dropdownselectEndOfRoundResource1'>Resource 1</Label>
+                                    <Select id='dropdownselectEndOfRoundResource1' valueLink={this.linkState('endOfRoundConditionResource1')}>
+                                      { Object.keys(resourcesAdded).map(function(resource) {
+                                        return (
+                                          <option value={resource}>{resource}</option>
+                                        )
+                                      })}
                                     </Select>
                                   </Col>
                                   <Col sm={3}>
-                                    <Label htmlFor='dropdownselect'>Operator</Label>
-                                    <Select id='dropdownselect' defaultValue='1'>
-                                      <option value='1'>{'>'}</option>
-                                      <option value='2'>{'<='}</option>
-                                      <option value='3'>{'=='}</option>
-                                      <option value='4'>{'<>'}</option>
+                                    <Label htmlFor='dropdownselectEndOfRoundOperator'>Operator</Label>
+                                    <Select id='dropdownselectEndOfRoundOperator' defaultValue='>' valueLink={this.linkState('endOfRoundConditionOperator')}>
+                                      <option value='>'>{'>'}</option>
+                                      <option value='<='>{'<='}</option>
+                                      <option value='=='>{'=='}</option>
+                                      <option value='<>'>{'<>'}</option>
                                     </Select>
                                   </Col>
                                   <Col sm={3} collapseLeft>
-                                    <Label htmlFor='dropdownselect'>Resource 2</Label>
-                                    <Select id='dropdownselect' defaultValue='1'>
-                                      <option value='1'>Wood</option>
-                                      <option value='2'>Gold</option>
-                                      <option value='3'>Liquor</option>
-                                      <option value='4'>Axe</option>
+                                    <Label htmlFor='dropdownselectEndOfRoundResource2'>Resource 2</Label>
+                                    <Select id='dropdownselectEndOfRoundResource2' valueLink={this.linkState('endOfRoundConditionResource2')}>
+                                      { Object.keys(resourcesAdded).map(function(resource) {
+                                        return (
+                                          <option value={resource}>{resource}</option>
+                                        )
+                                      })}
                                     </Select>
                                   </Col>
                                   <Col sm={1} xs={3} collapseLeft>
                                       <br />
                                       <Label></Label>
-                                      <Button outlined bsStyle='success'>
+                                      <Button outlined bsStyle='success' onClick={this.addEndOfRoundCondition}>
                                           <span>Add </span>
                                       </Button>
                                   </Col>
@@ -592,17 +618,21 @@ var FormSimul = React.createClass({
                                   <Table bordered striped condensed>
                                     <thead>
                                       <tr>
-                                        <th>Resources</th>
+                                        <th>Resource 1</th>
                                         <th>Operator</th>
-                                        <th>Value</th>
+                                        <th>Resource 2</th>
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      <tr>
-                                        <td>Wood</td>
-                                        <td>"!"</td>
-                                        <td>50</td>
-                                      </tr>
+                                      { endOfRoundConditionsAdded.length > 0 ? endOfRoundConditionsAdded.map(function(condition) {
+                                        return (
+                                          <tr>
+                                            <td>{condition.resource1}</td>
+                                            <td>{condition.operator}</td>
+                                            <td>{condition.resource2}</td>
+                                          </tr>
+                                        )}) : null
+                                      }
                                     </tbody>
                                   </Table>
                                   <hr />
@@ -625,15 +655,23 @@ var FormSimul = React.createClass({
                           <hr />
                           <h4>Resources: </h4>
                             <ul>
-                              <li>
-                                Money from 1 to 1000, initally at 20, shared.
-                              </li>
+                              { Object.keys(resourcesAdded).map(function(resource) {
+                                return (
+                                  <li>
+                                    {resource} from {resourcesAdded[resource].lowerValue} to {resourcesAdded[resource].higherValue}, initially at {resourcesAdded[resource].initialValue }
+                                  </li>
+                                )}
+                              )}
                             </ul>
                           <h4>Actions: </h4>
                           <ul>
-                            <li>
-                              {"Buy a car, available if Money > 30"}
-                            </li>
+                            { Object.keys(actionsAdded).map(function(action) {
+                                return (
+                                  <li>
+                                    {action}, available if:
+                                  </li>
+                                )}
+                              )}
                           </ul>
                           <h4>Rounds end up if: </h4>
                           <ul>
@@ -654,17 +692,31 @@ var FormSimul = React.createClass({
     );
   },
   addRole: function(e) {
-    console.log(JSON.stringify(this.state.roleToAddMessage));
-    console.log(JSON.stringify(this.state.roleToAddName));
     this.getFlux().actions.addSimulRole(this.state.roleToAddName, this.state.roleToAddMessage);
   },
   addResource: function(e) {
-    console.log(this.state.resourceName);
-    console.log(this.state.resourceHigherValue);
     console.log(JSON.stringify(this.state.resourceRole));
     this.getFlux().actions.addSimulModelResource(this.state.resourceName, this.state.resourceHigherValue,
       this.state.resourceLowerValue, this.state.resourceInitialValue, this.state.resourceIsShared, 
       this.state.resourceIsCritical, this.state.resourceRole);
+  },
+  addActionAvailableIf: function(e) {
+    this.getFlux().actions.addSimulModelActionAvailableIf(this.state.actionToAddName, this.state.actionToAddAvailableIfResource,
+      this.state.actionToAddAvailableIfOperator, this.state.actionToAddAvailableIfValue);
+  },
+  addActionAvailableForRole: function(e) {
+    this.getFlux().actions.addSimulModelActionAvailableForRole(this.state.actionToAddName, this.state.actionToAddAvailableForRole);
+  },
+  addActionEffectsOnResources: function(e) {
+    this.getFlux().actions.addSimulModelActionEffects(this.state.actionToAddName, this.state.actionToAddEffectResource,
+      this.state.actionToAddEffectOperator, this.state.actionToAddEffectValue, this.state.actionToAddEffectValueInput);
+  },
+  addAction: function(e) {
+    this.getFlux().actions.addSimulModelAction(this.state.actionToAddName);
+  },
+  addEndOfRoundCondition: function(e) {
+    this.getFlux().actions.addSimulModelEndOfRoundCondition(this.state.endOfRoundConditionResource1,
+      this.state.endOfRoundConditionResource2, this.state.endOfRoundConditionOperator);
   },
   handleClasseAdded: function(e, thisEl) {
     //thisEl.preventDefault();
