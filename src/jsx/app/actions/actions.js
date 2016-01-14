@@ -32,6 +32,23 @@ module.exports = {
       this.dispatch(constants.ADD_SIMUL_MODEL_ACTION_END_OF_ROUND_CONDITION, { endOfRoundConditionResource1: endOfRoundConditionResource1,
         endOfRoundConditionResource2: endOfRoundConditionResource2, endOfRoundConditionOperator: endOfRoundConditionOperator });
     },
+    addSimulModel: function(simulName, simulContext, roles, resources, actions, endOfRoundConditions) {
+      this.dispatch(constants.ADD_SIMUL_MODEL, { simulName: simulName, simulContext: simulContext });
+
+      $.post('/api/simul_model/', { name: simulName, context: simulContext, roles: roles, resources: resources,
+        actions: actions, endOfRoundConditions: endOfRoundConditions },
+      function(links) { }.bind(this)
+    )
+    .done(function(links) {
+        this.dispatch(constants.ADD_SIMUL_MODEL_SUCCESS, {uniqueId: links.uniqueId, name: name, context: simulContext, roles: roles, resources: resources,
+        actions: actions, endOfRoundConditions: endOfRoundConditions });
+      }.bind(this)
+    )
+    .fail(function(error) {
+        this.dispatch(constants.ADD_SIMUL_MODEL_FAIL, {error: error});
+      }.bind(this)
+    );
+    },
     //Simulation config
     addSimul: function(groups) {
       this.dispatch(constants.ADD_SIMUL);

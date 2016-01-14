@@ -124,6 +124,16 @@ app.get('/rtl', function(req, res, next) {
   res.redirect('/');
 });
 
+app.post('/api/simul_model/', function(req, res, next) {
+  rdb.createSimulModel(req.body.name, req.body.context, req.body.roles, req.body.resources,
+    req.body.actions, req.body.endOfRoundConditions).then(function (response) {
+      if (!response) {
+          return res.json("nope");
+      }
+      return res.json(response);
+  });
+});
+
 app.get('/api/simul_negociation/:uniqueId', function(req, res, next) {
   console.log('yes !');
   rdb.simulNegociationGetInfo(req.params.uniqueId).then(function (response) {

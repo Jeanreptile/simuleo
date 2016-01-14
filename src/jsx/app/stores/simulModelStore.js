@@ -3,7 +3,9 @@ var Fluxxor = require('../../../../node_modules/fluxxor');
 
 var SimulModelStore = Fluxxor.createStore({
   initialize: function() {
-    this.loading = true;
+    this.status = "";
+    this.name = "";
+    this.context = "";
     this.roles = {};
     this.resources = {};
     this.actions = {};
@@ -16,13 +18,15 @@ var SimulModelStore = Fluxxor.createStore({
       constants.ADD_SIMUL_MODEL_ACTION_AVAILABLEIF, this.onAddActionAvailableIf,
       constants.ADD_SIMUL_MODEL_ACTION_AVAILABLEFOR, this.onAddActionAvailableForRole,
       constants.ADD_SIMUL_MODEL_ACTION_EFFECT, this.onAddActionEffect,
-      constants.ADD_SIMUL_MODEL_ACTION_END_OF_ROUND_CONDITION, this.onAddEndOfRoundCondition
+      constants.ADD_SIMUL_MODEL_ACTION_END_OF_ROUND_CONDITION, this.onAddEndOfRoundCondition,
+      constants.ADD_SIMUL_MODEL, this.onAddSimulModel,
+      constants.ADD_SIMUL_MODEL_SUCCESS, this.onAddSimulModelSuccess,
+      constants.ADD_SIMUL_MODEL_FAIL, this.onAddSimulModelError
     );
   },
 
   onAddRole: function(payload) {
     this.roles[payload.roleName] = payload.roleMessage;
-    console.log("ROLE IS " + JSON.stringify(this.roles));
     this.emit("change");
   },
   getRoles: function() {
@@ -38,7 +42,7 @@ var SimulModelStore = Fluxxor.createStore({
       'role': payload.resourceRole
     };
     this.resources[payload.resourceName] = resource;
-    console.log("resources: " + JSON.stringify(this.resources));
+    //console.log("resources: " + JSON.stringify(this.resources));
     this.emit("change");
   },
   onAddAction: function(payload) {
@@ -53,11 +57,11 @@ var SimulModelStore = Fluxxor.createStore({
     }
     if (!this.actions[payload.actionName])
       this.actions[payload.actionName] = {};
-    console.log("availableIf: " + this.actions[payload.actionName].availableIf);
+    //console.log("availableIf: " + this.actions[payload.actionName].availableIf);
     if (!this.actions[payload.actionName].availableIf)
       this.actions[payload.actionName].availableIf = [];
     this.actions[payload.actionName].availableIf.push(actionAvailableIf);
-    console.log("actions: " + JSON.stringify(this.actions));
+    //console.log("actions: " + JSON.stringify(this.actions));
     this.emit("change");
   },
   onAddActionAvailableForRole: function(payload) {
@@ -84,7 +88,21 @@ var SimulModelStore = Fluxxor.createStore({
       "resource2": payload.endOfRoundConditionResource2
     };
     this.endOfRoundConditions.push(condition);
-    console.log("endOfRoundConditions: " + JSON.stringify(this.endOfRoundConditions));
+    //console.log("endOfRoundConditions: " + JSON.stringify(this.endOfRoundConditions));
+    this.emit("change");
+  },
+  onAddSimulModel: function(payload) {
+    this.name = payload.simulName;
+    this.context = payload.simulContext;
+    this.status = "ADDING";
+    this.emit("change");
+  },
+  onAddSimulModelSuccess: function(payload) {
+    this.status = "SUCCESS";
+    this.emit("change");
+  },
+  onAddSimulModelError: function(payload) {
+    this.status = "ERROR";
     this.emit("change");
   }
 });

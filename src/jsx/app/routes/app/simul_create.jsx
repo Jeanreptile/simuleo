@@ -66,10 +66,10 @@ var FormSimul = React.createClass({
    return { simulName: "", simulContext: "", roleToAddMessage: "", roleToAddName: "",
     resourceName: "", resourceHigherValue: "", resourceLowerValue: "", resourceInitialValue: "",
     resourceIsShared: false, resourceIsCritical: false, resourceRole: "",
-    actionToAddName: "", actionToAddAvailableIfResource: "", actionToAddAvailableIfOperator: "",
-    actionToAddAvailableIfValue: 0, actionToAddAvailableForRole:"", actionToAddEffectResource: "",
-    actionToAddEffectOperator:"", actionToAddEffectValue: '', actionToAddEffectValueInput: 0,
-    endOfRoundConditionResource1: "", endOfRoundConditionResource2: "", endOfRoundConditionOperator: "" };
+    actionToAddName: "", actionToAddAvailableIfResource: "", actionToAddAvailableIfOperator: ">",
+    actionToAddAvailableIfValue: 0, actionToAddAvailableForRole:"all", actionToAddEffectResource: "",
+    actionToAddEffectOperator:"+", actionToAddEffectValue: 'constant', actionToAddEffectValueInput: 0,
+    endOfRoundConditionResource1: "", endOfRoundConditionResource2: "", endOfRoundConditionOperator: ">" };
  },
   getStateFromFlux: function() {
     var ClasseStore = this.getFlux().store("ClasseStore");
@@ -161,12 +161,17 @@ var FormSimul = React.createClass({
     this.getFlux().actions.removeStudent(value);
   },
   render: function() {
+    this.state.resourceRole = $("#dropdownselectResourceRole option:first").val();
+    this.state.actionToAddAvailableIfResource = $("#dropdownselectActionAvailableIfResources option:first").val();
+    this.state.actionToAddEffectResource = $("#dropdownselectEffectResource option:first").val();
+    this.state.endOfRoundConditionResource1 = $("#dropdownselectEndOfRoundResource1 option:first").val();
+    this.state.endOfRoundConditionResource2 = $("#dropdownselectEndOfRoundResource2 option:first").val();
     rolesAdded = this.state.rolesAdded;
     resourcesAdded = this.state.resourcesAdded;
     actionsAdded = this.state.actionsAdded;
-    console.log("actionsAdded: " + JSON.stringify(actionsAdded));
-    console.log("actionsAdded length: " + Object.keys(actionsAdded).length);
-    console.log("actionToAddName: " + this.state.actionToAddName);
+    //console.log("actionsAdded: " + JSON.stringify(actionsAdded));
+    //console.log("actionsAdded length: " + Object.keys(actionsAdded).length);
+    //console.log("actionToAddName: " + this.state.actionToAddName);
     endOfRoundConditionsAdded = this.state.endOfRoundConditionsAdded;
     return (
               <PanelContainer noOverflow controlStyles='bg-green fg-white'>
@@ -389,8 +394,8 @@ var FormSimul = React.createClass({
                                     <Grid>
                                       <Row>
                                         <Col xs={12}>
-                                          <Label>Description</Label>
-                                          <Input autoFocus type='text' id='description_action' placeholder='Ex.: Buy a car' valueLink={this.linkState('actionToAddName')}/>
+                                          <Label>Name</Label>
+                                          <Input autoFocus type='text' id='name_action' placeholder='Ex.: Buy a car' valueLink={this.linkState('actionToAddName')}/>
                                           <hr />
                                           <Label>Action available if and only if *</Label>
                                           <Col sm={3}>
@@ -552,6 +557,25 @@ var FormSimul = React.createClass({
                                                 Add Action
                                               </Button>{' '}
                                           </Col>
+                                          <br />
+                                          <br />
+                                          <br />
+                                          <Table bordered striped condensed>
+                                            <thead>
+                                              <tr>
+                                                <th>Name</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              { Object.keys(actionsAdded).length > 0 ? Object.keys(actionsAdded).map(function(action) {
+                                                return (
+                                                  <tr>
+                                                    <td>{action}</td>
+                                                  </tr>
+                                                )}) : null
+                                              }
+                                            </tbody>
+                                          </Table>
                                         </Col>
                                       </Row>
                                     </Grid>
@@ -668,16 +692,20 @@ var FormSimul = React.createClass({
                             { Object.keys(actionsAdded).map(function(action) {
                                 return (
                                   <li>
-                                    {action}, available if:
+                                    {action}, available if: <AvailableIf data={actionsAdded[action].availableIf} />
                                   </li>
                                 )}
                               )}
                           </ul>
                           <h4>Rounds end up if: </h4>
                           <ul>
-                            <li>
-                              No condition
-                            </li>
+                            { endOfRoundConditionsAdded.map(function(condition) {
+                                return (
+                                  <li>
+                                    {condition.resource1} {condition.operator} {condition.resource2}
+                                  </li>
+                                )}
+                              )}
                           </ul>
                           <hr />
                           <Col sm={3} collapseRight collapseLeft className="center">
@@ -695,7 +723,7 @@ var FormSimul = React.createClass({
     this.getFlux().actions.addSimulRole(this.state.roleToAddName, this.state.roleToAddMessage);
   },
   addResource: function(e) {
-    console.log(JSON.stringify(this.state.resourceRole));
+    //console.log(JSON.stringify(this.state.resourceRole));
     this.getFlux().actions.addSimulModelResource(this.state.resourceName, this.state.resourceHigherValue,
       this.state.resourceLowerValue, this.state.resourceInitialValue, this.state.resourceIsShared, 
       this.state.resourceIsCritical, this.state.resourceRole);
@@ -719,7 +747,6 @@ var FormSimul = React.createClass({
       this.state.endOfRoundConditionResource2, this.state.endOfRoundConditionOperator);
   },
   handleClasseAdded: function(e, thisEl) {
-    //thisEl.preventDefault();
     this.getFlux().actions.initStudents(e);
     var length = (e.length)/2;
     this.setState({maxGroups: length});
@@ -770,9 +797,12 @@ var FormSimul = React.createClass({
         return $('#form-2').valid();
       },
       onFinished: function (event, currentIndex) {
-        var total = parseInt(this.state.maxRoles) * parseInt(this.state.maxGroups);
-          this.getFlux().actions.addSimul(this.state.groupsData);
-          console.log("Ok !");
+        //console.log("onFinished");
+        // var total = parseInt(this.state.maxRoles) * parseInt(this.state.maxGroups);
+        //   this.getFlux().actions.addSimul(this.state.groupsData);
+        //   console.log("Ok !");
+        this.getFlux().actions.addSimulModel(this.state.simulName, this.state.simulContext, this.state.rolesAdded,
+          this.state.resourcesAdded, this.state.actionsAdded, this.state.endOfRoundConditionsAdded);
       }.bind(this)
     });
 
@@ -782,7 +812,23 @@ var FormSimul = React.createClass({
   }
 });
 
+var AvailableIf = React.createClass({
+  getInitialState: function() {
+    return null;
+  },
 
+  getStateFromFlux: function() {
+    return null;
+  },
+
+  render: function() {
+    return (
+      <span>
+        { this.props.data }
+      </span>
+    );
+  }
+});
 
 var Recap = React.createClass({
   mixins: [FluxMixin, StoreWatchMixin("SimulConfigStore"), SetIntervalMixin],
