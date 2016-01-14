@@ -63,7 +63,7 @@ var FormSimul = React.createClass({
   mixins: [SetIntervalMixin,FluxMixin,React.addons.LinkedStateMixin, StoreWatchMixin("ClasseStore")],
 
   getInitialState: function() {
-   return { simulName: "", simulContext: "", existingSimulationModels: this.getFlux().actions.loadSimulationModels(), roleToAddMessage: "", roleToAddName: "",
+   return { simulName: "", simulContext: "", roleToAddMessage: "", roleToAddName: "",
     resourceName: "", resourceHigherValue: "", resourceLowerValue: "", resourceInitialValue: "",
     resourceIsShared: false, resourceIsCritical: false, resourceRole: "",
     actionToAddName: "", actionToAddAvailableIfResource: "", actionToAddAvailableIfOperator: ">",
@@ -78,7 +78,8 @@ var FormSimul = React.createClass({
       rolesAdded: this.getFlux().store("SimulModelStore").roles,
       resourcesAdded: this.getFlux().store("SimulModelStore").resources,
       actionsAdded: this.getFlux().store("SimulModelStore").actions,
-      endOfRoundConditionsAdded: this.getFlux().store("SimulModelStore").endOfRoundConditions
+      endOfRoundConditionsAdded: this.getFlux().store("SimulModelStore").endOfRoundConditions,
+      existingSimulationModels: this.getFlux().store("SimulModelStore").existingSimulationModels
     };
   },
 
@@ -178,7 +179,8 @@ var FormSimul = React.createClass({
     //console.log("actionsAdded length: " + Object.keys(actionsAdded).length);
     //console.log("actionToAddName: " + this.state.actionToAddName);
     endOfRoundConditionsAdded = this.state.endOfRoundConditionsAdded;
-    existingSimulationModels = this.state.existingSimulationModels;
+    console.log("existingSimulationModels: " + JSON.stringify(this.state.existingSimulationModels));
+    //existingSimulationModels = this.state.existingSimulationModels;
     return (
               <PanelContainer noOverflow controlStyles='bg-green fg-white'>
                 <Panel>
@@ -203,10 +205,11 @@ var FormSimul = React.createClass({
                                   <Label htmlFor='contexte'>Enter a name *</Label>
                                   <Input autoFocus valueLink={this.linkState('simulName')} type='text' id='name_simul' placeholder='Ex.: Negociation' className='required' />
                                   <hr />
-                                  <Label htmlFor='dropdownselectExistingSimulationModel'>Create simulation from an existing model </Label>
-                                  <Select id='dropdownselectExistingSimulationModel' valueLink={this.linkState('existingSimulationModels')}>
+                                  <Label htmlFor='dropdownselectExistingSimulationModel'>Create simulation from an existing model { JSON.stringify(this.state.existingSimulationModels) }</Label>
+                                  <Select id='dropdownselectExistingSimulationModel'>
                                     <option value='blank'>Blank simulation</option>
-                                    { existingSimulationModels ? existingSimulationModels.map(function(simulationModel) {
+                                    <option>{ JSON.stringify(this.state.existingSimulationModels) }</option>
+                                    { this.state.existingSimulationModels ? this.state.existingSimulationModels.map(function(simulationModel) {
                                       {simulationModel}
                                       return (
                                           <option value={simulationModel.name}>{simulationModel.name}</option>
@@ -759,7 +762,8 @@ var FormSimul = React.createClass({
     this.setState({groupIds: ids});
   },
   componentDidMount: function() {
-    this.getFlux().actions.loadClasses(this.props.user.email);
+    //this.getFlux().actions.loadClasses(this.props.user.email);
+    this.getFlux().actions.loadSimulationModels();
     var isLtr = $('html').attr('dir') === 'ltr';
     var styles = {};
 

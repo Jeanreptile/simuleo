@@ -152,6 +152,7 @@ var SimulModelStore = Fluxxor.createStore({
     console.log("onLoadSimulModelsSuccess: " + JSON.stringify(payload.simulationModels));
     this.loadingSimulationModels = "SUCCESS";
     this.existingSimulationModels = payload.simulationModels;
+    console.log("existingSimulationModels: " + JSON.stringify(this.existingSimulationModels));
     this.emit("change");
   },
   onLoadSimulModelsFail: function(payload) {
