@@ -10,6 +10,9 @@ var SimulModelStore = Fluxxor.createStore({
     this.resources = {};
     this.actions = {};
     this.endOfRoundConditions = [];
+    this.existingSimulationModels = [];
+    this.loadingSimulationModels = "";
+    this.loadingError = "";
 
     this.bindActions(
       constants.ADD_SIMUL_ROLE, this.onAddRole,
@@ -21,7 +24,10 @@ var SimulModelStore = Fluxxor.createStore({
       constants.ADD_SIMUL_MODEL_ACTION_END_OF_ROUND_CONDITION, this.onAddEndOfRoundCondition,
       constants.ADD_SIMUL_MODEL, this.onAddSimulModel,
       constants.ADD_SIMUL_MODEL_SUCCESS, this.onAddSimulModelSuccess,
-      constants.ADD_SIMUL_MODEL_FAIL, this.onAddSimulModelError
+      constants.ADD_SIMUL_MODEL_FAIL, this.onAddSimulModelError,
+      constants.LOAD_SIMUL_MODELS, this.onLoadSimulModels,
+      constants.LOAD_SIMUL_MODELS_SUCCESS, this.onLoadSimulModelsSuccess,
+      constants.LOAD_SIMUL_MODELS_FAIL, this.onLoadSimulModelsFail
     );
   },
 
@@ -55,12 +61,30 @@ var SimulModelStore = Fluxxor.createStore({
       "operator": payload.actionAvailableIfOperator,
       "value": payload.actionAvailableIfValue
     }
-    if (!this.actions[payload.actionName])
+    if (!this.actions[payload.actionName]) {
       this.actions[payload.actionName] = {};
-    //console.log("availableIf: " + this.actions[payload.actionName].availableIf);
-    if (!this.actions[payload.actionName].availableIf)
       this.actions[payload.actionName].availableIf = [];
-    this.actions[payload.actionName].availableIf.push(actionAvailableIf);
+      this.actions[payload.actionName].availableIf.push(actionAvailableIf);
+    }
+    else {
+      if (!this.actions[payload.actionName].availableIf) {
+        this.actions[payload.actionName].availableIf = [];
+        this.actions[payload.actionName].availableIf.push(actionAvailableIf);
+      }
+      else {
+        var found = false;
+        for (var i = 0; i < this.actions[payload.actionName].availableIf.length; i++) {
+          if (this.actions[payload.actionName].availableIf[i].resource == actionAvailableIf.resource) {
+            this.actions[payload.actionName].availableIf[i] = actionAvailableIf;
+            found = true;
+          }
+        };
+        if (!found) {
+          this.actions[payload.actionName].availableIf.push(actionAvailableIf);
+        }
+      }
+    }
+    //console.log("availableIf: " + this.actions[payload.actionName].availableIf);  
     //console.log("actions: " + JSON.stringify(this.actions));
     this.emit("change");
   },
@@ -71,14 +95,29 @@ var SimulModelStore = Fluxxor.createStore({
     this.emit("change");
   },
   onAddActionEffect: function(payload) {
-    if (!this.actions[payload.actionName].effects)
-      this.actions[payload.actionName].effects = [];
     var actionEffect = {
       "resource": payload.actionEffectsResource,
       "operator": payload.actionEffectsOperator,
       "value": payload.actionEffectsValue == "constant" ? payload.actionEffectsValueInput : payload.actionEffectsValue
     };
-    this.actions[payload.actionName].effects.push(actionEffect);
+    if (!this.actions[payload.actionName].effects) {
+      this.actions[payload.actionName].effects = [];
+      this.actions[payload.actionName].effects.push(actionEffect);
+    }
+    else {
+      var found = false;
+      for (var i = 0; i < this.actions[payload.actionName].effects.length; i++) {
+        if (this.actions[payload.actionName].effects[i].resource == actionEffect.resource) {
+          this.actions[payload.actionName].effects[i] = actionEffect;
+          found = true;
+        }
+      };
+      if (!found) {
+        this.actions[payload.actionName].effects.push(actionEffect);
+      }
+    }
+    
+    
     this.emit("change");
   },
   onAddEndOfRoundCondition: function(payload) {
@@ -103,6 +142,21 @@ var SimulModelStore = Fluxxor.createStore({
   },
   onAddSimulModelError: function(payload) {
     this.status = "ERROR";
+    this.emit("change");
+  },
+  onLoadSimulModels: function() {
+    this.loadingSimulationModels = "LOADING";
+    this.emit("change");
+  },
+  onLoadSimulModelsSuccess: function(payload) {
+    console.log("onLoadSimulModelsSuccess: " + JSON.stringify(payload.simulationModels));
+    this.loadingSimulationModels = "SUCCESS";
+    this.existingSimulationModels = payload.simulationModels;
+    this.emit("change");
+  },
+  onLoadSimulModelsFail: function(payload) {
+    this.loadingSimulationModels = "FAIL";
+    this.loadingError = payload.error;
     this.emit("change");
   }
 });

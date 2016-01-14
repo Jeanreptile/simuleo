@@ -63,7 +63,7 @@ var FormSimul = React.createClass({
   mixins: [SetIntervalMixin,FluxMixin,React.addons.LinkedStateMixin, StoreWatchMixin("ClasseStore")],
 
   getInitialState: function() {
-   return { simulName: "", simulContext: "", roleToAddMessage: "", roleToAddName: "",
+   return { simulName: "", simulContext: "", existingSimulationModels: this.getFlux().actions.loadSimulationModels(), roleToAddMessage: "", roleToAddName: "",
     resourceName: "", resourceHigherValue: "", resourceLowerValue: "", resourceInitialValue: "",
     resourceIsShared: false, resourceIsCritical: false, resourceRole: "",
     actionToAddName: "", actionToAddAvailableIfResource: "", actionToAddAvailableIfOperator: ">",
@@ -161,11 +161,16 @@ var FormSimul = React.createClass({
     this.getFlux().actions.removeStudent(value);
   },
   render: function() {
-    this.state.resourceRole = $("#dropdownselectResourceRole option:first").val();
-    this.state.actionToAddAvailableIfResource = $("#dropdownselectActionAvailableIfResources option:first").val();
-    this.state.actionToAddEffectResource = $("#dropdownselectEffectResource option:first").val();
-    this.state.endOfRoundConditionResource1 = $("#dropdownselectEndOfRoundResource1 option:first").val();
-    this.state.endOfRoundConditionResource2 = $("#dropdownselectEndOfRoundResource2 option:first").val();
+    if (this.state.resourceRole == "" || !this.state.resourceRole)
+      this.state.resourceRole = $("#dropdownselectResourceRole option:first").val();
+    if (this.state.actionToAddAvailableIfResource == "" || !this.state.actionToAddAvailableIfResource)
+      this.state.actionToAddAvailableIfResource = $("#dropdownselectActionAvailableIfResources option:first").val();
+    if (this.state.actionToAddEffectResource == "" || !this.state.actionToAddEffectResource)
+      this.state.actionToAddEffectResource = $("#dropdownselectEffectResource option:first").val();
+    if (this.state.endOfRoundConditionResource1 == "" || !this.state.endOfRoundConditionResource1)
+      this.state.endOfRoundConditionResource1 = $("#dropdownselectEndOfRoundResource1 option:first").val();
+    if (this.state.endOfRoundConditionResource2 == "" || !this.state.endOfRoundConditionResource2)
+      this.state.endOfRoundConditionResource2 = $("#dropdownselectEndOfRoundResource2 option:first").val();
     rolesAdded = this.state.rolesAdded;
     resourcesAdded = this.state.resourcesAdded;
     actionsAdded = this.state.actionsAdded;
@@ -173,6 +178,7 @@ var FormSimul = React.createClass({
     //console.log("actionsAdded length: " + Object.keys(actionsAdded).length);
     //console.log("actionToAddName: " + this.state.actionToAddName);
     endOfRoundConditionsAdded = this.state.endOfRoundConditionsAdded;
+    existingSimulationModels = this.state.existingSimulationModels;
     return (
               <PanelContainer noOverflow controlStyles='bg-green fg-white'>
                 <Panel>
@@ -197,12 +203,15 @@ var FormSimul = React.createClass({
                                   <Label htmlFor='contexte'>Enter a name *</Label>
                                   <Input autoFocus valueLink={this.linkState('simulName')} type='text' id='name_simul' placeholder='Ex.: Negociation' className='required' />
                                   <hr />
-                                  <Label htmlFor='dropdownselect'>Create simulation from an existing model </Label>
-                                  <Select id='dropdownselect' defaultValue='1'>
-                                    <option value='1'>Blank Simulation</option>
-                                    <option value='2'>Negociation</option>
-                                    <option value='3'>Desert Island</option>
-                                    <option value='4'>Everest</option>
+                                  <Label htmlFor='dropdownselectExistingSimulationModel'>Create simulation from an existing model </Label>
+                                  <Select id='dropdownselectExistingSimulationModel' valueLink={this.linkState('existingSimulationModels')}>
+                                    <option value='blank'>Blank simulation</option>
+                                    { existingSimulationModels ? existingSimulationModels.map(function(simulationModel) {
+                                      {simulationModel}
+                                      return (
+                                          <option value={simulationModel.name}>{simulationModel.name}</option>
+                                        )
+                                    }) : null }
                                   </Select>
                                   <hr />
                                   <Label htmlFor='contexte'>Add a context message</Label>
@@ -552,18 +561,13 @@ var FormSimul = React.createClass({
                                               }
                                             </tbody>
                                           </Table>
-                                          <Col sm={3} collapseRight collapseLeft className="pull-right">
-                                              <Button lg style={{marginBottom: 5}} bsStyle='success' onClick={this.addAction}>
-                                                Add Action
-                                              </Button>{' '}
-                                          </Col>
                                           <br />
                                           <br />
                                           <br />
                                           <Table bordered striped condensed>
                                             <thead>
                                               <tr>
-                                                <th>Name</th>
+                                                <th>Actions added</th>
                                               </tr>
                                             </thead>
                                             <tbody>
@@ -707,10 +711,6 @@ var FormSimul = React.createClass({
                                 )}
                               )}
                           </ul>
-                          <hr />
-                          <Col sm={3} collapseRight collapseLeft className="center">
-                              <Button lg style={{marginBottom: 5}} bsStyle='success'>Finish Creation</Button>{' '}
-                          </Col>
                         </div>
                       </div>
                     </Form>

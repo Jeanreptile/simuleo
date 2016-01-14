@@ -37,17 +37,28 @@ module.exports = {
 
       $.post('/api/simul_model/', { name: simulName, context: simulContext, roles: roles, resources: resources,
         actions: actions, endOfRoundConditions: endOfRoundConditions },
-      function(links) { }.bind(this)
-    )
-    .done(function(links) {
-        this.dispatch(constants.ADD_SIMUL_MODEL_SUCCESS, {uniqueId: links.uniqueId, name: name, context: simulContext, roles: roles, resources: resources,
-        actions: actions, endOfRoundConditions: endOfRoundConditions });
-      }.bind(this)
-    )
-    .fail(function(error) {
-        this.dispatch(constants.ADD_SIMUL_MODEL_FAIL, {error: error});
-      }.bind(this)
-    );
+        function(links) { }.bind(this)
+      )
+      .done(function(links) {
+          this.dispatch(constants.ADD_SIMUL_MODEL_SUCCESS, {uniqueId: links.uniqueId, name: name, context: simulContext, roles: roles, resources: resources,
+          actions: actions, endOfRoundConditions: endOfRoundConditions });
+        }.bind(this)
+      )
+      .fail(function(error) {
+          this.dispatch(constants.ADD_SIMUL_MODEL_FAIL, {error: error});
+        }.bind(this)
+      );
+    },
+    loadSimulationModels: function() {
+      this.dispatch(constants.LOAD_SIMUL_MODELS, {});
+      $.get('/api/simul_model/', function(simulationModels) {
+        this.dispatch(constants.LOAD_SIMUL_MODELS_SUCCESS, {simulationModels: simulationModels});
+      }.bind(this))
+      .done(function() {
+      })
+      .fail(function(error) {
+         this.dispatch(constants.LOAD_SIMUL_MODELS_FAIL, {error: error});
+      }.bind(this));
     },
     //Simulation config
     addSimul: function(groups) {
