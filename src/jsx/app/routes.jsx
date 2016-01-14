@@ -12,6 +12,8 @@ var simul_instance = require('./routes/app/simul_instance.jsx');
 var simul_instance_groups = require('./routes/app/simul_instance_groups.jsx');
 var simul_instance_dashboard = require('./routes/app/simul_instance_dashboard.jsx');
 var simul_instance_dashboard_end = require('./routes/app/simul_instance_dashboard_end.jsx');
+var simul_instance_student_dashboard = require('./routes/app/simul_instance_student_dashboard.jsx');
+var simul_instance_student_dashboard_end = require('./routes/app/simul_instance_student_dashboard_end.jsx');
 var signup = require('./routes/app/signup.jsx');
 var login = require('./routes/app/login.jsx');
 var logout = require('./routes/app/logout.jsx');
@@ -35,6 +37,8 @@ module.exports = (
     <Route path='/simul_instance/groups' handler={simul_instance_groups} />
     <Route path='/simul_instance/dashboard' handler={simul_instance_dashboard} />
     <Route path='/simul_instance/dashboard_end' handler={simul_instance_dashboard_end} />
+    <Route path='/simul_instance/student_dashboard' handler={simul_instance_student_dashboard} />
+    <Route path='/simul_instance/student_dashboard_end' handler={simul_instance_student_dashboard_end} />
     <Route path='/signup' handler={signup} />
     <Route path='/login' handler={login} />
     <Route path='/logout' handler={logout} />
