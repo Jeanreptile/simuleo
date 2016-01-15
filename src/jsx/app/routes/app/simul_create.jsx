@@ -220,7 +220,7 @@ var FormSimul = React.createClass({
                                   </Select>
                                   <hr />
                                   <Label htmlFor='contexte'>Add a context message</Label>
-                                  <Textarea rows='5' id='simul_context' name='simul_context' className='required'
+                                  <Textarea rows='5' id='simul_context' name='simul_context'
                                     valueLink={this.linkState('simulContext')}
                                     placeholder="Ex.: The two of you are in a car dealership..." />
                                 </FormGroup>
