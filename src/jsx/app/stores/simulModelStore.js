@@ -13,6 +13,9 @@ var SimulModelStore = Fluxxor.createStore({
     this.existingSimulationModels = [];
     this.loadingSimulationModels = "";
     this.loadingError = "";
+    this.editing = "";
+    this.editingError = "";
+    this.actionName = "";
 
     this.bindActions(
       constants.ADD_SIMUL_ROLE, this.onAddRole,
@@ -27,7 +30,10 @@ var SimulModelStore = Fluxxor.createStore({
       constants.ADD_SIMUL_MODEL_FAIL, this.onAddSimulModelError,
       constants.LOAD_SIMUL_MODELS, this.onLoadSimulModels,
       constants.LOAD_SIMUL_MODELS_SUCCESS, this.onLoadSimulModelsSuccess,
-      constants.LOAD_SIMUL_MODELS_FAIL, this.onLoadSimulModelsFail
+      constants.LOAD_SIMUL_MODELS_FAIL, this.onLoadSimulModelsFail,
+      constants.EDIT_SIMUL_MODEL, this.onEditSimulModel,
+      constants.EDIT_SIMUL_MODEL_SUCCESS, this.onEditSimulModelSuccess,
+      constants.EDIT_SIMUL_MODEL_FAIL, this.onEditSimulModelFail
     );
   },
 
@@ -53,6 +59,7 @@ var SimulModelStore = Fluxxor.createStore({
   },
   onAddAction: function(payload) {
     //this.actions[payload.actionName] = action;
+    this.actionName = payload.actionName;
     this.emit("change");
   },
   onAddActionAvailableIf: function(payload) {
@@ -149,15 +156,32 @@ var SimulModelStore = Fluxxor.createStore({
     this.emit("change");
   },
   onLoadSimulModelsSuccess: function(payload) {
-    console.log("onLoadSimulModelsSuccess: " + JSON.stringify(payload.simulationModels));
     this.loadingSimulationModels = "SUCCESS";
     this.existingSimulationModels = payload.simulationModels;
-    console.log("existingSimulationModels: " + JSON.stringify(this.existingSimulationModels));
     this.emit("change");
   },
   onLoadSimulModelsFail: function(payload) {
     this.loadingSimulationModels = "FAIL";
     this.loadingError = payload.error;
+    this.emit("change");
+  },
+  onEditSimulModel: function() {
+    this.editing = "EDITING";
+    this.emit("change");
+  },
+  onEditSimulModelSuccess: function(payload) {
+    this.editing = "SUCCESS";
+    this.name = payload.simulationModel.name;
+    this.context = payload.simulationModel.context;
+    this.roles = payload.simulationModel.roles;
+    this.resources = payload.simulationModel.resources;
+    this.actions = payload.simulationModel.actions;
+    this.endOfRoundConditions = payload.simulationModel.endOfRoundConditions;
+    this.actionName = Object.keys(payload.simulationModel.actions)[0];
+    this.emit("change");
+  },
+  onEditSimulModelFail: function(payload) {
+    this.editingError = "error";
     this.emit("change");
   }
 });

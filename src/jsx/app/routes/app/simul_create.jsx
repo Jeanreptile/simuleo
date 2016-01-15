@@ -60,10 +60,10 @@ var Body = React.createClass({
 });
 
 var FormSimul = React.createClass({
-  mixins: [SetIntervalMixin,FluxMixin,React.addons.LinkedStateMixin, StoreWatchMixin("ClasseStore")],
+  mixins: [SetIntervalMixin,FluxMixin,React.addons.LinkedStateMixin, StoreWatchMixin("SimulModelStore")],
 
   getInitialState: function() {
-   return { simulName: "", simulContext: "", roleToAddMessage: "", roleToAddName: "",
+   return { simulName: "", roleToAddMessage: "", roleToAddName: "",
     resourceName: "", resourceHigherValue: "", resourceLowerValue: "", resourceInitialValue: "",
     resourceIsShared: false, resourceIsCritical: false, resourceRole: "",
     actionToAddName: "", actionToAddAvailableIfResource: "", actionToAddAvailableIfOperator: ">",
@@ -79,7 +79,8 @@ var FormSimul = React.createClass({
       resourcesAdded: this.getFlux().store("SimulModelStore").resources,
       actionsAdded: this.getFlux().store("SimulModelStore").actions,
       endOfRoundConditionsAdded: this.getFlux().store("SimulModelStore").endOfRoundConditions,
-      existingSimulationModels: this.getFlux().store("SimulModelStore").existingSimulationModels
+      existingSimulationModels: this.getFlux().store("SimulModelStore").existingSimulationModels,
+      simulContext: this.getFlux().store("SimulModelStore").context
     };
   },
 
@@ -161,6 +162,10 @@ var FormSimul = React.createClass({
     this.setState({groupsData: oldGroupsData});
     this.getFlux().actions.removeStudent(value);
   },
+  handleExistingSimulationModelChanged: function(event) {
+    if (event.target.value != "blank")
+      this.getFlux().actions.editSimulModelCreationForm(event.target.value);
+  },
   render: function() {
     if (this.state.resourceRole == "" || !this.state.resourceRole)
       this.state.resourceRole = $("#dropdownselectResourceRole option:first").val();
@@ -179,8 +184,6 @@ var FormSimul = React.createClass({
     //console.log("actionsAdded length: " + Object.keys(actionsAdded).length);
     //console.log("actionToAddName: " + this.state.actionToAddName);
     endOfRoundConditionsAdded = this.state.endOfRoundConditionsAdded;
-    console.log("existingSimulationModels: " + JSON.stringify(this.state.existingSimulationModels));
-    //existingSimulationModels = this.state.existingSimulationModels;
     return (
               <PanelContainer noOverflow controlStyles='bg-green fg-white'>
                 <Panel>
@@ -205,14 +208,13 @@ var FormSimul = React.createClass({
                                   <Label htmlFor='contexte'>Enter a name *</Label>
                                   <Input autoFocus valueLink={this.linkState('simulName')} type='text' id='name_simul' placeholder='Ex.: Negociation' className='required' />
                                   <hr />
-                                  <Label htmlFor='dropdownselectExistingSimulationModel'>Create simulation from an existing model { JSON.stringify(this.state.existingSimulationModels) }</Label>
-                                  <Select id='dropdownselectExistingSimulationModel'>
+                                  <Label htmlFor='dropdownselectExistingSimulationModel'>Create simulation from an existing model</Label>
+                                  <Select id='dropdownselectExistingSimulationModel' onChange={this.handleExistingSimulationModelChanged}>
                                     <option value='blank'>Blank simulation</option>
-                                    <option>{ JSON.stringify(this.state.existingSimulationModels) }</option>
                                     { this.state.existingSimulationModels ? this.state.existingSimulationModels.map(function(simulationModel) {
                                       {simulationModel}
                                       return (
-                                          <option value={simulationModel.name}>{simulationModel.name}</option>
+                                          <option value={simulationModel.uniqueId}>{simulationModel.name}</option>
                                         )
                                     }) : null }
                                   </Select>
@@ -452,7 +454,7 @@ var FormSimul = React.createClass({
                                               </tr>
                                             </thead>
                                             <tbody>
-                                              { Object.keys(actionsAdded).length > 0 ? actionsAdded[this.state.actionToAddName].availableIf.map(function(action) {
+                                              { Object.keys(actionsAdded).length > 0 ? actionsAdded[Object.keys(actionsAdded)[0]].availableIf.map(function(action) {
                                                 return (
                                                   <tr>
                                                     <td>{action.resource}</td>
@@ -493,7 +495,7 @@ var FormSimul = React.createClass({
                                               </tr>
                                             </thead>
                                             <tbody>
-                                              { Object.keys(actionsAdded).length > 0 && actionsAdded[this.state.actionToAddName].availableFor !== undefined ? actionsAdded[this.state.actionToAddName].availableFor.map(function(roleName) {
+                                              { Object.keys(actionsAdded).length > 0 && actionsAdded[Object.keys(actionsAdded)[0]].availableFor !== undefined ? actionsAdded[Object.keys(actionsAdded)[0]].availableFor.map(function(roleName) {
                                                 return (
                                                   <tr>
                                                     <td>{roleName}</td>
@@ -516,7 +518,7 @@ var FormSimul = React.createClass({
                                           </Col>
                                           <Col sm={3}>
                                             <Label htmlFor='dropdownselectEffectOperator'>Operator</Label>
-                                            <Select id='dropdownselectEffectOperator' defaultValue='1' valueLink={this.linkState('actionToAddEffectOperator')}>
+                                            <Select id='dropdownselectEffectOperator' valueLink={this.linkState('actionToAddEffectOperator')}>
                                               <option value='+'>{'+'}</option>
                                               <option value='-'>{'-'}</option>
                                               <option value='='>{'='}</option>
@@ -553,7 +555,7 @@ var FormSimul = React.createClass({
                                               </tr>
                                             </thead>
                                             <tbody>
-                                              { Object.keys(actionsAdded).length > 0 && actionsAdded[this.state.actionToAddName].effects !== undefined ? actionsAdded[this.state.actionToAddName].effects.map(function(effect) {
+                                              { Object.keys(actionsAdded).length > 0 && actionsAdded[Object.keys(actionsAdded)[0]].effects !== undefined ? actionsAdded[Object.keys(actionsAdded)[0]].effects.map(function(effect) {
                                                 return (
                                                   <tr>
                                                     <td>{effect.resource}</td>

@@ -52,12 +52,23 @@ module.exports = {
     loadSimulationModels: function() {
       this.dispatch(constants.LOAD_SIMUL_MODELS, {});
       $.get('/api/simul_model/', function(simulationModels) {
-        this.dispatch(constants.LOAD_SIMUL_MODELS_SUCCESS, {simulationModels: simulationModels});
+        this.dispatch(constants.LOAD_SIMUL_MODELS_SUCCESS, { simulationModels: simulationModels });
       }.bind(this))
       .done(function() {
       })
       .fail(function(error) {
          this.dispatch(constants.LOAD_SIMUL_MODELS_FAIL, {error: error});
+      }.bind(this));
+    },
+    editSimulModelCreationForm: function(simulationModelUniqueId) {
+      this.dispatch(constants.EDIT_SIMUL_MODEL);
+      $.get('/api/simul_model/' + simulationModelUniqueId, function(simulationModel) {
+        this.dispatch(constants.EDIT_SIMUL_MODEL_SUCCESS, {simulationModel: simulationModel });
+      }.bind(this))
+      .done(function() {
+      })
+      .fail(function(error) {
+         this.dispatch(constants.EDIT_SIMUL_MODEL_FAIL, {error: error});
       }.bind(this));
     },
     //Simulation config

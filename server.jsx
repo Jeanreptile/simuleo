@@ -143,6 +143,15 @@ app.get('/api/simul_model/', function(req, res, next) {
   });
 });
 
+app.get('/api/simul_model/:uniqueId', function(req, res, next) {
+  rdb.findSimulationModelByUniqueId(req.params.uniqueId).then(function (response) {
+      if(!response) {
+          return res.json("nope");
+      }
+      return res.json(response);
+  });
+});
+
 app.get('/api/simul_negociation/:uniqueId', function(req, res, next) {
   console.log('yes !');
   rdb.simulNegociationGetInfo(req.params.uniqueId).then(function (response) {
