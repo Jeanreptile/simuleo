@@ -2,8 +2,8 @@ var constants = require('../constants/constants');
 
 module.exports = {
 
-    addSimulRole: function(roleName, roleMessage) {
-      this.dispatch(constants.ADD_SIMUL_ROLE, {roleName: roleName, roleMessage: roleMessage});
+    addSimulRole: function(simulContext, roleName, roleMessage) {
+      this.dispatch(constants.ADD_SIMUL_ROLE, {simulContext: simulContext, roleName: roleName, roleMessage: roleMessage});
     },
     addSimulModelResource: function(resourceName, resourceHigherValue, resourceLowerValue, resourceInitialValue, resourceIsShared, resourceIsCritical, resourceRole) {
       this.dispatch(constants.ADD_SIMUL_MODEL_RESOURCE, { resourceName: resourceName,

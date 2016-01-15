@@ -38,6 +38,7 @@ var SimulModelStore = Fluxxor.createStore({
   },
 
   onAddRole: function(payload) {
+    this.context = payload.simulContext;
     this.roles[payload.roleName] = payload.roleMessage;
     this.emit("change");
   },
@@ -63,6 +64,7 @@ var SimulModelStore = Fluxxor.createStore({
     this.emit("change");
   },
   onAddActionAvailableIf: function(payload) {
+    this.actionName = payload.actionName;
     var actionAvailableIf = {
       "resource": payload.actionAvailableIfResource,
       "operator": payload.actionAvailableIfOperator,

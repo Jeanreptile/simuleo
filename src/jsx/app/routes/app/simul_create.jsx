@@ -66,7 +66,7 @@ var FormSimul = React.createClass({
    return { simulName: "", roleToAddMessage: "", roleToAddName: "",
     resourceName: "", resourceHigherValue: "", resourceLowerValue: "", resourceInitialValue: "",
     resourceIsShared: false, resourceIsCritical: false, resourceRole: "",
-    actionToAddName: "", actionToAddAvailableIfResource: "", actionToAddAvailableIfOperator: ">",
+    actionToAddAvailableIfResource: "", actionToAddAvailableIfOperator: ">",
     actionToAddAvailableIfValue: 0, actionToAddAvailableForRole:"all", actionToAddEffectResource: "",
     actionToAddEffectOperator:"+", actionToAddEffectValue: 'constant', actionToAddEffectValueInput: 0,
     endOfRoundConditionResource1: "", endOfRoundConditionResource2: "", endOfRoundConditionOperator: ">" };
@@ -80,7 +80,8 @@ var FormSimul = React.createClass({
       actionsAdded: this.getFlux().store("SimulModelStore").actions,
       endOfRoundConditionsAdded: this.getFlux().store("SimulModelStore").endOfRoundConditions,
       existingSimulationModels: this.getFlux().store("SimulModelStore").existingSimulationModels,
-      simulContext: this.getFlux().store("SimulModelStore").context
+      simulContext: this.getFlux().store("SimulModelStore").context,
+      actionToAddName: this.getFlux().store("SimulModelStore").actionName
     };
   },
 
@@ -725,7 +726,7 @@ var FormSimul = React.createClass({
     );
   },
   addRole: function(e) {
-    this.getFlux().actions.addSimulRole(this.state.roleToAddName, this.state.roleToAddMessage);
+    this.getFlux().actions.addSimulRole(this.state.simulContext, this.state.roleToAddName, this.state.roleToAddMessage);
   },
   addResource: function(e) {
     //console.log(JSON.stringify(this.state.resourceRole));
